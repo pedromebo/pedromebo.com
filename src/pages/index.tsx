@@ -3,7 +3,9 @@ import { InferGetStaticPropsType } from 'next';
 import * as React from 'react';
 import { IoArrowDownOutline } from 'react-icons/io5';
 import { IoNewspaperSharp } from 'react-icons/io5';
-import { SiGithub, SiTwitter } from 'react-icons/si';
+
+import { SiGithub, SiLinkedin } from 'react-icons/si';
+import {FaXTwitter} from 'react-icons/fa6';
 import { InView } from 'react-intersection-observer';
 
 import { trackEvent } from '@/lib/analytics';
@@ -21,7 +23,7 @@ import ButtonLink from '@/components/links/ButtonLink';
 import CustomLink from '@/components/links/CustomLink';
 import UnstyledLink from '@/components/links/UnstyledLink';
 import Seo from '@/components/Seo';
-import TC from '@/components/TC';
+import PMB from '@/components/PMB';
 import Tooltip from '@/components/Tooltip';
 
 export default function IndexPage({
@@ -49,14 +51,14 @@ export default function IndexPage({
           )}
         >
           <article className='layout'>
-            <h2 className='text-2xl md:text-4xl 2xl:text-5xl' data-fade='1'>
-              Hi!
+            <h2 className='text-2xl md:text-4xl 2xl:text-5xl mb-4' data-fade='1'>
+              ¡Hola! Soy <Accent>Pedro</Accent>,
             </h2>
             <h1
               className='mt-1 text-3xl md:text-5xl 2xl:text-6xl'
               data-fade='2'
             >
-              You can call me <Accent>Clarence</Accent>
+              ¿me acompañas a descubrir el mundo de los datos y la IA?
             </h1>
             <p
               className='mt-2 max-w-4xl leading-relaxed text-gray-700 dark:text-gray-200 md:mt-3 text-sm md:text-base 2xl:text-lg'
@@ -65,10 +67,7 @@ export default function IndexPage({
                 trackEvent('Social Link: Dimension', { type: 'link' });
               }}
             >
-              Front-end Engineer at{' '}
-              <CustomLink href='https://dimension.dev/?ref=theodorusclarence.com'>
-                Dimension
-              </CustomLink>
+              Ingeniero/Científico de datos en constante aprendizaje
             </p>
             <p
               className={clsx(
@@ -77,16 +76,22 @@ export default function IndexPage({
               )}
               data-fade='3'
             >
-              I work with React Ecosystem, and write to teach people how to
-              rebuild and redefine fundamental concepts through mental models.
+              Explora un universo de innovación y los últimos avances en inteligencia artificial. Aquí encontrarás desde noticias hasta proyectos únicos que te ayudarán a seguir aprendiendo y estar al día.
             </p>
 
             <p
               className='mt-3 max-w-4xl leading-relaxed text-gray-700 dark:text-gray-200 md:mt-4 md:text-lg 2xl:text-xl'
               data-fade='4'
             >
-              Don't forget to sign my{' '}
-              <CustomLink href='/guestbook'>guestbook</CustomLink>!
+              ¡No olvides de seguirme en {' '}
+              <CustomLink
+                href='https://twitter.com/pedromebo'
+                onClick={() => {
+                  trackEvent('Social Link: Twitter', { type: 'link' });
+                }}
+              >
+                Twitter
+              </CustomLink>!
             </p>
             <div
               data-fade='5'
@@ -101,31 +106,31 @@ export default function IndexPage({
                     'opacity-75 transition duration-1000 group-hover:opacity-100 group-hover:duration-200'
                   )}
                 />
-                <ButtonLink href='#intro'>Read the blog</ButtonLink>
+                <ButtonLink href='#intro'>Explorar el blog</ButtonLink>
               </div>
-              <ButtonLink href='/about'>Learn more about me</ButtonLink>
+              <ButtonLink href='/about'>¿Quién soy?</ButtonLink>
             </div>
             <div
               data-fade='6'
               className='mt-4 flex flex-wrap gap-4 gap-y-2 md:mt-8'
             >
               <UnstyledLink
-                href='https://clarence.link/cv'
+                href='https://www.linkedin.com/in/pedromebo/'
                 className={clsx(
                   'inline-flex items-center gap-1 text-sm font-medium md:text-base',
-                  'text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-white',
+                  'group text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-white',
                   'focus:outline-none focus-visible:ring focus-visible:ring-primary-300',
                   'transition-colors'
                 )}
                 onClick={() => {
-                  trackEvent('Social Link: Resume', { type: 'link' });
+                  trackEvent('Social Link: Linkedin', { type: 'link' });
                 }}
               >
-                <IoNewspaperSharp className='shrink-0' />
-                <span>Resume</span>
+                <SiLinkedin className='shrink-0 transition-colors group-hover:text-[#1da1f2]' />
+                <span>Pedromebo</span>
               </UnstyledLink>
               <UnstyledLink
-                href='https://twitter.com/th_clarence'
+                href='https://twitter.com/pedromebo'
                 className={clsx(
                   'inline-flex items-center gap-1 text-sm font-medium md:text-base',
                   'group text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-white',
@@ -136,11 +141,11 @@ export default function IndexPage({
                   trackEvent('Social Link: Twitter', { type: 'link' });
                 }}
               >
-                <SiTwitter className='shrink-0 transition-colors group-hover:text-[#1da1f2]' />
-                <span>@th_clarence</span>
+                <FaXTwitter className='shrink-0 transition-colors group-hover:text-[#1da1f2]' />
+                <span>@pedromebo</span>
               </UnstyledLink>
               <UnstyledLink
-                href='https://github.com/theodorusclarence'
+                href='https://github.com/pedromebo'
                 className={clsx(
                   'inline-flex items-center gap-1 text-sm font-medium md:text-base',
                   'text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-white',
@@ -152,7 +157,7 @@ export default function IndexPage({
                 }}
               >
                 <SiGithub className='shrink-0' />
-                <span>theodorusclarence</span>
+                <span>pedromebo</span>
               </UnstyledLink>
             </div>
           </article>
@@ -166,7 +171,7 @@ export default function IndexPage({
           >
             <IoArrowDownOutline className='h-8 w-8 animate-bounce md:h-10 md:w-10' />
           </UnstyledLink>
-          <TC
+          <PMB
             className={clsx(
               'absolute bottom-0 right-6',
               'translate-y-[37%] transform-gpu',
@@ -193,33 +198,16 @@ export default function IndexPage({
                 <div className='mt-8 h-full w-full md:mt-0'>
                   <h2 className='text-4xl md:text-6xl'>
                     <Accent className='inline decoration-clone leading-snug dark:leading-none'>
-                      Rebuild your mental model
+                      Reimagina tu forma de aprender
                     </Accent>
                   </h2>
                   <div className='mt-4 text-base text-gray-600 dark:text-gray-300 md:text-lg'>
-                    <Tooltip
-                      withUnderline
-                      tipChildren={
-                        <>
-                          A mental model is an explanation of someone's{' '}
-                          <strong>thought process</strong> about how something
-                          works. You can use it as your own guide that you can
-                          test through some cases.
-                        </>
-                      }
-                    >
-                      <span>Mental model</span>
-                    </Tooltip>{' '}
-                    will make front-end development more{' '}
+                    Inspírate mediante artículos y proyectos. Aprende creando
+                    y desarrollando {' '}
                     <strong className='text-gray-700 dark:text-gray-200'>
-                      predictable
+                    productos de IA completos 
                     </strong>{' '}
-                    by seeing how they work{' '}
-                    <strong className='text-gray-700 dark:text-gray-200'>
-                      fundamentally
-                    </strong>
-                    . In my blog, I'm sharing how I approach something and how
-                    my mental model affect my learning about a certain topic.
+                    y redescubre nuevas formas de afrontar problemas del día a día.
                   </div>
                 </div>
                 <div className='h-full w-full'>
@@ -253,7 +241,7 @@ export default function IndexPage({
             >
               <article className='layout' data-fade='0'>
                 <h2 className='text-2xl md:text-4xl' id='blog'>
-                  <Accent>Featured Posts</Accent>
+                  <Accent>Publicaciones destacadas</Accent>
                 </h2>
                 <ul className='mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-3'>
                   {populatedPosts.map((post, i) => (
@@ -268,10 +256,10 @@ export default function IndexPage({
                   className='mt-4'
                   href='/blog'
                   onClick={() =>
-                    trackEvent('Home: See more post', { type: 'navigate' })
+                    trackEvent('Home: Ver más publicaciones', { type: 'navigate' })
                   }
                 >
-                  See more post
+                  Ver más publicaciones
                 </ButtonLink>
               </article>
             </section>
@@ -286,10 +274,10 @@ export default function IndexPage({
             >
               <article className='layout' data-fade='0'>
                 <h2 className='text-2xl md:text-4xl' id='projects'>
-                  <Accent>Featured Projects</Accent>
+                  <Accent>Proyectos destacados</Accent>
                 </h2>
                 <p className='mt-2 text-gray-600 dark:text-gray-300'>
-                  Some projects that I'm proud of
+                  Algunos proyectos de los que estoy orgulloso
                 </p>
                 <ul className='mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-3'>
                   {populatedProjects.map((project, i) => (
@@ -307,7 +295,7 @@ export default function IndexPage({
                     trackEvent('Home: See more project', { type: 'navigate' })
                   }
                 >
-                  See more project
+                  Ver más proyectos
                 </ButtonLink>
               </article>
             </section>
@@ -325,8 +313,7 @@ export default function IndexPage({
                   <Accent>Shorts</Accent>
                 </h2>
                 <p className='mt-2 text-gray-600 dark:text-gray-300'>
-                  Short article that's not long enough to be a blog post,
-                  usually comes from my personal notes.
+                  Mini artículos o micro publicaciones. Suelen ser consejos rápidos sobre código, desarrollo o reflexiones.
                 </p>
                 <ul className='mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-3'>
                   {populatedShorts.map((short, i) => (
@@ -341,10 +328,10 @@ export default function IndexPage({
                   className='mt-4'
                   href='/shorts'
                   onClick={() =>
-                    trackEvent('Home: See more shorts', { type: 'navigate' })
+                    trackEvent('Home: Ver más shorts', { type: 'navigate' })
                   }
                 >
-                  See more shorts
+                  Ver más shorts
                 </ButtonLink>
               </article>
             </section>
@@ -363,30 +350,19 @@ export async function getStaticProps() {
   const shorts = await getAllFilesFrontmatter('library');
 
   const featuredPosts = getFeatured(blogs, [
-    'gradient-border-is-hard',
-    'advanced-react-patterns',
-    'fully-reusable-components',
-    'react-core-concept-rendering-state',
-    'nextjs-auth-hoc',
-    'nextjs-fetch-method',
+    'informe-datos-marbella-vice',
+    'readme-presentacion-github'
   ]);
   const featuredProjects = getFeatured(projects, [
-    'hexcape',
-    'notiolink',
-    'ppdbsumsel',
+    'informe-datos-marbella-vice',
+    'oona-the-druids-path'
+  ]);
+  const introPosts = getFeatured(blogs, [
+    'informe-datos-marbella-vice',
+    'readme-presentacion-github'
   ]);
   const featuredShorts = getFeatured(shorts, [
-    'react/absolute-import',
-    'auth-context',
-    'mac/zsh',
-    'react/jsx-one-parent',
-    'styling/margin-usage',
-    'uncategorized/search-removal',
-  ]);
-
-  const introPosts = getFeatured(blogs, [
-    'btb-flex-mental-model',
-    'nextjs-fetch-method',
+    'nuevos-desarrolladores-ia'
   ]);
 
   return {

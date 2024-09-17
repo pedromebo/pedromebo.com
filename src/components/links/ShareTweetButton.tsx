@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import * as React from 'react';
-import { SiTwitter } from 'react-icons/si';
+import {FaXTwitter} from 'react-icons/fa6';
 
 import ButtonLink, { ButtonLinkProps } from '@/components/links/ButtonLink';
 
@@ -15,7 +15,7 @@ export default function ShareTweetButton({
   className,
   ...rest
 }: ShareTweetButtonProps) {
-  const text = `I just read an article about ${title} by @th_clarence.`;
+  const text = `Acabo de leer un artículo sobre ${title} por @pedromebo.`;
   const intentUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(
     url
   )}&text=${encodeURIComponent(text)}%0A%0A`;
@@ -26,8 +26,8 @@ export default function ShareTweetButton({
       href={intentUrl}
       className={clsx('items-center gap-2', className)}
     >
-      <SiTwitter className='text-[1.2em] text-[#1da1f2]' />
-      Tweet this article
+      <FaXTwitter className='text-[1.2em] text-[#1da1f2]' />
+      Pon un Tweet de este artículo
     </ButtonLink>
   );
 }

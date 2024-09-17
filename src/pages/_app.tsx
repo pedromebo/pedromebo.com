@@ -10,7 +10,6 @@ import * as React from 'react';
 import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css';
 import 'react-tippy/dist/tippy.css';
 import '@/styles/globals.css';
-import '@/styles/carbon.css';
 import '@/styles/mdx.css';
 import '@/styles/nprogress.css';
 
@@ -30,7 +29,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     if (
       window.location.host !==
         (process.env.NEXT_PUBLIC_BLOCK_DOMAIN_WHITELIST ||
-          'theodorusclarence.com') &&
+          'pedromebo.com') &&
       blockDomainMeta
     ) {
       if (getFromLocalStorage('incrementMetaFlag') !== 'false') {

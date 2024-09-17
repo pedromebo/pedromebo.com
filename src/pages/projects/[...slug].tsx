@@ -7,11 +7,9 @@ import { SiGithub } from 'react-icons/si';
 
 import { trackEvent } from '@/lib/analytics';
 import { getFileBySlug, getFileSlugArray } from '@/lib/mdx.server';
-import useContentMeta from '@/hooks/useContentMeta';
 import useScrollSpy from '@/hooks/useScrollspy';
+import { cleanPagePrefix } from '@/lib/helper.client';
 
-import Comment from '@/components/content/Comment';
-import LikeButton from '@/components/content/LikeButton';
 import MDXComponents from '@/components/content/MDXComponents';
 import TableOfContents, {
   HeadingScrollSpy,
@@ -28,8 +26,13 @@ export default function SingleProjectPage({ code, frontmatter }: ProjectType) {
 
   //#region  //*=========== Content Meta ===========
   const contentSlug = `p_${frontmatter.slug.replace('|', '-')}`;
-  const meta = useContentMeta(contentSlug, { runIncrement: true });
   //#endregion  //*======== Content Meta ===========
+
+  //#region  //*=========== Project Language ===========
+  // TODO: add implementation, should be bugged if folder/es-slug.mdx
+  const cleanSlug = cleanPagePrefix(frontmatter.slug);
+  const isSpanish = cleanSlug === frontmatter.slug;
+  //#endregion  //*======== Project Language ===========
 
   //#region  //*=========== Scrollspy ===========
   const activeSection = useScrollSpy();
@@ -66,7 +69,7 @@ export default function SingleProjectPage({ code, frontmatter }: ProjectType) {
         <section className=''>
           <div className='layout'>
             <CloudinaryImg
-              publicId={`theodorusclarence/${frontmatter.banner}`}
+              publicId={`pedromebo/${frontmatter.banner}`}
               alt={frontmatter.title}
               width={1440}
               height={792}
@@ -78,10 +81,6 @@ export default function SingleProjectPage({ code, frontmatter }: ProjectType) {
             </p>
 
             <div className='mt-2 flex flex-wrap items-center justify-start gap-3 text-sm font-medium text-gray-600 dark:text-gray-300'>
-              <div className='flex items-center gap-1'>
-                <HiOutlineEye className='inline-block text-base' />
-                {meta?.views?.toLocaleString() ?? '–––'} views
-              </div>
               {(frontmatter.github ||
                 frontmatter.youtube ||
                 frontmatter.link) &&
@@ -139,13 +138,21 @@ export default function SingleProjectPage({ code, frontmatter }: ProjectType) {
                 </div>
               )}
             </div>
-
             {frontmatter.category && (
               <p className='mt-2 flex items-center justify-start gap-2 text-sm text-gray-600 dark:text-gray-300'>
                 <HiUser className='text-lg text-gray-800 dark:text-white' />{' '}
                 {frontmatter.category}
               </p>
             )}
+            
+            {!frontmatter?.spanishOnly && (
+                <CustomLink
+                  href={`/projects/${isSpanish ? 'en-' : ''}${cleanSlug}`}
+                  className='mt-4'
+                >
+                  {isSpanish ? 'Read in English' : 'Leer en Español'}
+                </CustomLink>
+              )}
 
             <hr className='mt-4 dark:border-gray-600' />
 
@@ -168,23 +175,11 @@ export default function SingleProjectPage({ code, frontmatter }: ProjectType) {
                     minLevel={minLevel}
                     activeSection={activeSection}
                   />
-                  <div className='flex items-center justify-center py-8'>
-                    <LikeButton slug={contentSlug} />
-                  </div>
                 </div>
               </aside>
             </section>
 
-            <figure className='mt-12'>
-              <Comment />
-            </figure>
-
-            <div className='mt-8 flex flex-col items-start gap-4 md:flex-row-reverse md:justify-between'>
-              <CustomLink
-                href={`https://github.com/theodorusclarence/theodorusclarence.com/blob/main/src/contents/projects/${frontmatter.slug}.mdx`}
-              >
-                Edit this on GitHub
-              </CustomLink>
+            <div className='mt-8 flex flex-col items-start gap-4 md:flex-row md:justify-between'>
               <CustomLink href='/projects'>← Back to projects</CustomLink>
             </div>
           </div>

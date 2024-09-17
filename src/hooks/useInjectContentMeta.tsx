@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import * as React from 'react';
 
 import { pickContentMeta } from '@/lib/contentMeta';
-import { cleanBlogPrefix } from '@/lib/helper.client';
+import { cleanPagePrefix } from '@/lib/helper.client';
 import { getContentMeta } from '@/lib/requests/content-meta';
 
 import { contentMetaFlag } from '@/constants/env';
@@ -39,10 +39,10 @@ export default function useInjectContentMeta<T extends ContentType>(
     if (meta) {
       const mapped = frontmatter.map((fm) => {
         const views = meta.find(
-          (meta) => meta.slug.replace('|', '/') === cleanBlogPrefix(fm.slug)
+          (meta) => meta.slug.replace('|', '/') === cleanPagePrefix(fm.slug)
         )?.views;
         const likes = meta.find(
-          (meta) => meta.slug.replace('|', '/') === cleanBlogPrefix(fm.slug)
+          (meta) => meta.slug.replace('|', '/') === cleanPagePrefix(fm.slug)
         )?.likes;
         return { ...fm, views, likes };
       });

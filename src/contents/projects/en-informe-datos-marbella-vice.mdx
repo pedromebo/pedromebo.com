@@ -1,0 +1,63 @@
+---
+title: 'Consulting and Data Analytics for Live Events on Twitch (Marbella Vice 2021)'
+description: Marbella Vice data collection and analysis project using Twitch API, data visualization and content generation
+category: 'Personal project'
+publishedAt: '2021-06-28'
+techs: 'python,amazonaws,twitch,twitter'
+banner: 'projects/marbella/marbella-vice-banner'
+link: ''
+youtube: ''
+---
+
+> ## Introduction
+
+In recent months, I have been developing a data collection and analysis system focused on Twitch creators who participated in a series called Marbella Vice. Marbella Vice is a GTA V RolePlay server where over 240 participants have created thousands of hours of content.
+
+You can see the full article on the final report I published on my website by clicking [here](https://www.pedromebo.com/informe-de-datos-de-marbella-vice).
+
+<TweetCard tweetId='1408046974725672963'/>
+
+[Link to Tweet](https://twitter.com/pedromebo/status/1408046974725672963)
+
+> ## Problem
+
+As a Twitch consumer and a data enthusiast, I decided in January to start developing a system that used the Twitch API to collect data and classify creators to see their stats. After the official announcement of the creation of the Marbella Vice server, I decided to improve the entire system and continue the development to adapt it to this event and be able to use this project as part of my portfolio. What I could never have imagined was the impact it would have and the large number of people interested in this work.
+
+> ## Development
+
+### Data Collection
+
+To collect the data, different scripts were used where the Twitch API was adapted to create classes and a custom API (Flask) on top that facilitates the entire data collection process. To ensure the system's functionality, a battery of tests was conducted, and all the code was developed to be error-proof since the data collection server was critical to the project and could not fail. All these scripts were loaded into EC2 on Amazon Web Services. The script was executed every minute, and crontabs were used to create asynchronous tasks and execute scripts on scheduled dates.
+
+All this data needed to be cleaned as the API response is in JSON format, and it was necessary to remove a large amount of data that was not going to be used. Therefore, an ETL process was carried out to later insert the data into an SQL database hosted on RDS.
+
+Every minute, live data was collected from the different channels indicated, thus obtaining the necessary data to calculate the average viewers, peak viewers, live time, etc. The only data extracted from the API is the number of live viewers and the creator's ID. Additionally, the number of followers and views was updated daily to calculate each channel's growth.
+
+### Data Analysis and Visualization
+
+To analyze this data, advanced SQL queries were used to, through various JOINS and applying different filters, obtain the data we were looking for. With this data, the statistics of each stream were calculated and added to a new table with all the data already complete and ready for consultation.
+
+Once all the data was prepared, various Jupyter notebooks were used to access the data via SQL and Pandas, and all visualizations were produced using Plotly. Numerous classes and tools were created to make this process as clean and fast as possible, avoiding any possible errors.
+
+Initially, this was a task with little automation, but over time it has been optimized and automated, making it possible to create daily visualizations and reports quickly.
+
+### Content Publication
+
+Once these visualizations were obtained, they were published daily on Twitter, receiving a strong reception from the community and the creators themselves. Additionally, numerous marketing companies and media outlets have used this data to improve their campaign decisions, explore collaboration possibilities with creators, or see the performance of active campaigns during the series. You can find all the Marbella Vice data we have published on Twitter.
+
+> ## Results
+
+After 71 days of publishing daily information and more than 6 months of development, I have created a robust data collection and analysis system that has been useful for hundreds of people and companies. Additionally, I have continued to learn numerous tools and technologies that have helped the system become increasingly better.
+
+However, many more tools have been developed that have not been publicly shown. Examples of these include dashboards for creators, analysis for creators, brand identification within videos and impression estimation, and the development of a Flask API for internal use...
+
+These are some of the data and achievements obtained:
+
+- Over 3 million impressions on Twitter of the work developed.
+- Collaboration with marketing companies to provide consulting on the performance of their campaigns in Marbella Vice (PS21 with the KFC campaign).
+- Networking with many high-level content creators and offering them support through data.
+- Collaboration with media outlets for their analyses of Marbella:
+  - [Final summary of Marbella Vice - Movistar eSports](https://esports.as.com/bonus/influencers/marbella-vice/Resumen-Marbella-Vice-entretenimiento-espectadores_0_1477652222.html)
+  - [One month of Marbella Vice - Movistar eSports](https://esports.as.com/bonus/influencers/marbella-vice/mes-Marbella-Vice-cifras_0_1464753511.html)
+- SQL optimizations of more than 70% in execution time.
+- Maintenance and support of servers, keeping them active throughout the project without any downtime, despite numerous Twitch outages, user bans, and issues generated by the API.

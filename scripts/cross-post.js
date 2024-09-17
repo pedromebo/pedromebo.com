@@ -4,6 +4,7 @@ const { readFile, writeFile, mkdir, createWriteStream } = require('fs');
 const glob = require('glob');
 const matter = require('gray-matter');
 const { join } = require('path');
+const { openGraph } = require('../src/lib/helper.client');
 
 //#region  //*=========== Regex Constants ===========
 const dotAll = '(?:[^<]+?)';
@@ -11,7 +12,7 @@ const quote = '["\']';
 const select = '(.*)';
 
 /**
- * @argument $1 publicId e.g. theodorusclarence/blogs/one-stop-starter/seo-component_xpzsab
+ * @argument $1 publicId e.g. pedromebo/blogs/one-stop-starter/seo-component_xpzsab
  * @argument $2 alt e.g. seo-component
  */
 const CLOUDINARY_REGEXP = new RegExp(
@@ -20,7 +21,7 @@ const CLOUDINARY_REGEXP = new RegExp(
 );
 
 /**
- * @argument $1 user/reponame e.g. theodorusclarence/ts-nextjs-tailwind-starter
+ * @argument $1 user/reponame e.g. pedromebo/ts-nextjs-tailwind-starter
  */
 const GITHUB_REGEXP = new RegExp(
   `<GithubCard${dotAll}repo=${quote}${select}${quote}${dotAll}/>`,
@@ -44,22 +45,6 @@ const TWEET_REGEXP = new RegExp(
 );
 //#endregion  //*======== Regex Constants ===========
 
-//#region  //*=========== Footers ===========
-const devtoFooter = `
----
-
-> Originally posted on [my personal site](https://theodorusclarence.com/?ref=devto), find more [blog posts](https://theodorusclarence.com/blog?ref=devto) and [code snippets library](https://theodorusclarence.com/library?ref=devto) I put up for easy access on my site 🚀
-
-Like this post? [Subscribe to my newsletter](https://theodorusclarence.com/subscribe?ref=devto) to get notified every time a new post is out!`;
-
-const hashnodeFooter = `
----
-
-> Originally posted on [my personal site](https://theodorusclarence.com/?ref=hashnode), find more [blog posts](https://theodorusclarence.com/blog?ref=hashnode) and [code snippets library](https://theodorusclarence.com/library?ref=hashnode) I put up for easy access on my site 🚀
-
-Like this post? [Subscribe to my newsletter](https://theodorusclarence.com/subscribe?ref=hashnode) to get notified every time a new post is out!`;
-//#endregion  //*======== Footers ===========
-
 const slug = process.argv[2];
 const fileName = [
   ...glob.sync(join(process.cwd(), 'src', 'contents', 'blog', `${slug}.mdx`)),
@@ -76,40 +61,6 @@ mkdir(outPath, { recursive: true }, (err) => {
   }
 });
 
-//#region  //*=========== Dev.to ===========
-const devto = () => {
-  let parsedContent = '';
-  const outputFolder = join(outPath, 'devto.mdx');
-
-  readFile(fileName, 'utf8', (err, content) => {
-    if (err) reject(err);
-
-    parsedContent = content;
-    parsedContent = parsedContent.replace(
-      CLOUDINARY_REGEXP,
-      '![$2](https://res.cloudinary.com/theodorusclarence/image/upload/q_auto,f_auto/$1)'
-    );
-    parsedContent = parsedContent.replace(
-      GITHUB_REGEXP,
-      '{% github $1 no-readme %}'
-    );
-    parsedContent = parsedContent.replace(YOUTUBE_REGEXP, '{% youtube $1 %}');
-    parsedContent = parsedContent.replace(TWEET_REGEXP, '{% twitter $1 %}');
-
-    // append footer
-    parsedContent += devtoFooter;
-
-    writeFile(outputFolder, parsedContent, (err) => {
-      if (err) {
-        throw new Error('Error while generating content', err);
-      } else {
-        console.log('✓ dev.to markdown is successfully generated');
-      }
-    });
-  });
-};
-//#endregion  //*======== Dev.to ===========
-
 //#region  //*=========== Hashnode ===========
 const hashnode = () => {
   let parsedContent = '';
@@ -122,7 +73,7 @@ const hashnode = () => {
 
     parsedContent = parsedContent.replace(
       CLOUDINARY_REGEXP,
-      '![$2](https://res.cloudinary.com/theodorusclarence/image/upload/q_auto,f_auto/$1)'
+      '![$2](https://res.cloudinary.com/pedromebo/image/upload/c_fit,g_center,w_1200,h_630/$1)'
     );
     parsedContent = parsedContent.replace(
       GITHUB_REGEXP,
@@ -134,13 +85,10 @@ const hashnode = () => {
     );
     parsedContent = parsedContent.replace(
       TWEET_REGEXP,
-      '%[https://twitter.com/1475685363003768836]'
+      '%[https://twitter.com/pedromebo]'
     );
     // Change tsx to ts
     parsedContent = parsedContent.replace(/```tsx/g, '```ts');
-
-    // append footer
-    parsedContent += hashnodeFooter;
 
     writeFile(outputFolder, parsedContent, (err) => {
       if (err) {
@@ -162,10 +110,13 @@ const getOgImage = () => {
     if (err) reject(err);
 
     const { data: frontmatter } = matter(content);
-    const bannerLink = `https://res.cloudinary.com/theodorusclarence/image/upload/f_auto,c_fill,ar_4:5,w_1200/theodorusclarence/banner/${frontmatter.banner}`;
-    const ogLink = `https://og.clarence.link/api/blog?templateTitle=${encodeURIComponent(
-      frontmatter.title
-    )}&banner=${encodeURIComponent(bannerLink)}`;
+    const bannerLink = `https://res.cloudinary.com/pedromebo/image/upload/c_fit,g_center,w_1200,h_630/pedromebo/banner/${frontmatter.banner}`;
+    const ogLink = openGraph({
+      siteName: 'pedromebo',
+      siteName: 'pedromebo',
+      description: frontmatter.description,
+      banner: bannerLink,
+    });
     const image_path = join(outPath, 'og_image.png');
     axios({
       url: ogLink,

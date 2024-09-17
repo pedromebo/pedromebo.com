@@ -38,7 +38,7 @@ export default function ProjectCard({ project, className }: ProjectCardProps) {
 
         <CloudinaryImg
           className='pointer-events-none mt-3 w-full'
-          publicId={`theodorusclarence/${project.banner}`}
+          publicId={`pedromebo/${project.banner}`}
           alt={project.title}
           width={1440}
           height={792}
@@ -46,7 +46,7 @@ export default function ProjectCard({ project, className }: ProjectCardProps) {
         />
 
         <p className='animated-underline mt-2 inline-block font-medium'>
-          See more →
+          Ver más →
         </p>
       </UnstyledLink>
     </li>

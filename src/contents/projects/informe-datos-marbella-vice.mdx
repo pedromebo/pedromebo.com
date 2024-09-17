@@ -1,0 +1,63 @@
+---
+title: 'Consultoría y analítica de datos para eventos en directo en Twitch (Marbella Vice 2021)'
+description: 'Proyecto de recolección y análisis de datos de Marbella Vice usando la API de twitch, visualización de los datos y publicación del contenido'
+category: 'Proyecto Personal'
+publishedAt: '2021-06-28'
+techs: 'python,amazonaws,twitch,twitter'
+banner: 'projects/marbella/marbella-vice-banner'
+link: ''
+youtube: ''
+---
+
+> ## Introducción
+
+En los últimos meses he estado desarrollando un sistema de recolección y análisis de datos enfocado a los creadores de Twitch que han participado en una serie llamada Marbella Vice. Marbella Vice se trata de un servidor de GTA V RolePlay donde ha habido más de 240 participantes creando miles de horas de contenido.
+
+Puedes ver el artículo completo sobre el informe final que publiqué en mi página web haciendo click [aquí](https://www.pedromebo.com/informe-de-datos-de-marbella-vice).
+
+<TweetCard tweetId='1408046974725672963'/>
+
+[Link to Tweet](https://twitter.com/pedromebo/status/1408046974725672963)
+
+> ## Problema
+
+Como consumidor de Twitch y un amante de los datos, decidí en enero comenzar a desarrollar un sistema que usara la API de Twitch para recolectar datos y poder clasificar a los creadores y ver sus stats. Tras anunciarse de manera oficial la creacción del servidor de Marbella Vice, decidí comenzar a mejorar todo el sistema y continuar el desarrollo para adaptarlo a este evento y poder tener este proyecto como portfolio. Lo que nunca podría imaginar es la repercusión que conseguiría y la gran cantidad de personas interesadas en este trabajo.
+
+> ## Desarrollo
+
+### Recolección de datos
+
+Para recolectar los datos, se ha contado con diferentes scripts donde se ha adaptado la API de Twitch para crear clases y una API propia (Flask) por encima que facilita todo el trabajo de recolección. Para comprobar todo el funcionamiento del sistema, se ha contado con una batería de tests, además de desarrollar todo el código a prueba de errores, ya que el servidor de recolección era crítico para el proyecto y no debía fallar. Todos estos scripts se cargaron en EC2 de Amazon Web Services. En este, se ejecutaba el script cada minuto y se hacía uso de crontabs para crear tareas asíncronas y ejecutar scripts en fechas determinadas.
+
+Todos estos datos debían limpiarse ya que la respuesta de la API es en formato JSON y era necesario deshacerse de una gran cantidad de datos que no se iban a usar. Por tanto, se produce un proceso de ETL para más tarde insertarse en una base de datos SQL alojada en RDS.
+
+Cada minuto se recolectaban datos en directo de los diferentes canales que se le habían indicado, obteniendo así los datos que son necesarios para obtener la media de espectadores, pico máximo, tiempo en directo, etc. El único dato que se extrae de la API es el número de espectadores en directo y el ID del creador. Por otro lado, de forma diaria, se actualizaba el número de seguidores y de visualizaciones para así calcular el crecimiento de cada canal.
+
+### Análisis de datos y visualización
+
+Para poder analizar estos datos, se ha hecho uso de consultas SQL avanzadas para poder, a través de diferentes JOINS, así como de aplicar diferentes filtros, obtener los datos que buscamos. Con estos datos, se calculan las estadísticas de cada directo y se añaden a una nueva tabla con todos los datos ya completos y preparados para consultar.
+
+Una vez todos los datos están preparados, se hace uso de diferentes cuadernos de Jupyter que, mediante SQL y Pandas, se accede a los datos y se producen todas las visualizaciones usando Plotly. Para ello, se crean numerosas clases, así como herramientas para que este proceso sea lo más limpio y rápido posible, evitando cualquier posible error.
+
+Todo esto, al principio, era una tarea poco automatizada y, con el paso del tiempo, se ha ido optimizando y automatizando, haciendo que se puedan crear las visualizaciones diarias y los informes de forma rápida.
+
+### Publicación de contenido
+
+Una vez obtenidas estas visualizaciones, se publicaban en Twitter de forma diaria, teniendo una fuerte acogida por la comunidad y por los propios creadores. Además, numerosas empresas de marketing, así como medios de prensa, han usado estos datos para mejorar las decisiones de sus campañas, estudiar la posibilidad de colaboración con creadores o ver el rendimiento de campañas activas durante la serie. Puedes encontrar todos los datos de Marbella Vice que hemos publicado en Twitter.
+
+> ## Resultados
+
+Tras 71 días publicando información diaria y más de 6 meses de desarrollo, he creado un sistema fuerte de recopilación y análisis de datos que ha sido de utilidad para cientos de personas y empresas. Además, he podido seguir aprendiendo numerosas herramientas y tecnologías que han ayudado a que el sistema cada vez sea mejor.
+
+Sin embargo, se han desarrollado muchas más herramientas de las que se han mostrado de forma pública. Ejemplos de estas son dashboards para creadores, análisis para creadores, identificación de marcas dentro de vídeos y estimación de impresiones, desarrollo de API con Flask para uso interno...
+
+Estos son algunos de los datos y méritos obtenidos:
+
+- Más de 3 millones de impresiones en Twitter del trabajo desarrollado.
+- Colaboración con empresas de marketing para ofrecer consultoría del rendimiento de sus campañas en Marbella Vice (PS21 con la acción KFC).
+- Networking con multitud de creadores de contenido de alto nivel y poder ofrecerles soporte a través de datos.
+- Colaboración con medios de prensa para sus análisis de Marbella:
+  - [Resumen final de Marbella Vice - Movistar eSports](https://esports.as.com/bonus/influencers/marbella-vice/Resumen-Marbella-Vice-entretenimiento-espectadores_0_1477652222.html)
+  - [Un mes de Marbella Vice - Movistar eSports](https://esports.as.com/bonus/influencers/marbella-vice/mes-Marbella-Vice-cifras_0_1464753511.html)
+- Optimizaciones de SQL de más de un 70% de tiempo de ejecución.
+- Mantenimiento y soporte de los servidores estando activos durante todo el proyecto sin ningún tipo de corte, a pesar de las numerosas caídas de Twitch, baneos de usuarios y problemas generados por la API.

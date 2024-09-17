@@ -16,11 +16,11 @@ export function openGraph({
   templateTitle,
   description,
   banner,
-  logo = 'https://og.clarence.link/images/logo.jpg',
+  logo = 'https://res.cloudinary.com/pedromebo/image/upload/c_fit,w_1200,h_630,b_white/v1725804553/logo.png',
   isBlog = false,
   tags,
 }: OpenGraphType): string {
-  const ogLogo = encodeURIComponent(logo);
+  const ogLogo = logo.trim();
   const ogSiteName = encodeURIComponent(siteName.trim());
   const ogTemplateTitle = templateTitle
     ? encodeURIComponent(templateTitle.trim())
@@ -29,21 +29,23 @@ export function openGraph({
 
   if (isBlog) {
     const ogTags = tags ? encodeURIComponent(tags.trim()) : undefined;
-    const ogBanner = banner ? encodeURIComponent(banner.trim()) : undefined;
+    const ogBanner = banner ? banner.trim() : undefined;
 
-    return `https://og.clarence.link/api/blog?templateTitle=${ogTemplateTitle}&banner=${ogBanner}&tags=${ogTags}`;
+    return `${ogBanner}?siteName=${ogSiteName}&description=${ogDesc}&templateTitle=${ogTemplateTitle}${
+      ogTags ? `&tags=${ogTags}` : ''
+    }`;
   }
 
-  return `https://og.clarence.link/api/gradient?siteName=${ogSiteName}&description=${ogDesc}&logo=${ogLogo}${
+  return `${ogLogo}?siteName=${ogSiteName}&description=${ogDesc}${
     ogTemplateTitle ? `&templateTitle=${ogTemplateTitle}` : ''
   }`;
 }
 
 /**
- * Remove `id-` prefix
+ * Remove `en-` prefix
  */
-export const cleanBlogPrefix = (slug: string) => {
-  if (slug.slice(0, 3) === 'id-') {
+export const cleanPagePrefix = (slug: string) => {
+  if (slug.slice(0, 3) === 'en-') {
     return slug.slice(3);
   } else {
     return slug;

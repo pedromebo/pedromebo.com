@@ -11,15 +11,3 @@ export async function getSingleContentMeta({ slug }: { slug: string }) {
     .get<SingleContentMeta>(`/api/content/${slug}`)
     .then((res) => res.data);
 }
-
-export async function incrementViewCount({ slug }: { slug: string }) {
-  return axios
-    .post<SingleContentMeta>(`/api/content/${slug}`)
-    .then((res) => res.data);
-}
-
-export async function incrementLikeCount({ slug }: { slug: string }) {
-  return axios
-    .post<SingleContentMeta>(`/api/like/${slug}`)
-    .then((res) => res.data);
-}

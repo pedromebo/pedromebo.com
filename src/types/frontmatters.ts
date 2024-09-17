@@ -4,7 +4,7 @@ export type BlogFrontmatter = {
   wordCount: number;
   readingTime: ReadTimeResults;
   slug: string;
-  englishOnly?: boolean;
+  spanishOnly?: boolean;
   title: string;
   description: string;
   banner: string;
@@ -54,6 +54,7 @@ export type ProjectFrontmatter = {
   link?: string;
   github?: string;
   youtube?: string;
+  spanishOnly?: boolean;
 };
 
 export type ProjectType = {

@@ -1,56 +1,33 @@
 import * as React from 'react';
 import { FiMail } from 'react-icons/fi';
 import { IconType } from 'react-icons/lib';
-import { SiGithub, SiLinkedin, SiTwitter } from 'react-icons/si';
+import { SiGithub, SiLinkedin } from 'react-icons/si';
+import {FaXTwitter} from 'react-icons/fa6';
 
 import { trackEvent } from '@/lib/analytics';
 import useCopyToClipboard from '@/hooks/useCopyToClipboard';
 
 import Accent from '@/components/Accent';
-import Spotify from '@/components/layout/Spotify';
 import UnstyledLink from '@/components/links/UnstyledLink';
 import Tooltip from '@/components/Tooltip';
+import CustomLink from '@/components/links/CustomLink';
 
-import { spotifyFlag } from '@/constants/env';
 
 export default function Footer() {
   return (
     <footer className='mt-4 pb-2'>
       <main className='layout flex flex-col items-center border-t pt-6 dark:border-gray-600'>
-        <FooterLinks />
-
-        {spotifyFlag && <Spotify className='mt-8' />}
-
-        <p className='mt-12 font-medium text-gray-600 dark:text-gray-300'>
-          Reach me out
+        <p className='mt-2 font-medium text-gray-600 dark:text-gray-300'>
+          Contáctame
         </p>
         <SocialLinks />
-
-        <p className='mt-8 text-sm text-gray-600 dark:text-gray-300'>
-          © Theodorus Clarence {new Date().getFullYear()}
+        <p className='mt-8 text-sm text-gray-600 dark:text-gray-300 text-center'>
+          © Pedromebo {new Date().getFullYear()}<br />
+          based on{' '}
+          <CustomLink href='https://github.com/theodorusclarence/theodorusclarence.com'>Theodorus Clarence Website</CustomLink>
         </p>
       </main>
     </footer>
-  );
-}
-
-function FooterLinks() {
-  return (
-    <div className='flex flex-wrap justify-center gap-x-8 gap-y-4'>
-      {footerLinks.map(({ href, text, tooltip }) => (
-        <Tooltip interactive={false} key={href} tipChildren={tooltip}>
-          <UnstyledLink
-            className='animated-underline rounded-sm text-sm font-medium focus:outline-none focus-visible:ring focus-visible:ring-primary-300 dark:text-gray-200'
-            href={href}
-            onClick={() => {
-              trackEvent(`Footer Link: ${text}`, { type: 'link' });
-            }}
-          >
-            {text}
-          </UnstyledLink>
-        </Tooltip>
-      ))}
-    </div>
   );
 }
 
@@ -69,17 +46,17 @@ function SocialLinks() {
           html={
             <div className='inline-block rounded-md border bg-white p-2 text-gray-600 shadow-md dark:border-gray-600 dark:bg-dark dark:text-gray-200'>
               {copyStatus === 'idle'
-                ? 'Click the mail logo to copy'
-                : 'Copied to clipboard 🥳'}
+                ? 'Haz click en el icono del correo para copiar '
+                : 'Copiado al portapapeles🥳'}
               <Accent className='inline-block font-medium'>
-                me@theodorusclarence.com
+                contacto@pedromebo.com
               </Accent>
             </div>
           }
         >
           <button
             onClick={() => {
-              copy('me@theodorusclarence.com').then(() => {
+              copy('contact@pedromebo.com').then(() => {
                 setCopyStatus('copied');
                 setTimeout(() => setCopyStatus('idle'), 1500);
               });
@@ -111,65 +88,6 @@ function SocialLinks() {
   );
 }
 
-const footerLinks: { href: string; text: string; tooltip: React.ReactNode }[] =
-  [
-    {
-      href: 'https://github.com/theodorusclarence/theodorusclarence.com',
-      text: 'Source Code',
-      tooltip: (
-        <>
-          This website is <strong>open source</strong>!
-        </>
-      ),
-    },
-    {
-      href: '/design',
-      text: 'Design',
-      tooltip: 'theodorusclarence.com color palette',
-    },
-    {
-      href: 'https://clarence.link/docs',
-      text: 'Docs',
-      tooltip: 'Personal documentation about my best practices on development',
-    },
-    {
-      href: 'https://clarence.link/booknotes',
-      text: 'Book Notes',
-      tooltip: 'Note collection of books that I read',
-    },
-    {
-      href: 'https://clarence.link/starters',
-      text: 'Starter Templates',
-      tooltip: 'Starter that I build and use throughout my projects',
-    },
-    {
-      href: 'https://clarence.link/um',
-      text: 'Analytics',
-      tooltip: 'theodorusclarence.com views and visitors analytics',
-    },
-    {
-      href: '/statistics',
-      text: 'Statistics',
-      tooltip: 'Blog, Projects, and Library Statistics',
-    },
-    {
-      href: '/guestbook',
-      text: 'Guestbook',
-      tooltip:
-        'Leave whatever you like to say—message, appreciation, suggestions',
-    },
-    {
-      href: '/subscribe',
-      text: 'Subscribe',
-      tooltip: 'Get an email whenever I post, no spam',
-    },
-    {
-      href: 'https://theodorusclarence.com/rss.xml',
-      text: 'RSS',
-      tooltip: 'Add theodorusclarence.com blog to your feeds',
-    },
-  ];
-
 type Social = {
   href: string;
   icon: IconType;
@@ -178,32 +96,32 @@ type Social = {
 };
 const socials: Social[] = [
   {
-    href: 'https://clarence.link/github',
+    href: 'https://github.com/pedromebo',
     icon: SiGithub,
     id: 'Github',
     text: (
       <>
-        See my projects on <Accent className='font-medium'>Github</Accent>
+        Mira mis proyectos en <Accent className='font-medium'>Github</Accent>
       </>
     ),
   },
   {
-    href: 'https://clarence.link/linkedin',
+    href: 'https://www.linkedin.com/in/pedromebo/',
     icon: SiLinkedin,
     id: 'Linkedin',
     text: (
       <>
-        Find me on <Accent className='font-medium'>Linkedin</Accent>
+        Encuentrame en <Accent className='font-medium'>Linkedin</Accent>
       </>
     ),
   },
   {
-    href: 'https://clarence.link/twt',
-    icon: SiTwitter,
+    href: 'https://twitter.com/pedromebo',
+    icon: FaXTwitter,
     id: 'Twitter',
     text: (
       <>
-        I post updates, tips, insight, and sometimes do some talk. Follow me on{' '}
+        Subo actualizaciones, tips, estadísticas y noticias. Sigueme en{' '}
         <Accent className='font-medium'>Twitter</Accent>!
       </>
     ),
