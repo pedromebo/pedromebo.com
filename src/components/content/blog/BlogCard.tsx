@@ -41,8 +41,8 @@ export default function BlogCard({
           <CloudinaryImg
             noStyle
             className='pointer-events-none overflow-hidden rounded-t-md'
-            publicId={`theodorusclarence/banner/${post.banner}`}
-            alt='Photo taken from unsplash'
+            publicId={`pedromebo/banner/${post.banner}`}
+            alt='Banner photo'
             width={1200}
             height={(1200 * 2) / 5}
             aspect={{ height: 2, width: 5 }}
@@ -70,11 +70,7 @@ export default function BlogCard({
           <div className='mt-2 flex items-center justify-start gap-2 text-sm font-medium text-gray-600 dark:text-gray-300'>
             <div className='flex items-center gap-1'>
               <HiOutlineClock className='inline-block text-base' />
-              <Accent>{post.readingTime.text}</Accent>
-            </div>
-            <div className='flex items-center gap-1'>
-              <HiOutlineEye className='inline-block text-base' />
-              <Accent>{post?.views?.toLocaleString() ?? '–––'} views</Accent>
+              <Accent>{post.readingTime.text.replace('min read', 'min.')}</Accent>
             </div>
           </div>
           <p className='mb-2 mt-4 text-sm text-gray-600 dark:text-gray-300'>

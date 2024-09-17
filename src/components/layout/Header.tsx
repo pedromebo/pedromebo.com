@@ -13,7 +13,6 @@ type HeaderProps = {
 export default function Header({ large = false }: HeaderProps) {
   //#region  //*=========== Route Functionality ===========
   const router = useRouter();
-  /** Ex: /projects/petrolida-2021 -> ['', 'projects', 'petrolida-2021'] */
   const arrOfRoute = router.route.split('/');
   const baseRoute = '/' + arrOfRoute[1];
   //#endregion  //*======== Route Functionality ===========
@@ -51,7 +50,7 @@ export default function Header({ large = false }: HeaderProps) {
           '-translate-y-16 focus:translate-y-0'
         )}
       >
-        <Accent>Skip to main content</Accent>
+        <Accent>Ir al contenido principal</Accent>
       </a>
 
       {/* Gradient List */}
@@ -98,9 +97,9 @@ export default function Header({ large = false }: HeaderProps) {
 }
 
 const links = [
-  { href: '/', label: 'Home' },
+  { href: '/', label: 'Inicio' },
   { href: '/blog', label: 'Blog' },
-  { href: '/projects', label: 'Projects' },
+  { href: '/projects', label: 'Proyectos' },
   { href: '/shorts', label: 'Shorts' },
-  { href: '/about', label: 'About' },
+  { href: '/about', label: 'Sobre mí' },
 ];

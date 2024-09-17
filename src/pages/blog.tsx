@@ -6,7 +6,6 @@ import { HiCalendar, HiEye } from 'react-icons/hi';
 import { getFromSessionStorage } from '@/lib/helper.client';
 import { getTags, sortByDate, sortDateFn } from '@/lib/mdx.client';
 import { getAllFilesFrontmatter } from '@/lib/mdx.server';
-import useInjectContentMeta from '@/hooks/useInjectContentMeta';
 import useLoaded from '@/hooks/useLoaded';
 
 import Accent from '@/components/Accent';
@@ -25,14 +24,9 @@ import { BlogFrontmatter, InjectedMeta } from '@/types/frontmatters';
 const sortOptions: Array<SortOption> = [
   {
     id: 'date',
-    name: 'Sort by date',
+    name: 'Ordenar por fecha',
     icon: HiCalendar,
-  },
-  {
-    id: 'views',
-    name: 'Sort by views',
-    icon: HiEye,
-  },
+  }
 ];
 
 export default function IndexPage({
@@ -43,10 +37,8 @@ export default function IndexPage({
   const [sortOrder, setSortOrder] = React.useState<SortOption>(
     () => sortOptions[Number(getFromSessionStorage('blog-sort')) || 0]
   );
-  const [isEnglish, setIsEnglish] = React.useState<boolean>(true);
+  const [isSpanish, setisSpanish] = React.useState<boolean>(true);
   const isLoaded = useLoaded();
-
-  const populatedPosts = useInjectContentMeta('blog', posts);
 
   //#region  //*=========== Search ===========
   const [search, setSearch] = React.useState<string>('');
@@ -60,7 +52,7 @@ export default function IndexPage({
   const clearSearch = () => setSearch('');
 
   React.useEffect(() => {
-    const results = populatedPosts.filter(
+    const results = posts.filter(
       (post) =>
         post.title.toLowerCase().includes(search.toLowerCase()) ||
         post.description.toLowerCase().includes(search.toLowerCase()) ||
@@ -74,19 +66,16 @@ export default function IndexPage({
     if (sortOrder.id === 'date') {
       results.sort(sortDateFn);
       sessionStorage.setItem('blog-sort', '0');
-    } else if (sortOrder.id === 'views') {
-      results.sort((a, b) => (b?.views ?? 0) - (a?.views ?? 0));
-      sessionStorage.setItem('blog-sort', '1');
     }
 
     setFilteredPosts(results);
-  }, [search, sortOrder.id, populatedPosts]);
+  }, [search, sortOrder.id, posts]);
   //#endregion  //*======== Search ===========
 
   //#region  //*=========== Post Language Splitter ===========
-  const englishPosts = filteredPosts.filter((p) => !p.slug.startsWith('id-'));
-  const bahasaPosts = filteredPosts.filter((p) => p.slug.startsWith('id-'));
-  const currentPosts = isEnglish ? englishPosts : bahasaPosts;
+  const englishPosts = filteredPosts.filter((p) => !p.slug.startsWith('en-'));
+  const spanishPosts = filteredPosts.filter((p) => p.slug.startsWith('en-'));
+  const currentPosts = isSpanish ? englishPosts : spanishPosts;
   //#endregion  //*======== Post Language Splitter ===========
 
   //#region  //*=========== Tag ===========
@@ -121,18 +110,17 @@ export default function IndexPage({
     <Layout>
       <Seo
         templateTitle='Blog'
-        description='Thoughts, mental models, and tutorials about front-end development. Rebuild your mental model so front-end development can be predictable.'
+        description='Pensamientos, noticias y tutoriales sobre datos e inteligencia artificial. Rediseña tu forma de enfrentarte a problemas de desarrollo y aprende nuevos conceptos del mundo de los datos y la IA.'
       />
 
       <main>
         <section className={clsx(isLoaded && 'fade-in-start')}>
           <div className='layout py-12'>
             <h1 className='text-3xl md:text-5xl' data-fade='0'>
-              <Accent>Blog {!isEnglish && 'Bahasa Indonesia'}</Accent>
+              <Accent>Blog {!isSpanish && 'English'}</Accent>
             </h1>
             <p className='mt-2 text-gray-600 dark:text-gray-300' data-fade='1'>
-              Thoughts, mental models, and tutorials about front-end
-              development.
+              {isSpanish ? 'Pensamientos, noticias y tutoriales sobre datos e inteligencia artificial.' : 'Thoughts, news and tutorials about data and artificial intelligence.'}
             </p>
             <StyledInput
               data-fade='2'
@@ -146,7 +134,9 @@ export default function IndexPage({
               className='mt-2 flex flex-wrap items-baseline justify-start gap-2 text-sm text-gray-600 dark:text-gray-300'
               data-fade='3'
             >
-              <span className='font-medium'>Choose topic:</span>
+              <span className='font-medium'>
+                {isSpanish ? 'Elige un tema:' : 'Choose a topic:.'}
+              </span>
               <SkipNavTag>
                 {tags.map((tag) => (
                   <Tag
@@ -165,12 +155,12 @@ export default function IndexPage({
             >
               <Button
                 onClick={() => {
-                  setIsEnglish((b) => !b);
+                  setisSpanish((b) => !b);
                   clearSearch();
                 }}
                 className='text-sm !font-medium'
               >
-                Read in {isEnglish ? 'Bahasa Indonesia' : 'English'}
+                {isSpanish ? 'Read in English' : 'Leer en Español'}
               </Button>
               <SortListbox
                 selected={sortOrder}

@@ -18,7 +18,7 @@ export default function NotFoundPage() {
             />
             <h1 className='mt-8'>Page Not Found</h1>
             <CustomLink className='mt-4' href='/'>
-              Back to Home
+              Volver al inicio
             </CustomLink>
           </div>
         </section>

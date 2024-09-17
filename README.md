@@ -1,40 +1,51 @@
-<div align="center">
-  <h1>theodorusclarence.com</h1>
-  <p>💠 Personal website and blog made using Next.js, TypeScript, Tailwind CSS, MDX Bundler, Prisma, and SWR.</p>
-</div>
+# pedromebo.com
+This is my personal portfolio website built using [Next.js](https://nextjs.org/). The site showcases my blog posts, projects, short content, and provides information about me. 
 
-## Contributing & Project Setup
+Based on [Theodorus Clarance Portfolio](https://github.com/theodorusclarence/theodorusclarence.com)
 
-If you are interested in contributing or running this project on your local machine, please check the [contributing guide](CONTRIBUTING.md)
+## Table of Contents
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Getting Started](#getting-started)
+- [License](#license)
 
-## Notable Features
+## Features
 
-This website was first initialized in January 2021, went through numerous changes and refactors, resulted to some notable features
+- **Blog**: A section where I publish articles and share my knowledge on various topics.
+- **Projects**: Showcasing my personal and professional projects, with detailed descriptions, screenshots, and links to live versions or GitHub repositories.
+- **Shorts**: A space to quickly share insights, thoughts, or microblogging-style posts.
+- **About Me**: A section providing background information, skills, and links to my social media profiles.
 
-### Dedicated Project Page
+## Technologies Used
 
-Each project is descriptively explained provided with my learnings.
+- **Next.js**: The main framework for the website.
+- **Markdown**: For writing blog posts and short content.
+- **SST**: Used for deployment.
 
-![image](https://user-images.githubusercontent.com/55318172/132983591-63e495f1-fc5a-48d0-9e0a-ef3dddba6cad.png)
+## Getting Started
 
-### Blogs & Library
+To get a local copy up and running, follow these simple steps:
 
-I write to teach people how to rebuild and redefine fundamental concepts through mental models.
+### Prerequisites
 
-https://user-images.githubusercontent.com/55318172/132983558-55adf0a2-3ce5-43b2-8718-09fd1567e43f.mov
+- Node.js (v14.x or higher)
+- npm (or yarn)
 
-### Lazy Blur Loader
+### Installation
 
-Images are hosted on Cloudinary
+1. Clone the repo:
 
-https://user-images.githubusercontent.com/55318172/132983757-135138db-6907-4951-a98f-e2a75c16fa01.mov
+```bash
+git clone https://github.com/pedromebo/pedromebo.com.git
+```
+2. Install dependencies:
+```bash
+npm i
+```
+3. Run project:
+```bash
+npm run dev
+```
 
-### Love Button Interaction
-
-https://user-images.githubusercontent.com/55318172/132983796-9187857f-bbf2-4bb0-80ac-59cc1c4f3e87.mov
-
-### Spotify Now Playing
-
-Check out the [tutorial](https://theodorusclarence.com/blog/spotify-now-playing).
-
-![image](https://user-images.githubusercontent.com/55318172/132983710-000cc6c8-a466-4314-ad3f-656d9dc1a1e4.png)
+## License
+This project is licensed under the GNU General Public License v3.0. You can find the full text of the license in the [LICENSE](LICENSE) file, or read more about it at [https://www.gnu.org/licenses/gpl-3.0.en.html](https://www.gnu.org/licenses/gpl-3.0.en.html).

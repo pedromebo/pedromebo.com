@@ -4,12 +4,12 @@ import { useRouter } from 'next/router';
 import { openGraph } from '@/lib/helper.client';
 
 const defaultMeta = {
-  title: 'Theodorus Clarence',
-  siteName: 'theodorusclarence.com',
+  title: 'Pedro Medinilla Bohorquez - Pedromebo - Blog personal y portfolio',
+  siteName: 'pedromebo.com',
   description:
-    'An online portfolio and blog by Theodorus Clarence. Showcase of my projects, and some of my thoughts about website development.',
-  url: 'https://theodorusclarence.com',
-  image: 'https://theodorusclarence.com/favicon/large-og.jpg',
+    'Portfolio online y blog de Pedro Medinilla Bohórquez (pedromebo). Demostración de mis proyectos, noticias y reflexiones sobre el desarrollo de IA.',
+  url: 'https://www.pedromebo.com',
+  image: 'https://www.pedromebo.com/favicon/large-og.jpg',
   type: 'website',
   robots: 'follow, index',
 };
@@ -62,7 +62,7 @@ export default function Seo(props: SeoProps) {
       <meta name='image' property='og:image' content={meta.image} />
       {/* Twitter */}
       <meta name='twitter:card' content='summary_large_image' />
-      <meta name='twitter:site' content='@th_clarence' />
+      <meta name='twitter:site' content='@pedromebo' />
       <meta name='twitter:title' content={meta.title} />
       <meta name='twitter:description' content={meta.description} />
       <meta name='twitter:image' content={meta.image} />
@@ -77,7 +77,7 @@ export default function Seo(props: SeoProps) {
           <meta
             name='author'
             property='article:author'
-            content='Theodorus Clarence'
+            content='Pedro Medinilla'
           />
         </>
       )}
@@ -94,7 +94,7 @@ export default function Seo(props: SeoProps) {
               author: [
                 {
                   '@type': 'Person',
-                  name: 'Theodorus Clarence',
+                  name: 'Pedro Medinilla',
                 },
               ],
               image: meta.image,

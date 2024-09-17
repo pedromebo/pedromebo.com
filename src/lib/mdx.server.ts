@@ -117,9 +117,9 @@ export async function getRecommendations(currSlug: string) {
   // Get current frontmatter
   const currentFm = frontmatters.find((fm) => fm.slug === currSlug);
 
-  // Remove currentFm and Bahasa Posts, then randomize order
+  // Remove currentFm and spanish Posts, then randomize order
   const otherFms = frontmatters
-    .filter((fm) => !fm.slug.startsWith('id-') && fm.slug !== currSlug)
+    .filter((fm) => !fm.slug.startsWith('en-') && fm.slug !== currSlug)
     .sort(() => Math.random() - 0.5);
 
   // Find with similar tags

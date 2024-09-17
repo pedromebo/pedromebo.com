@@ -6,7 +6,6 @@ import { HiSortAscending } from 'react-icons/hi';
 
 import { getTags, sortByTitle, sortTitleFn } from '@/lib/mdx.client';
 import { getAllFilesFrontmatter } from '@/lib/mdx.server';
-import useInjectContentMeta from '@/hooks/useInjectContentMeta';
 import useLoaded from '@/hooks/useLoaded';
 
 import Accent from '@/components/Accent';
@@ -19,24 +18,24 @@ import Seo from '@/components/Seo';
 import SortListbox, { SortOption } from '@/components/SortListbox';
 
 import { LibraryFrontmatter } from '@/types/frontmatters';
+import Button from '@/components/buttons/Button';
 
 const sortOptions: Array<SortOption> = [
   {
     id: 'name',
-    name: 'Sort by name',
+    name: 'Ordenar por nombre',
     icon: HiSortAscending,
-  },
-  { id: 'popular', name: 'Sort by popularity', icon: GiTechnoHeart },
+  }
 ];
 
 export default function ShortsPage({
   snippets,
   tags,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
+  const [isSpanish, setisSpanish] = React.useState<boolean>(true);
+
   const [sortOrder, setSortOrder] = React.useState<SortOption>(sortOptions[0]);
   const isLoaded = useLoaded();
-
-  const populatedPosts = useInjectContentMeta('library', snippets);
 
   //#region  //*=========== Search ===========
   const [search, setSearch] = React.useState<string>('');
@@ -49,7 +48,7 @@ export default function ShortsPage({
   };
 
   React.useEffect(() => {
-    const results = populatedPosts.filter(
+    const results = snippets.filter(
       (snippet) =>
         snippet.title.toLowerCase().includes(search.toLowerCase()) ||
         snippet.description.toLowerCase().includes(search.toLowerCase()) ||
@@ -62,13 +61,16 @@ export default function ShortsPage({
 
     if (sortOrder.id === 'date') {
       results.sort(sortTitleFn);
-    } else if (sortOrder.id === 'popular') {
-      results.sort((a, b) => (b?.likes ?? 0) - (a?.likes ?? 0));
     }
 
     setFiltered(results);
-  }, [populatedPosts, search, sortOrder.id]);
+  }, [snippets, search, sortOrder.id]);
   //#endregion  //*======== Search ===========
+
+  const englishPosts = filtered.filter((p) => !p.slug.startsWith('en-'));
+  const spanishPosts = filtered.filter((p) => p.slug.startsWith('en-'));
+  const currentPosts = isSpanish ? englishPosts : spanishPosts;
+  
 
   //#region  //*=========== Tag ===========
   const toggleTag = (tag: string) => {
@@ -87,7 +89,7 @@ export default function ShortsPage({
   };
 
   /** Currently available tags based on filtered library */
-  const filteredTags = getTags(filtered);
+  const filteredTags = getTags(currentPosts);
 
   /** Show accent if not disabled and selected  */
   const checkTagged = (tag: string) => {
@@ -102,8 +104,7 @@ export default function ShortsPage({
     <Layout>
       <Seo
         templateTitle='Shorts'
-        description="Short article that's not long enough to be a blog post, 
-        usually comes from my personal notes."
+        description="Mini artículos o micro publicaciones. Suelen ser consejos rápidos sobre código, desarrollo o reflexiones"
       />
 
       <main>
@@ -113,8 +114,7 @@ export default function ShortsPage({
               <Accent>Shorts</Accent>
             </h1>
             <p className='mt-2 text-gray-600 dark:text-gray-300' data-fade='1'>
-              Short article that's not long enough to be a blog post, usually
-              comes from my personal notes.
+              {isSpanish ? 'Mini artículos o micro publicaciones. Suelen ser consejos rápidos sobre código, desarrollo o reflexiones.' : 'Mini blog or micro posts. Usually you will find tips about code, development and reflections.'}
             </p>
             <StyledInput
               data-fade='2'
@@ -128,7 +128,7 @@ export default function ShortsPage({
               className='mt-2 flex flex-wrap items-baseline justify-start gap-2 text-sm text-gray-600 dark:text-gray-300'
               data-fade='3'
             >
-              <span className='font-medium'>Choose topic:</span>
+              <span className='font-medium'>{isSpanish ? 'Elige un tema' : 'Choose a topic'}:</span>
               <SkipNavTag>
                 {tags.map((tag) => (
                   <Tag
@@ -140,6 +140,19 @@ export default function ShortsPage({
                   </Tag>
                 ))}
               </SkipNavTag>
+            </div>
+            <div
+              className='relative z-10 mt-6 flex flex-col items-end gap-4 text-gray-600 dark:text-gray-300 md:flex-row md:items-center md:justify-between'
+              data-fade='4'
+            >
+              <Button
+                onClick={() => {
+                  setisSpanish((b) => !b);
+                }}
+                className='text-sm !font-medium'
+              >
+                {isSpanish ? 'Read in English' : 'Leer en Español'}
+              </Button>
             </div>
             <div
               className='relative z-10 mt-4 flex flex-col items-end gap-4 text-gray-600 dark:text-gray-300 md:mt-8'
@@ -156,8 +169,8 @@ export default function ShortsPage({
               className='mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-3'
               data-fade='5'
             >
-              {filtered.length > 0 ? (
-                filtered.map((snippet) => (
+              {currentPosts.length > 0 ? (
+                currentPosts.map((snippet) => (
                   <ShortsCard
                     key={snippet.slug}
                     short={snippet}

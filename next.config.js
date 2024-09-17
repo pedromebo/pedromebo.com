@@ -14,9 +14,6 @@ const nextConfig = {
   images: {
     domains: [
       'res.cloudinary.com',
-
-      // Spotify Album
-      'i.scdn.co',
     ],
   },
   async redirects() {
@@ -34,6 +31,11 @@ const nextConfig = {
       {
         source: '/library/:slug',
         destination: '/shorts/:slug',
+        permanent: true,
+      },
+      {
+        source: '/informe-de-datos-de-marbella-vice',
+        destination: '/blog/informe-datos-marbella-vice',
         permanent: true,
       },
     ];

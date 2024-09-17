@@ -59,10 +59,10 @@ export default function Quiz(props: QuizType) {
         })}
       </div>
       {!selected ? (
-        <p>Go ahead and pick one!</p>
+        <p>Selecciona una!</p>
       ) : (
         <p>
-          <b>Explanation: </b>
+          <b>Explicación: </b>
           {props.explanation}
         </p>
       )}

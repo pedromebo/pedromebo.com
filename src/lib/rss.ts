@@ -6,10 +6,10 @@ import { getAllFilesFrontmatter } from '@/lib/mdx.server';
 export async function getRssXml() {
   const frontmatters = await getAllFilesFrontmatter('blog');
 
-  const blogUrl = 'https://theodorusclarence.com/blog';
+  const blogUrl = 'https://www.pedromebo.com/blog';
 
   const itemXml = frontmatters
-    .filter((fm) => !fm.slug.startsWith('id-'))
+    .filter((fm) => !fm.slug.startsWith('en-'))
     .map(({ slug, title, description, publishedAt, lastUpdated }) =>
       `
     <item>
@@ -28,10 +28,10 @@ export async function getRssXml() {
   return `
     <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:blogChannel="${blogUrl}">
       <channel>
-        <title>Theodorus Clarence Blog</title>
+        <title>Pedro Medinilla Blog</title>
         <link>${blogUrl}</link>
-        <description>The Theodorus Clarence Blog, thoughts, mental models, and tutorials about front-end development.</description>
-        <language>en</language>
+        <description>The Pedro Medinilla Blog, thoughts, mental models, and tutorials about AI development.</description>
+        <language>es</language>
         <ttl>40</ttl>
         ${itemXml.join('\n')}
       </channel>

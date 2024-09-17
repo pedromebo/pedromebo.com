@@ -1,23 +1,18 @@
 import clsx from 'clsx';
 import * as React from 'react';
-import { IoLogoVercel } from 'react-icons/io5';
+import {FaXTwitter} from 'react-icons/fa6';
+
 import {
-  SiFirebase,
+  SiPython,
+  SiCplusplus,
+  SiDocker,
+  SiAmazonaws,
+  SiTwitch,
+  SiVisualstudio,
+  SiOpengl,
   SiGit,
-  SiGoogleanalytics,
-  SiJavascript,
-  SiMarkdown,
-  SiMongodb,
-  SiNextdotjs,
-  SiNodedotjs,
-  SiNotion,
-  SiPrettier,
-  SiReact,
-  SiRedux,
-  SiSass,
-  SiSwift,
-  SiTailwindcss,
-  SiTypescript,
+  SiUnrealengine,
+  SiFmod
 } from 'react-icons/si';
 
 import Tooltip from '@/components/Tooltip';
@@ -49,72 +44,52 @@ export default function TechIcons({ className, techs }: TechIconsProps) {
 }
 
 const techList = {
-  react: {
-    icon: SiReact,
-    name: 'React',
+  python: {
+    icon: SiPython,
+    name: 'Python'
   },
-  nextjs: {
-    icon: SiNextdotjs,
-    name: 'Next.js',
+  cplusplus: {
+    icon: SiCplusplus,
+    name: 'C++'
   },
-  tailwindcss: {
-    icon: SiTailwindcss,
-    name: 'Tailwind CSS',
+  docker: {
+    icon: SiDocker,
+    name: 'Docker'
   },
-  scss: {
-    icon: SiSass,
-    name: 'SCSS',
+  amazonaws: {
+    icon: SiAmazonaws,
+    name: 'AWS'
   },
-  javascript: {
-    icon: SiJavascript,
-    name: 'JavaScript',
+  twitch: {
+    icon: SiTwitch,
+    name: 'Twitch'
   },
-  typescript: {
-    icon: SiTypescript,
-    name: 'TypeScript',
+  twitter: {
+    icon: FaXTwitter,
+    name: 'Twitter'
   },
-  nodejs: {
-    icon: SiNodedotjs,
-    name: 'Node.js',
+  visualstudio: {
+    icon: SiVisualstudio,
+    name: 'Visual Studio'
   },
-  firebase: {
-    icon: SiFirebase,
-    name: 'Firebase',
-  },
-  mongodb: {
-    icon: SiMongodb,
-    name: 'MongoDB',
-  },
-  swr: {
-    icon: IoLogoVercel,
-    name: 'SWR',
-  },
-  redux: {
-    icon: SiRedux,
-    name: 'Redux',
-  },
-  mdx: {
-    icon: SiMarkdown,
-    name: 'MDX',
-  },
-  prettier: {
-    icon: SiPrettier,
-    name: 'Prettier',
-  },
-  analytics: {
-    icon: SiGoogleanalytics,
-    name: 'Google Analytics',
+  opengl: {
+    icon: SiOpengl,
+    name: 'OpenGL'
   },
   git: {
     icon: SiGit,
     name: 'Git',
   },
-  notion: {
-    icon: SiNotion,
-    name: 'Notion API',
+  cpp: {
+    icon: SiCplusplus,
+    name: 'C++'
   },
-  swift: {
-    icon: SiSwift,
-    name: 'Swift',
+  unrealengine: {
+    icon: SiUnrealengine,
+    name: 'Unreal Engine'
+  },
+  fmod: {
+    icon: SiFmod,
+    name: 'FMOD'
   },
 };

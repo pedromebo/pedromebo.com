@@ -2,9 +2,7 @@ import { buildUrl } from 'cloudinary-build-url';
 import clsx from 'clsx';
 import Image from 'next/image';
 import * as React from 'react';
-import Lightbox from 'react-image-lightbox';
-
-import 'react-image-lightbox/style.css';
+import Lightbox from 'react-18-image-lightbox';
 
 type CloudinaryImgType = {
   publicId: string;
@@ -40,11 +38,11 @@ export default function CloudinaryImg({
 
   const urlBlurred = buildUrl(publicId, {
     cloud: {
-      cloudName: 'theodorusclarence',
+      cloudName: 'pedromebo',
     },
     transformations: {
       effect: {
-        name: 'blur:1000',
+        name: 'blur:200',
       },
       quality: 1,
       rawTransformation: aspect
@@ -54,7 +52,7 @@ export default function CloudinaryImg({
   });
   const url = buildUrl(publicId, {
     cloud: {
-      cloudName: 'theodorusclarence',
+      cloudName: 'pedromebo',
     },
     transformations: {
       rawTransformation: aspect
@@ -107,10 +105,10 @@ export default function CloudinaryImg({
         <div className='absolute left-0 top-0'>
           <Image
             width={
-              resizedToMaxWidth ? Math.min(+width, RESIZE_MAX_WIDTH) : width
+              resizedToMaxWidth ? Math.min(+width, RESIZE_MAX_WIDTH) : +width
             }
             height={
-              resizedToMaxWidth ? (RESIZE_MAX_WIDTH * +height) / +width : height
+              resizedToMaxWidth ? (RESIZE_MAX_WIDTH * +height) / +width : +height
             }
             unoptimized
             src={url}
