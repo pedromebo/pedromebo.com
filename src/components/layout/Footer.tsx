@@ -23,8 +23,7 @@ export default function Footer() {
         <SocialLinks />
         <p className='mt-8 text-sm text-gray-600 dark:text-gray-300 text-center'>
           © Pedromebo {new Date().getFullYear()}<br />
-          based on{' '}
-          <CustomLink href='https://github.com/theodorusclarence/theodorusclarence.com'>Theodorus Clarence Website</CustomLink>
+          <CustomLink href='https://github.com/pedromebo/pedromebo.com'>My Source Code</CustomLink>
         </p>
       </main>
     </footer>
