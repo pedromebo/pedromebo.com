@@ -6,7 +6,6 @@ import { HiSortAscending } from 'react-icons/hi';
 
 import { getTags, sortByTitle, sortTitleFn } from '@/lib/mdx.client';
 import { getAllFilesFrontmatter } from '@/lib/mdx.server';
-import useInjectContentMeta from '@/hooks/useInjectContentMeta';
 import useLoaded from '@/hooks/useLoaded';
 
 import Accent from '@/components/Accent';
@@ -38,8 +37,6 @@ export default function ShortsPage({
   const [sortOrder, setSortOrder] = React.useState<SortOption>(sortOptions[0]);
   const isLoaded = useLoaded();
 
-  const populatedPosts = useInjectContentMeta('library', snippets);
-
   //#region  //*=========== Search ===========
   const [search, setSearch] = React.useState<string>('');
   const [filtered, setFiltered] = React.useState<Array<LibraryFrontmatter>>(
@@ -51,7 +48,7 @@ export default function ShortsPage({
   };
 
   React.useEffect(() => {
-    const results = populatedPosts.filter(
+    const results = snippets.filter(
       (snippet) =>
         snippet.title.toLowerCase().includes(search.toLowerCase()) ||
         snippet.description.toLowerCase().includes(search.toLowerCase()) ||
@@ -64,12 +61,10 @@ export default function ShortsPage({
 
     if (sortOrder.id === 'date') {
       results.sort(sortTitleFn);
-    } else if (sortOrder.id === 'popular') {
-      results.sort((a, b) => (b?.likes ?? 0) - (a?.likes ?? 0));
     }
 
     setFiltered(results);
-  }, [populatedPosts, search, sortOrder.id]);
+  }, [snippets, search, sortOrder.id]);
   //#endregion  //*======== Search ===========
 
   const englishPosts = filtered.filter((p) => !p.slug.startsWith('en-'));

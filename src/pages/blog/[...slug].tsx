@@ -13,7 +13,6 @@ import {
   getFileSlugArray,
   getRecommendations,
 } from '@/lib/mdx.server';
-import useInjectContentMeta from '@/hooks/useInjectContentMeta';
 import useScrollSpy from '@/hooks/useScrollspy';
 
 import Accent from '@/components/Accent';
@@ -42,11 +41,6 @@ export default function SingleBlogPage({
   recommendations,
 }: SingleBlogPageProps) {
   const Component = React.useMemo(() => getMDXComponent(code), [code]);
-
-  const populatedRecommendations = useInjectContentMeta(
-    'blog',
-    recommendations
-  );
 
   //#region  //*=========== Link Constants ===========
   const OG_BANNER_LINK = `https://res.cloudinary.com/pedromebo/image/upload/f_auto,g_auto,c_fill,ar_4:5,w_1200/pedromebo/banner/${frontmatter.banner}`;
@@ -166,13 +160,13 @@ export default function SingleBlogPage({
               title={frontmatter.title}
             />
 
-            {populatedRecommendations.length > 0 && (
+            {recommendations.length > 0 && (
               <div className='mt-20'>
                 <h2>
                   <Accent>Otros posts que podrían interesarte</Accent>
                 </h2>
                 <ul className='mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-3'>
-                  {populatedRecommendations.map((post, i) => (
+                  {recommendations.map((post, i) => (
                     <BlogCard
                       onClick={() => {
                         trackEvent(post.slug, { type: 'recommend' });

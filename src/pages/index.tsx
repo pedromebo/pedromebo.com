@@ -11,7 +11,6 @@ import { InView } from 'react-intersection-observer';
 import { trackEvent } from '@/lib/analytics';
 import { getAllFilesFrontmatter, getFeatured } from '@/lib/mdx.server';
 import { generateRss } from '@/lib/rss';
-import useInjectContentMeta from '@/hooks/useInjectContentMeta';
 import useLoaded from '@/hooks/useLoaded';
 
 import Accent from '@/components/Accent';
@@ -24,7 +23,6 @@ import CustomLink from '@/components/links/CustomLink';
 import UnstyledLink from '@/components/links/UnstyledLink';
 import Seo from '@/components/Seo';
 import PMB from '@/components/PMB';
-import Tooltip from '@/components/Tooltip';
 
 export default function IndexPage({
   featuredPosts,
@@ -32,10 +30,6 @@ export default function IndexPage({
   featuredShorts,
   introPosts,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const populatedPosts = useInjectContentMeta('blog', featuredPosts);
-  const populatedIntro = useInjectContentMeta('blog', introPosts);
-  const populatedProjects = useInjectContentMeta('projects', featuredProjects);
-  const populatedShorts = useInjectContentMeta('library', featuredShorts);
 
   const isLoaded = useLoaded();
 
@@ -105,7 +99,7 @@ export default function IndexPage({
                     'dark:from-primary-200 dark:via-primary-300',
                     'opacity-75 transition duration-1000 group-hover:opacity-100 group-hover:duration-200'
                   )}
-                />
+                  />
                 <ButtonLink href='#intro'>Explorar el blog</ButtonLink>
               </div>
               <ButtonLink href='/about'>¿Quién soy?</ButtonLink>
@@ -220,11 +214,11 @@ export default function IndexPage({
                         'rotate-3 md:rotate-6 lg:rotate-12',
                         'pointer-events-none md:pointer-events-auto'
                       )}
-                      post={populatedIntro[1]}
+                      post={introPosts[1]}
                     />
                     <BlogCard
                       className='mx-auto max-w-[350px]'
-                      post={populatedIntro[0]}
+                      post={introPosts[0]}
                     />
                   </ul>
                 </div>
@@ -244,7 +238,7 @@ export default function IndexPage({
                   <Accent>Publicaciones destacadas</Accent>
                 </h2>
                 <ul className='mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-3'>
-                  {populatedPosts.map((post, i) => (
+                  {featuredPosts.map((post, i) => (
                     <BlogCard
                       key={post.slug}
                       post={post}
@@ -280,7 +274,7 @@ export default function IndexPage({
                   Algunos proyectos de los que estoy orgulloso
                 </p>
                 <ul className='mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-3'>
-                  {populatedProjects.map((project, i) => (
+                  {featuredProjects.map((project, i) => (
                     <ProjectCard
                       key={project.slug}
                       project={project}
@@ -316,7 +310,7 @@ export default function IndexPage({
                   Mini artículos o micro publicaciones. Suelen ser consejos rápidos sobre código, desarrollo o reflexiones.
                 </p>
                 <ul className='mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-3'>
-                  {populatedShorts.map((short, i) => (
+                  {featuredShorts.map((short, i) => (
                     <ShortsCard
                       key={short.slug}
                       short={short}

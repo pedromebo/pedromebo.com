@@ -6,7 +6,6 @@ import { HiCalendar, HiEye } from 'react-icons/hi';
 import { getFromSessionStorage } from '@/lib/helper.client';
 import { getTags, sortByDate, sortDateFn } from '@/lib/mdx.client';
 import { getAllFilesFrontmatter } from '@/lib/mdx.server';
-import useInjectContentMeta from '@/hooks/useInjectContentMeta';
 import useLoaded from '@/hooks/useLoaded';
 
 import Accent from '@/components/Accent';
@@ -41,8 +40,6 @@ export default function IndexPage({
   const [isSpanish, setisSpanish] = React.useState<boolean>(true);
   const isLoaded = useLoaded();
 
-  const populatedPosts = useInjectContentMeta('blog', posts);
-
   //#region  //*=========== Search ===========
   const [search, setSearch] = React.useState<string>('');
   const [filteredPosts, setFilteredPosts] = React.useState<
@@ -55,7 +52,7 @@ export default function IndexPage({
   const clearSearch = () => setSearch('');
 
   React.useEffect(() => {
-    const results = populatedPosts.filter(
+    const results = posts.filter(
       (post) =>
         post.title.toLowerCase().includes(search.toLowerCase()) ||
         post.description.toLowerCase().includes(search.toLowerCase()) ||
@@ -72,7 +69,7 @@ export default function IndexPage({
     }
 
     setFilteredPosts(results);
-  }, [search, sortOrder.id, populatedPosts]);
+  }, [search, sortOrder.id, posts]);
   //#endregion  //*======== Search ===========
 
   //#region  //*=========== Post Language Splitter ===========
