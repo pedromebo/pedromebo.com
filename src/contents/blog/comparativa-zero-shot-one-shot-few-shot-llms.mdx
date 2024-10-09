@@ -1,0 +1,101 @@
+---
+title: 'Comparativa de Zero-Shot, One-Shot y Few-Shot en LLMs'
+description: 'Comparativa de la estrategia de zero-shot, one-shot y few-shot orientado a LLMs.'
+publishedAt: '2024-10-10'
+banner: 'zero-shot-blog-banner'
+tags: 'blogs'
+---
+En el campo de la inteligencia artificial y el procesamiento del lenguaje natural, los modelos de lenguaje de gran tamaño (LLMs, por sus siglas en inglés) han revolucionado la manera en que interactuamos con la tecnología. Una de las características más destacadas de estos modelos es su capacidad para aprender y adaptarse a nuevas tareas con casi ninguna información adicional. A continuación, vamos a explorar tres enfoques claves: Zero-Shot, One-Shot y Few-Shot, proporcionando una introducción, explicación detallada, ejemplos de uso y una comparativa entre ellos.
+
+> ## Introducción
+
+Los LLMs han demostrado habilidades impresionantes para comprender y generar texto independientemente del contexto. Una de las razones de su eficacia es su capacidad para generalizar a partir de muy pocos ejemplos o incluso sin ejemplos específicos de una tarea. Los términos Zero-Shot, One-Shot y Few-Shot describen diferentes niveles de esta capacidad de aprendizaje, dependiendo de la cantidad de información previa proporcionada al modelo para realizar una tarea específica.
+
+> ## Zero-Shot
+
+### ¿Qué es Zero-Shot?
+
+El enfoque **Zero-Shot** implica que el modelo es capaz de realizar una tarea sin haber sido entrenado específicamente para ella y sin recibir ejemplos durante la interacción. El modelo utiliza su conocimiento previo para inferir cómo abordar la tarea basándose únicamente en una descripción en formato texto.
+
+### Ejemplo de Uso
+
+**Tarea:** Traducir una frase del inglés al español.
+
+**Prompt Zero-Shot:**
+
+```md
+Traduce al español: "The weather is nice today."
+
+**Respuesta del Modelo:**
+El clima está agradable hoy.
+```
+
+
+En este ejemplo, el modelo no recibe ejemplos de traducción, pero entiende la tarea a partir de la instrucción proporcionada.
+
+>## One-Shot
+
+### ¿Qué es One-Shot?
+
+El enfoque **One-Shot** proporciona al modelo un único ejemplo de la tarea que se desea realizar. Este ejemplo sirve como referencia para que el modelo entienda mejor el contexto y el formato esperado de la respuesta.
+
+### Ejemplo de Uso
+
+**Tarea:** Traducir una frase del inglés al español.
+
+**Prompt One-Shot:**
+
+```md
+Ejemplo: Inglés: "Good morning." Español: "Buenos días."
+
+Traduce al español: "The weather is nice today."
+
+**Respuesta del Modelo:**
+El clima está agradable hoy.
+```
+
+Aquí, el modelo utiliza el único ejemplo proporcionado para inferir cómo debe realizar la traducción.
+
+> ## Few-Shot
+
+### ¿Qué es Few-Shot?
+
+El enfoque **Few-Shot** implica proporcionar al modelo varios ejemplos de la tarea. Esto ayuda al modelo a captar patrones más complejos y a generalizar mejor para realizar la tarea con mayor precisión.
+
+### Ejemplo de Uso
+
+**Tarea:** Traducir frases del inglés al español.
+
+**Prompt Few-Shot:**
+
+```md
+Ejemplo 1: Inglés: "Good morning." Español: "Buenos días."
+
+Ejemplo 2: Inglés: "Thank you." Español: "Gracias."
+
+Ejemplo 3: Inglés: "See you later." Español: "Hasta luego."
+
+Traduce al español: "The weather is nice today."
+
+**Respuesta del Modelo:**
+El clima está agradable hoy.
+```
+
+
+Con múltiples ejemplos, el modelo puede entender mejor el patrón de traducción y aplicarlo de manera más efectiva.
+
+> ## Comparativa
+
+| **Aspecto**              | **Zero-Shot**                             | **One-Shot**                                     | **Few-Shot**                                     |
+|--------------------------|-------------------------------------------|--------------------------------------------------|--------------------------------------------------|
+| **Cantidad de Ejemplos** | Ninguno                                   | Un solo ejemplo                                  | Varios ejemplos                                  |
+| **Facilidad de Implementación** | Muy sencillo, solo una instrucción clara  | Moderadamente sencillo, requiere crear un ejemplo | Más complejo, requiere múltiples ejemplos        |
+| **Precisión**            | Puede ser menos precisa en tareas complejas | Mayor precisión que Zero-Shot                   | Mayor precisión y capacidad de generalización    |
+| **Uso de Recursos**      | Menos recursos necesarios                  | Recursos moderados para crear un ejemplo         | Más recursos para generar y gestionar ejemplos   |
+| **Aplicabilidad**        | Tareas simples o bien definidas            | Tareas medianamente complejas                     | Tareas complejas que se benefician de varios ejemplos |
+
+> ## Conclusión
+
+Los enfoques Zero-Shot, One-Shot y Few-Shot ofrecen diferentes niveles de flexibilidad y precisión al utilizar LLMs para diversas tareas. **Zero-Shot** es ideal para tareas sencillas donde una instrucción clara es suficiente. **One-Shot** mejora la precisión proporcionando un ejemplo, siendo útil para tareas con una cierta complejidad. **Few-Shot** es la mejor opción para tareas más complejas que requieren una comprensión más profunda y patrones específicos, aprovechando múltiples ejemplos para optimizar el rendimiento del modelo.
+
+Comprender y seleccionar el enfoque adecuado según la tarea y los recursos disponibles puede maximizar la eficacia de los LLMs, permitiendo una integración más eficiente y precisa de estas tecnologías en aplicaciones del mundo real.
