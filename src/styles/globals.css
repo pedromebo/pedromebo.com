@@ -16,6 +16,12 @@
   --clr-primary-500: rgb(var(--tw-clr-primary-500)); /* #00c4fd */
 }
 
+.table-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+}
+
 @layer base {
   /* inter var - latin */
   @font-face {
@@ -94,6 +100,7 @@
   .accent-highlight {
     @apply bg-primary-300/50 dark:bg-gradient-to-tr dark:from-primary-300 dark:to-primary-400 dark:bg-clip-text dark:text-transparent;
   }
+  
 }
 
 @layer utilities {
