@@ -344,8 +344,9 @@ export async function getStaticProps() {
   const shorts = await getAllFilesFrontmatter('library');
 
   const featuredPosts = getFeatured(blogs, [
-    'informe-datos-marbella-vice',
-    'readme-presentacion-github'
+    'llm-prompt-caching',
+    'comparativa-zero-shot-one-shot-few-shot-llms',
+    'informe-datos-marbella-vice'
   ]);
   const featuredProjects = getFeatured(projects, [
     'informe-datos-marbella-vice',
