@@ -353,8 +353,8 @@ export async function getStaticProps() {
     'oona-the-druids-path'
   ]);
   const introPosts = getFeatured(blogs, [
-    'informe-datos-marbella-vice',
-    'readme-presentacion-github'
+    'llm-prompt-caching',
+    'informe-datos-marbella-vice'
   ]);
   const featuredShorts = getFeatured(shorts, [
     'nuevos-desarrolladores-ia'
