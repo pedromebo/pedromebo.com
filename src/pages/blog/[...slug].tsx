@@ -100,7 +100,7 @@ export default function SingleBlogPage({
             <div className='pb-4 dark:border-gray-600'>
               <CloudinaryImg
                 publicId={`pedromebo/banner/${frontmatter.banner}`}
-                alt={`Photo from unsplash: ${frontmatter.banner}`}
+                alt={`${frontmatter.banner}`}
                 width={1200}
                 height={(1200 * 2) / 5}
                 aspect={{ height: 2, width: 5 }}
