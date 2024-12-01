@@ -5,7 +5,7 @@ import { openGraph } from '@/lib/helper.client';
 
 const defaultMeta = {
   title: 'Pedro Medinilla Bohorquez - Blog personal y portfolio',
-  siteName: 'pedromebo.com',
+  siteName: 'Pedro Medinilla Bohorquez - Pedromebo',
   description:
     'Portfolio online y blog de Pedro Medinilla Bohórquez (pedromebo). Demostración de mis proyectos, noticias y reflexiones sobre el desarrollo de IA.',
   url: 'https://www.pedromebo.com',
