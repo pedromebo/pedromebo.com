@@ -1,0 +1,147 @@
+---
+title: 'From N-grams to Word2Vec: The Early Steps in Language Representation'
+description: 'Explore how traditional approaches like n-grams evolved into more advanced models like Word2Vec to represent human language efficiently.'
+publishedAt: '2024-12-05'
+banner: 'ngram_banner'
+tags: 'blogs'
+---
+
+> ## Introduction
+Language representation in computational models is a central topic in natural language processing (NLP). In its early stages, statistical methods like **n-grams** were the norm. However, the need to better understand context and semantic relationships led to the development of more advanced techniques such as **Word2Vec**. In this article, we’ll explore the evolution of language representation approaches, from n-grams to word embeddings, learn how to implement them in Python, and look at real-world application examples.
+
+> ## N-grams: An Introduction
+
+### What Are N-grams?
+
+An **n-gram** is a contiguous sequence of "n" elements (words or characters) in a text. For example, given the sentence:
+
+> "Artificial intelligence is fascinating."
+
+N-grams are generated as follows:
+- **Unigrams (n=1):** `["Artificial", "intelligence", "is", "fascinating"]`
+- **Bigrams (n=2):** `[("Artificial", "intelligence"), ("intelligence", "is"), ("is", "fascinating")]`
+- **Trigrams (n=3):** `[("Artificial", "intelligence", "is"), ("intelligence", "is", "fascinating")]`
+
+N-grams are useful in tasks such as text prediction but face significant limitations, especially for capturing broader contexts and complex semantic relationships.
+
+### Real-world Use Cases for N-grams
+- **Text Prediction**: N-grams are used in predictive keyboards to suggest words based on likely patterns.
+- **Spam Filtering**: They help identify common word combinations in spam emails.
+- **Frequency Analysis**: Used in linguistic data analysis to study recurring patterns in different languages.
+
+### Advantages and Limitations
+
+- **Advantages:**
+  - Simple to implement.
+  - Capture basic local patterns in text.
+- **Limitations:**
+  - **Exponential Growth:** The number of possible combinations grows rapidly with "n."
+  - **Lack of Semantics:** They fail to capture meaning or relationships beyond their immediate neighborhood.
+  - **Sparsity:** Many possible combinations are absent in the corpus.
+
+### Practical Implementation
+
+```python
+from nltk import ngrams  
+from collections import Counter  
+
+# Example text  
+text = "Artificial intelligence is fascinating".split()  
+
+# Generate bigrams  
+bigrams = list(ngrams(text, 2))  
+print("Bigrams:", bigrams)  
+
+# Count the frequency of the bigrams  
+frequency = Counter(bigrams)  
+print("Bigram frequency:", frequency)
+```
+
+Expected output:
+
+```python
+Bigrams: [('Artificial', 'intelligence'), ('intelligence', 'is'), ('is', 'fascinating')]  
+Bigram frequency: Counter({('Artificial', 'intelligence'): 1, ('intelligence', 'is'): 1, ('is', 'fascinating'): 1})
+```
+
+> ## The Conceptual Leap: From N-grams to Word2Vec
+
+### What Is Word2Vec?
+
+**Word2Vec**, introduced by Google in 2013, represents a significant step forward in understanding the semantic and syntactic relationships between words. Unlike n-grams, which rely on fixed-sized word sequences, Word2Vec leverages a neural network to encode words into dense, continuous vectors in a high-dimensional space. This approach enables it to capture deeper contextual meanings and relationships between words.
+
+Word2Vec is built on the **distributional hypothesis**, which states that *words that appear in similar contexts tend to have similar meanings*. It provides two core architectures:
+
+1. **Continuous Bag of Words (CBOW):** Predicts a target word based on its surrounding context words.
+2. **Skip-gram:** Predicts surrounding context words given a target word.
+
+These methods make Word2Vec particularly effective in learning representations that reflect the similarity and relationship between words in a meaningful way.
+
+---
+
+### Real-world Use Cases for Word2Vec
+
+- **Search Engines**: Enhance query understanding and relevance by identifying semantic connections between search terms and content.
+- **Customer Sentiment Analysis**: Classify user reviews or feedback as positive, negative, or neutral by analyzing the relationships between opinion words.
+- **Machine Translation**: Map words from different languages to a shared semantic space, improving translation accuracy.
+- **Recommendation Systems**: Power recommendation engines (e.g., Amazon, Netflix) by associating related items based on user reviews and descriptions.
+- **Biological Sequence Analysis**: Apply word embeddings to DNA, RNA, or protein sequences, treating biological sequences as "words" for pattern detection.
+- **Social Media Insights**: Track trends and sentiment shifts by embedding text from tweets or posts.
+
+### Strengths and Weaknesses of Word2Vec
+
+#### Strengths:
+- **Dense Representations**: Encodes meaning in compact, dense vectors, reducing the sparsity typical in earlier methods.
+- **Semantic and Syntactic Learning**: Captures relationships like similarity (e.g., king and queen) and analogies (e.g., Paris is to France as Berlin is to Germany).
+- **Scalability**: Efficiently handles large text datasets and computes embeddings for extensive vocabularies.
+
+#### Weaknesses:
+- **Context Limitations**: Word2Vec does not account for the full sentence or paragraph context, as it considers only local neighborhoods.
+- **Dependency on Data Volume**: Requires a substantial amount of diverse text data to produce high-quality embeddings.
+- **Static Representations**: Fails to capture multiple meanings of polysemous words (e.g., "bank" as a financial institution vs. a riverbank).
+
+---
+
+### Basic Implementation with Gensim
+
+To understand how Word2Vec works, let’s implement a basic version using the Gensim library.
+
+```python
+from gensim.models import Word2Vec  
+from nltk.tokenize import word_tokenize  
+import nltk  
+nltk.download('punkt')  
+
+# Example corpus  
+text = [  
+    "Artificial intelligence is fascinating",  
+    "Intelligence is key to solving problems",  
+    "AI is transforming the world"  
+]  
+
+# Tokenize the text  
+corpus = [word_tokenize(sentence.lower()) for sentence in text]  
+
+# Train the Word2Vec model  
+model = Word2Vec(corpus, vector_size=50, window=3, min_count=1, sg=1)  
+
+# Get the vector for a word  
+word_vector = model.wv['intelligence']  
+print("Vector for 'intelligence':", word_vector)  
+
+# Find similar words  
+similar_words = model.wv.most_similar('intelligence', topn=5)  
+print("Words similar to 'intelligence':", similar_words)  
+```
+Expected output:
+
+```text
+Vector for 'intelligence': [0.123, -0.235, ...]  # (Valores de ejemplo)  
+Words similar to 'intelligence': [('artificial', 0.89), ('key', 0.75), ...]  
+```
+
+> ## Conclusion
+
+The transition from methods like n-grams to Word2Vec marked a milestone in natural language processing. While n-grams were useful for simple tasks and local patterns, Word2Vec paved the way for semantic representation, enabling more advanced applications such as sentiment analysis, machine translation, and text generation.
+
+Understanding these foundations is crucial for exploring modern models like BERT and GPT, which take these ideas to new heights. The future of NLP is bright, and Word2Vec remains a cornerstone in this exciting field!
