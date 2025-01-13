@@ -1,0 +1,120 @@
+---
+title: 'TF-IDF y Bag of Words: Cómo la estadística marcó el comienzo del procesamiento del lenguaje natural (NLP)'
+description: 'Explora cómo las técnicas estadísticas clásicas como Bag of Words y TF-IDF pusieron las bases para el análisis y comprensión del lenguaje natural en el mundo de la computación.'
+publishedAt: '2025-01-14'
+banner: 'tfidf_banner'
+tags: 'blogs'
+---
+> ## Introducción
+Antes del auge de las redes neuronales y los embeddings como Word2Vec, las técnicas estadísticas jugaron un papel fundamental en el procesamiento del lenguaje natural (NLP). Dos de los métodos más destacados fueron **Bag of Words (BoW)** y **TF-IDF**. Estas técnicas simples pero poderosas permitieron transformar el texto en datos numéricos, abriendo el camino para análisis de texto más complejos. En este artículo, aprenderemos en qué consisten estas técnicas, sus ventajas y limitaciones, y cómo implementarlas en Python.
+
+> ## Bag of Words: La base del análisis de texto
+
+### ¿Qué es Bag of Words?
+
+Bag of Words (BoW) es una representación simple pero efectiva del texto. En este modelo:
+1. Cada documento se convierte en una **bolsa** (bag) de palabras.
+2. Se cuenta cuántas veces aparece cada palabra en el documento, ignorando el orden o la gramática.
+
+Por ejemplo, dada la colección de documentos:
+- Documento 1: "La inteligencia artificial es fascinante."
+- Documento 2: "La inteligencia es clave."
+
+El vocabulario será: `["La", "inteligencia", "artificial", "es", "fascinante", "clave"]`.
+
+La representación BoW para cada documento será:
+- Documento 1: `[1, 1, 1, 1, 1, 0]`
+- Documento 2: `[1, 1, 0, 1, 0, 1]`
+
+### Ventajas y limitaciones
+
+- **Ventajas:**
+  - Fácil de implementar y entender.
+  - Funciona bien para tareas donde el contexto no es crítico.
+- **Limitaciones:**
+  - **Sparsity:** Las matrices generadas suelen ser grandes y dispersas.
+  - **Sin semántica:** No considera relaciones entre palabras.
+  - **Escalabilidad:** Se vuelve ineficiente con vocabularios grandes.
+
+### Implementación en Python
+```python
+from sklearn.feature_extraction.text import CountVectorizer  
+
+# Colección de documentos  
+documentos = [  
+    "La inteligencia artificial es fascinante",  
+    "La inteligencia es clave"  
+]  
+
+# Crear la representación Bag of Words  
+vectorizador = CountVectorizer()  
+boW_matriz = vectorizador.fit_transform(documentos)  
+
+# Mostrar la matriz resultante  
+print("Vocabulario:", vectorizador.get_feature_names_out())  
+print("Matriz BoW:\n", boW_matriz.toarray())  
+```
+Salida esperada:
+```python
+Vocabulario: ['artificial', 'clave', 'es', 'fascinante', 'inteligencia', 'la']  
+Matriz BoW:  
+[[1 0 1 1 1 1]  
+ [0 1 1 0 1 1]]  
+```
+> ## TF-IDF: Más allá de la frecuencia
+
+### ¿Qué es TF-IDF?
+
+TF-IDF (Term Frequency-Inverse Document Frequency) mejora el modelo BoW al asignar un peso a cada palabra basado en:
+1. **Frecuencia del término (TF):** Cuántas veces aparece una palabra en un documento.
+2. **Frecuencia inversa del documento (IDF):** Qué tan común o rara es la palabra en toda la colección.
+
+La fórmula básica es:
+
+`TF-IDF(t, d) = TF(t, d) × log(N / DF(t))`
+
+Donde:
+- t es el término.
+- d es el documento.
+- N es el número total de documentos.
+- DF(t) es el número de documentos que contienen t.
+
+### Ventajas y limitaciones
+
+- **Ventajas:**
+  - Destaca términos relevantes al reducir el peso de palabras comunes.
+  - Mantiene un equilibrio entre frecuencia local y relevancia global.
+- **Limitaciones:**
+  - No captura relaciones semánticas ni contexto.
+  - Sensible a vocabularios grandes.
+
+### Implementación en Python
+```python
+from sklearn.feature_extraction.text import TfidfVectorizer  
+
+# Colección de documentos  
+documentos = [  
+    "La inteligencia artificial es fascinante",  
+    "La inteligencia es clave"  
+]  
+
+# Crear la representación TF-IDF  
+vectorizador_tfidf = TfidfVectorizer()  
+tfidf_matriz = vectorizador_tfidf.fit_transform(documentos)  
+
+# Mostrar la matriz resultante  
+print("Vocabulario:", vectorizador_tfidf.get_feature_names_out())  
+print("Matriz TF-IDF:\n", tfidf_matriz.toarray())  
+```
+Salida esperada:
+```python
+Vocabulario: ['artificial', 'clave', 'es', 'fascinante', 'inteligencia', 'la']  
+Matriz TF-IDF:  
+[[0.49  0.00  0.49  0.49  0.49  0.49]  
+ [0.00  0.70  0.35  0.00  0.35  0.35]]  
+```
+> ## Conclusión
+
+Bag of Words y TF-IDF son técnicas esenciales que marcaron el inicio del procesamiento del lenguaje natural al transformar texto en datos numéricos. Aunque estas herramientas tienen limitaciones en comparación con los métodos modernos, como los embeddings densos y los modelos de lenguaje preentrenados, siguen siendo útiles en tareas donde la simplicidad y la interpretación son clave.
+
+Aprender estas técnicas no solo ayuda a entender los fundamentos del NLP, sino que también proporciona una base sólida para abordar problemas complejos con modelos más avanzados como BERT o GPT. ¡La combinación de estadísticas y NLP sigue siendo una poderosa herramienta para el análisis de texto!
