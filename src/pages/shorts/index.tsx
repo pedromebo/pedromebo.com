@@ -130,11 +130,10 @@ export default function ShortsPage({
             >
               <span className='font-medium'>{isSpanish ? 'Elige un tema' : 'Choose a topic'}:</span>
               <SkipNavTag>
-                {tags.map((tag) => (
+                {filteredTags.map((tag) => (
                   <Tag
                     key={tag}
                     onClick={() => toggleTag(tag)}
-                    disabled={!filteredTags.includes(tag)}
                   >
                     {checkTagged(tag) ? <Accent>{tag}</Accent> : tag}
                   </Tag>
