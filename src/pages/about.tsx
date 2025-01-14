@@ -52,7 +52,6 @@ export default function AboutPage() {
                 width='512'
                 height='384'
                 alt='Foto de mí en una presentación sobre Transformers'
-                preview={false}
                 title=' '
               />
               <article className='prose dark:prose-invert'>

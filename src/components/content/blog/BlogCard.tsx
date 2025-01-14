@@ -46,7 +46,6 @@ export default function BlogCard({
             width={1200}
             height={(1200 * 2) / 5}
             aspect={{ height: 2, width: 5 }}
-            preview={false}
           />
           <div
             className={clsx(

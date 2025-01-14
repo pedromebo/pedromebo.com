@@ -2,7 +2,6 @@ import { buildUrl } from 'cloudinary-build-url';
 import clsx from 'clsx';
 import Image from 'next/image';
 import * as React from 'react';
-import Lightbox from 'react-18-image-lightbox';
 
 type CloudinaryImgType = {
   publicId: string;
@@ -11,7 +10,6 @@ type CloudinaryImgType = {
   alt: string;
   title?: string;
   className?: string;
-  preview?: boolean;
   noStyle?: boolean;
   aspect?: {
     width: number;
@@ -27,15 +25,12 @@ export default function CloudinaryImg({
   alt,
   title,
   className,
-  preview = true,
   noStyle = false,
   mdx = false,
   style,
   aspect,
   ...rest
 }: CloudinaryImgType) {
-  const [isOpen, setIsOpen] = React.useState<boolean>(false);
-
   const urlBlurred = buildUrl(publicId, {
     cloud: {
       cloudName: 'pedromebo',
@@ -85,10 +80,8 @@ export default function CloudinaryImg({
           paddingTop: aspectRatio
             ? `${aspectRatio * 100}%`
             : `${(+height / +width) * 100}%`,
-          cursor: preview ? 'zoom-in' : 'default',
         }}
         className='img-blur'
-        onClick={preview ? () => setIsOpen(true) : undefined}
       >
         <style jsx>{`
           .img-blur::before {
@@ -117,9 +110,6 @@ export default function CloudinaryImg({
           />
         </div>
       </div>
-      {isOpen && (
-        <Lightbox mainSrc={url} onCloseRequest={() => setIsOpen(false)} />
-      )}
     </figure>
   );
 }

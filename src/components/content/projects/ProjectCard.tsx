@@ -42,7 +42,6 @@ export default function ProjectCard({ project, className }: ProjectCardProps) {
           alt={project.title}
           width={1440}
           height={792}
-          preview={false}
         />
 
         <p className='animated-underline mt-2 inline-block font-medium'>
