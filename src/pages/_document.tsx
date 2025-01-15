@@ -28,6 +28,7 @@ class MyDocument extends Document {
             defer
             data-website-id={process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID || ''}
             src='https://cloud.umami.is/script.js'
+            data-domains='www.pedromebo.com'
           />
         </Head>
         <body className='bg-white antialiased transition-colors dark:bg-dark dark:text-white'>
