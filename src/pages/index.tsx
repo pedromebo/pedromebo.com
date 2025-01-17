@@ -344,9 +344,9 @@ export async function getStaticProps() {
   const shorts = await getAllFilesFrontmatter('library');
 
   const featuredPosts = getFeatured(blogs, [
-    'llm-prompt-caching',
-    'comparativa-zero-shot-one-shot-few-shot-llms',
-    'informe-datos-marbella-vice'
+    'tfidf-bow-nlp',
+    'ngram-word2vec-evolucion',
+    'llm-prompt-caching'
   ]);
   const featuredProjects = getFeatured(projects, [
     'informe-datos-marbella-vice',
@@ -354,7 +354,7 @@ export async function getStaticProps() {
   ]);
   const introPosts = getFeatured(blogs, [
     'llm-prompt-caching',
-    'informe-datos-marbella-vice'
+    'tfidf-bow-nlp'
   ]);
   const featuredShorts = getFeatured(shorts, [
     'nuevos-desarrolladores-ia'
