@@ -4,6 +4,7 @@ export type BlogFrontmatter = {
   wordCount: number;
   readingTime: ReadTimeResults;
   slug: string;
+  translated_slug?: string;
   spanishOnly?: boolean;
   title: string;
   description: string;

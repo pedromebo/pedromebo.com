@@ -48,8 +48,9 @@ export default function SingleBlogPage({
 
   //#region  //*=========== Blog Language ===========
   // TODO: add implementation, should be bugged if folder/es-slug.mdx
-  const cleanSlug = cleanPagePrefix(frontmatter.slug);
-  const isSpanish = cleanSlug === frontmatter.slug;
+  const translated_slug = frontmatter.translated_slug;
+  const cleanSlug = cleanPagePrefix(translated_slug ?? frontmatter.slug);
+  const isSpanish = cleanPagePrefix(frontmatter.slug) === frontmatter.slug;
   //#endregion  //*======== Blog Language ===========
 
   //#region  //*=========== Content Meta ===========

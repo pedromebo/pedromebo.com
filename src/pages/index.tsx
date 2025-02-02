@@ -344,8 +344,8 @@ export async function getStaticProps() {
   const shorts = await getAllFilesFrontmatter('library');
 
   const featuredPosts = getFeatured(blogs, [
+    'como-funciona-deepseek-r1',
     'tfidf-bow-nlp',
-    'ngram-word2vec-evolucion',
     'llm-prompt-caching'
   ]);
   const featuredProjects = getFeatured(projects, [
@@ -353,8 +353,8 @@ export async function getStaticProps() {
     'oona-the-druids-path'
   ]);
   const introPosts = getFeatured(blogs, [
-    'llm-prompt-caching',
-    'tfidf-bow-nlp'
+    'como-funciona-deepseek-r1',
+    'llm-prompt-caching'
   ]);
   const featuredShorts = getFeatured(shorts, [
     'nuevos-desarrolladores-ia'
