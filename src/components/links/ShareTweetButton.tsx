@@ -26,8 +26,8 @@ export default function ShareTweetButton({
       href={intentUrl}
       className={clsx('items-center gap-2', className)}
     >
-      <FaXTwitter className='text-[1.2em] text-[#1da1f2]' />
-      Pon un Tweet de este artículo
+      <FaXTwitter className='text-[1.2em]' />
+      Pon un Post de este artículo
     </ButtonLink>
   );
 }
