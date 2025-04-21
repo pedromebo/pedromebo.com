@@ -17,9 +17,18 @@ Un **n-grama** es una secuencia contigua de "n" elementos (palabras o caracteres
 > "La inteligencia artificial es fascinante."
 
 Los n-gramas se generan como sigue:
-- **Unigramas (n=1):** `["La", "inteligencia", "artificial", "es", "fascinante"]`
-- **Bigramas (n=2):** `[("La", "inteligencia"), ("inteligencia", "artificial"), ("artificial", "es"), ("es", "fascinante")]`
-- **Trigramas (n=3):** `[("La", "inteligencia", "artificial"), ("inteligencia", "artificial", "es"), ("artificial", "es", "fascinante")]`
+- **Unigramas (n=1):**
+```javascript
+["La", "inteligencia", "artificial", "es", "fascinante"]
+```
+- **Bigramas (n=2):**
+```javascript
+[("La", "inteligencia"), ("inteligencia", "artificial"), ("artificial", "es"), ("es", "fascinante")]
+```
+- **Trigramas (n=3):**
+```javascript
+[("La", "inteligencia", "artificial"), ("inteligencia", "artificial", "es"), ("artificial", "es", "fascinante")]
+```
 
 Los n-gramas son útiles en tareas como la predicción de texto, pero tienen limitaciones significativas, especialmente para contextos amplios y relaciones semánticas complejas.
 

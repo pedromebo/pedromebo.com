@@ -18,10 +18,18 @@ An **n-gram** is a contiguous sequence of "n" elements (words or characters) in 
 > "Artificial intelligence is fascinating."
 
 N-grams are generated as follows:
-- **Unigrams (n=1):** `["Artificial", "intelligence", "is", "fascinating"]`
-- **Bigrams (n=2):** `[("Artificial", "intelligence"), ("intelligence", "is"), ("is", "fascinating")]`
-- **Trigrams (n=3):** `[("Artificial", "intelligence", "is"), ("intelligence", "is", "fascinating")]`
-
+- **Unigrams (n=1):**
+```javascript
+["La", "inteligencia", "artificial", "es", "fascinante"]
+```
+- **Bigrams (n=2):**
+```javascript
+[("La", "inteligencia"), ("inteligencia", "artificial"), ("artificial", "es"), ("es", "fascinante")]
+```
+- **Trigrams (n=3):**
+```javascript
+[("La", "inteligencia", "artificial"), ("inteligencia", "artificial", "es"), ("artificial", "es", "fascinante")]
+```
 N-grams are useful in tasks such as text prediction but face significant limitations, especially for capturing broader contexts and complex semantic relationships.
 
 ### Real-world Use Cases for N-grams
