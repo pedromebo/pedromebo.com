@@ -84,20 +84,29 @@ With multiple examples, the model can better understand the translation pattern 
 
 > ## Comparison
 
-<div class="table-container">
+### Zero-Shot
+- **Number of Examples:** None  
+- **Ease of Implementation:** Very simple, just a clear instruction  
+- **Accuracy:** May be less accurate for complex tasks  
+- **Resource Usage:** Fewer resources required  
+- **Applicability:** Simple or well-defined tasks  
 
-| **Aspect**              | **Zero-Shot**                             | **One-Shot**                                     | **Few-Shot**                                     |
-|--------------------------|-------------------------------------------|--------------------------------------------------|--------------------------------------------------|
-| **Number of Examples**   | None                                      | One example                                      | Several examples                                 |
-| **Ease of Implementation** | Very simple, just a clear instruction     | Moderately simple, requires creating one example | More complex, requires multiple examples         |
-| **Accuracy**             | May be less accurate for complex tasks     | More accurate than Zero-Shot                     | Greater accuracy and generalization ability      |
-| **Resource Usage**       | Fewer resources needed                    | Moderate resources to create one example         | More resources needed to generate and manage examples |
-| **Applicability**        | Simple or well-defined tasks              | Moderately complex tasks                         | Complex tasks that benefit from multiple examples |
+### One-Shot
+- **Number of Examples:** A single example  
+- **Ease of Implementation:** Moderately simple, requires creating one example  
+- **Accuracy:** More accurate than Zero-Shot  
+- **Resource Usage:** Moderate resources needed to create an example  
+- **Applicability:** Moderately complex tasks  
 
-</div>
+### Few-Shot
+- **Number of Examples:** Several examples  
+- **Ease of Implementation:** More complex, requires multiple examples  
+- **Accuracy:** Higher accuracy and better generalization  
+- **Resource Usage:** More resources needed to create and manage examples  
+- **Applicability:** Complex tasks that benefit from multiple examples  
 
 > ## Conclusion
 
-The Zero-Shot, One-Shot, and Few-Shot approaches offer different levels of flexibility and accuracy when using LLMs for various tasks. **Zero-Shot** is ideal for simple tasks where a clear instruction is enough. **One-Shot** improves accuracy by providing one example, useful for tasks with some complexity. **Few-Shot** is the best choice for more complex tasks requiring deeper understanding and specific patterns, leveraging multiple examples to optimize model performance.
+Zero-Shot, One-Shot, and Few-Shot approaches offer varying levels of flexibility and accuracy when using LLMs for different tasks. **Zero-Shot** is ideal for simple tasks where a clear instruction suffices. **One-Shot** improves accuracy by providing a single example, making it useful for moderately complex tasks. **Few-Shot** is the best choice for more complex tasks that require deeper understanding and pattern recognition, leveraging multiple examples to optimize model performance.
 
-Understanding and selecting the right approach based on the task and available resources can maximize the effectiveness of LLMs, allowing for more efficient and accurate integration of these technologies into real-world applications.
+Understanding and choosing the right approach based on the task and available resources can maximize the effectiveness of LLMs, enabling more efficient and accurate integration of these technologies into real-world applications.
