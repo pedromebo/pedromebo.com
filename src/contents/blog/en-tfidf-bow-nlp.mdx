@@ -20,11 +20,18 @@ For example, given the collection of documents:
 - Document 1: "Artificial intelligence is fascinating."
 - Document 2: "Intelligence is key."
 
-The vocabulary will be: `["Artificial", "intelligence", "is", "fascinating", "key"]`.
+The vocabulary will be:
+```javascript
+["Artificial", "intelligence", "is", "fascinating", "key"]
+```
 
 The BoW representation for each document will be:
-- Document 1: `[1, 1, 1, 1, 0]`
-- Document 2: `[0, 1, 1, 0, 1]`
+```javascript
+// Document 1:
+[1, 1, 1, 1, 0]
+// Document 2:
+[0, 1, 1, 0, 1]
+```
 
 ### Advantages and Limitations
 
@@ -33,7 +40,7 @@ The BoW representation for each document will be:
   - Works well for tasks where context is not critical.
 - **Limitations:**
   - **Sparsity:** The resulting matrices are often large and sparse.
-  - **No semantics:** It doesn’t account for relationships between words.
+  - **No semantics:** It doesn't account for relationships between words.
   - **Scalability:** Becomes inefficient with large vocabularies.
 
 ### Implementation in Python
@@ -72,8 +79,9 @@ TF-IDF (Term Frequency-Inverse Document Frequency) enhances the BoW model by ass
 2. **Inverse Document Frequency (IDF):** How common or rare the word is across the entire collection.
 
 The basic formula is:
-
-`TF-IDF(t, d) = TF(t, d) × log(N / DF(t))`
+```javascript
+TF-IDF(t, d) = TF(t, d) × log(N / DF(t))
+```
 
 Where:
 - t is the term.

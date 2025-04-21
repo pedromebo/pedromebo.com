@@ -20,11 +20,18 @@ Por ejemplo, dada la colección de documentos:
 - Documento 1: "La inteligencia artificial es fascinante."
 - Documento 2: "La inteligencia es clave."
 
-El vocabulario será: `["La", "inteligencia", "artificial", "es", "fascinante", "clave"]`.
+El vocabulario será:
+```javascript
+["La", "inteligencia", "artificial", "es", "fascinante", "clave"]
+```
 
 La representación BoW para cada documento será:
-- Documento 1: `[1, 1, 1, 1, 1, 0]`
-- Documento 2: `[1, 1, 0, 1, 0, 1]`
+```javascript
+// Documento 1:
+[1, 1, 1, 1, 1, 0]
+// Documento 2:
+[1, 1, 0, 1, 0, 1]
+```
 
 ### Ventajas y limitaciones
 
@@ -70,9 +77,9 @@ TF-IDF (Term Frequency-Inverse Document Frequency) mejora el modelo BoW al asign
 2. **Frecuencia inversa del documento (IDF):** Qué tan común o rara es la palabra en toda la colección.
 
 La fórmula básica es:
-
-`TF-IDF(t, d) = TF(t, d) × log(N / DF(t))`
-
+```javascript
+TF-IDF(t, d) = TF(t, d) × log(N / DF(t))
+```
 Donde:
 - t es el término.
 - d es el documento.
