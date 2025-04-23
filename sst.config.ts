@@ -1,20 +1,22 @@
-import { SSTConfig } from "sst";
-import { NextjsSite } from "sst/constructs";
-
-export default {
-  config(_input) {
+/// <reference path="./.sst/platform/config.d.ts" />
+export default $config({
+  app(input) {
     return {
       name: "pedromebo-website",
+      home: "aws",
       region: "eu-west-1",
+      providers: { aws: "6.77.1" },
     };
   },
-  stacks(app) {
-    app.stack(function Site({ stack }) {
-      const site = new NextjsSite(stack, "site");
-
-      stack.addOutputs({
-        SiteUrl: site.url,
-      });
+  async run() {
+    const site = new sst.aws.Nextjs("MySite", {
+      path: ".",
     });
+
+    return {
+      outputs: {
+        SiteUrl: site.url,
+      },
+    };
   },
-} satisfies SSTConfig;
+});
