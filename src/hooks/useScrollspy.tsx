@@ -11,7 +11,7 @@ export default function useScrollSpy() {
   const actionSectionScrollSpy = throttle(() => {
     const sections = document.getElementsByClassName('hash-anchor');
 
-    let prevBBox = null;
+    let prevBBox: DOMRect | null = null;
     let currentSectionId = activeSection;
 
     for (let i = 0; i < sections.length; ++i) {

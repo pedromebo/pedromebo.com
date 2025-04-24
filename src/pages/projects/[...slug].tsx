@@ -1,14 +1,20 @@
-import { getMDXComponent } from 'mdx-bundler/client';
+import clsx from 'clsx';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import * as React from 'react';
 import { HiLink, HiOutlineEye, HiPlay, HiUser } from 'react-icons/hi';
 import { SiGithub } from 'react-icons/si';
+import { MDXRemote } from 'next-mdx-remote';
+import { serialize } from 'next-mdx-remote/serialize';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import rehypePrettyCode from 'rehype-pretty-code';
+import rehypeSlug from 'rehype-slug';
+import remarkGfm from 'remark-gfm';
 
 import { trackEvent } from '@/lib/analytics';
-import { getFileBySlug, getFileSlugArray } from '@/lib/mdx.server';
-import useScrollSpy from '@/hooks/useScrollspy';
 import { cleanPagePrefix } from '@/lib/helper.client';
+import { getFileSlugArray, getFrontmatter } from '@/lib/mdx.server';
+import useScrollSpy from '@/hooks/useScrollspy';
 
 import MDXComponents from '@/components/content/MDXComponents';
 import TableOfContents, {
@@ -21,13 +27,15 @@ import Seo from '@/components/Seo';
 
 import { ProjectType } from '@/types/frontmatters';
 
-export default function SingleProjectPage({ code, frontmatter }: ProjectType) {
-  const Component = React.useMemo(() => getMDXComponent(code), [code]);
+type SingleProjectPageProps = {
+  frontmatter: ProjectType['frontmatter'];
+  mdxSource: any;
+};
 
-  //#region  //*=========== Content Meta ===========
-  const contentSlug = `p_${frontmatter.slug.replace('|', '-')}`;
-  //#endregion  //*======== Content Meta ===========
-
+export default function SingleProjectPage({
+  frontmatter,
+  mdxSource,
+}: SingleProjectPageProps) {
   //#region  //*=========== Project Language ===========
   // TODO: add implementation, should be bugged if folder/es-slug.mdx
   const cleanSlug = cleanPagePrefix(frontmatter.slug);
@@ -158,14 +166,7 @@ export default function SingleProjectPage({ code, frontmatter }: ProjectType) {
 
             <section className='lg:grid lg:grid-cols-[auto,250px] lg:gap-8'>
               <article className='mdx projects prose mx-auto w-full transition-colors dark:prose-invert'>
-                <Component
-                  components={
-                    {
-                      ...MDXComponents,
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    } as any
-                  }
-                />
+                <MDXRemote {...mdxSource} components={MDXComponents} />
               </article>
 
               <aside className='py-4'>
@@ -195,7 +196,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: posts.map((slug) => ({
       params: {
-        slug: slug,
+        slug,
       },
     })),
     fallback: false,
@@ -205,11 +206,56 @@ export const getStaticPaths: GetStaticPaths = async () => {
 interface Params extends ParsedUrlQuery {
   slug: string[];
 }
+
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { slug } = params as Params;
-  const post = await getFileBySlug('projects', slug.join('/'));
+  const { frontmatter } = await getFrontmatter('projects', slug.join('/'));
+
+  // Read and process the MDX file
+  const filePath = `src/contents/projects/${slug.join('/')}.mdx`;
+  const { readFile } = await import('node:fs/promises');
+  const source = await readFile(filePath, 'utf8');
+
+  const mdxSource = await serialize(source, {
+    mdxOptions: {
+      remarkPlugins: [remarkGfm],
+      rehypePlugins: [
+        rehypeSlug,
+        // @ts-ignore - Ignoring type mismatch between different versions of vfile
+        [rehypePrettyCode, {
+          theme: {
+            dark: 'github-dark',
+            light: 'github-light'
+          },
+          keepBackground: true,
+          onVisitLine(node: any) {
+            // Prevent lines from collapsing in `display: grid` mode, and
+            // allow empty lines to be copy/pasted
+            if (node.children.length === 0) {
+              node.children = [{ type: 'text', value: ' ' }];
+            }
+          },
+          onVisitHighlightedLine(node: any) {
+            node.properties.className.push('highlighted');
+          },
+          onVisitHighlightedWord(node: any) {
+            node.properties.className = ['word'];
+          },
+        }],
+        [rehypeAutolinkHeadings, {
+          properties: {
+            className: ['hash-anchor']
+          }
+        }]
+      ],
+    },
+    parseFrontmatter: true,
+  });
 
   return {
-    props: { ...post },
+    props: { 
+      frontmatter,
+      mdxSource,
+    },
   };
 };

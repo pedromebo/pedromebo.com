@@ -1,22 +1,19 @@
 /// <reference path="./.sst/platform/config.d.ts" />
+
 export default $config({
   app(input) {
     return {
       name: "pedromebo-website",
+      removal: input?.stage === "production" ? "retain" : "remove",
       home: "aws",
-      region: "eu-west-1",
-      providers: { aws: "6.77.1" },
     };
   },
   async run() {
-    const site = new sst.aws.Nextjs("MySite", {
-      path: ".",
+    const bucket = new sst.aws.Bucket("MyBucket", {
+      access: "public"
     });
-
-    return {
-      outputs: {
-        SiteUrl: site.url,
-      },
-    };
-  },
+    new sst.aws.Nextjs("pedromebo-website", {
+      link: [bucket]
+    });
+  }
 });

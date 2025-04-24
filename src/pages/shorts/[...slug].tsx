@@ -1,9 +1,16 @@
-import { getMDXComponent } from 'mdx-bundler/client';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import * as React from 'react';
+import { readFileSync } from 'fs';
+import path from 'path';
+import { MDXRemote } from 'next-mdx-remote';
+import { serialize } from 'next-mdx-remote/serialize';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import rehypePrettyCode from 'rehype-pretty-code';
+import rehypeSlug from 'rehype-slug';
+import remarkGfm from 'remark-gfm';
 
-import { getFileBySlug, getFileSlugArray } from '@/lib/mdx.server';
+import { getFileSlugArray, getFrontmatter } from '@/lib/mdx.server';
 import useScrollSpy from '@/hooks/useScrollspy';
 
 import MDXComponents from '@/components/content/MDXComponents';
@@ -17,9 +24,12 @@ import Seo from '@/components/Seo';
 
 import { LibraryType } from '@/types/frontmatters';
 
-export default function SingleShortPage({ code, frontmatter }: LibraryType) {
-  const Component = React.useMemo(() => getMDXComponent(code), [code]);
+type SingleShortPageProps = {
+  mdxSource: any;
+  frontmatter: LibraryType['frontmatter'];
+};
 
+export default function SingleShortPage({ mdxSource, frontmatter }: SingleShortPageProps) {
   //#region  //*=========== Scrollspy ===========
   const activeSection = useScrollSpy();
 
@@ -75,14 +85,7 @@ export default function SingleShortPage({ code, frontmatter }: LibraryType) {
 
             <section className='lg:grid lg:grid-cols-[auto,250px] lg:gap-8'>
               <article className='mdx prose mx-auto mt-4 w-full transition-colors dark:prose-invert'>
-                <Component
-                  components={
-                    {
-                      ...MDXComponents,
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    } as any
-                  }
-                />
+                <MDXRemote {...mdxSource} components={MDXComponents} />
               </article>
 
               <aside className='py-4'>
@@ -124,9 +127,51 @@ interface Params extends ParsedUrlQuery {
 }
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { slug } = params as Params;
-  const post = await getFileBySlug('library', slug.join('/'));
+  const { frontmatter } = await getFrontmatter('library', slug.join('/'));
+
+  // Read and process the MDX file
+  const filePath = path.join(process.cwd(), 'src', 'contents', 'library', `${slug.join('/')}.mdx`);
+  const mdxContent = readFileSync(filePath, 'utf8');
+
+  const mdxSource = await serialize(mdxContent, {
+    mdxOptions: {
+      remarkPlugins: [remarkGfm],
+      rehypePlugins: [
+        rehypeSlug,
+        [rehypePrettyCode as any, {
+          theme: {
+            dark: 'github-dark',
+            light: 'github-light'
+          },
+          keepBackground: true,
+          onVisitLine(node: any) {
+            // Prevent lines from collapsing in `display: grid` mode, and
+            // allow empty lines to be copy/pasted
+            if (node.children.length === 0) {
+              node.children = [{ type: 'text', value: ' ' }];
+            }
+          },
+          onVisitHighlightedLine(node: any) {
+            node.properties.className.push('highlighted');
+          },
+          onVisitHighlightedWord(node: any) {
+            node.properties.className = ['word'];
+          },
+        }],
+        [rehypeAutolinkHeadings, {
+          properties: {
+            className: ['hash-anchor']
+          }
+        }]
+      ],
+    },
+    parseFrontmatter: true,
+  });
 
   return {
-    props: { ...post },
+    props: { 
+      frontmatter,
+      mdxSource,
+    },
   };
 };

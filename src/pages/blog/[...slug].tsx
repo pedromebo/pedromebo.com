@@ -1,18 +1,21 @@
 import clsx from 'clsx';
 import { format } from 'date-fns';
-import { getMDXComponent } from 'mdx-bundler/client';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import * as React from 'react';
-import { HiOutlineClock, HiOutlineEye } from 'react-icons/hi';
+import { HiOutlineClock } from 'react-icons/hi';
+import { MDXRemote } from 'next-mdx-remote';
+import { serialize } from 'next-mdx-remote/serialize';
+import { readFileSync } from 'fs';
+import path from 'path';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import rehypePrettyCode from 'rehype-pretty-code';
+import rehypeSlug from 'rehype-slug';
+import remarkGfm from 'remark-gfm';
 
 import { trackEvent } from '@/lib/analytics';
 import { cleanPagePrefix } from '@/lib/helper.client';
-import {
-  getFileBySlug,
-  getFileSlugArray,
-  getRecommendations,
-} from '@/lib/mdx.server';
+import { getFileSlugArray, getRecommendations, getFrontmatter } from '@/lib/mdx.server';
 import useScrollSpy from '@/hooks/useScrollspy';
 
 import Accent from '@/components/Accent';
@@ -29,25 +32,24 @@ import CustomLink from '@/components/links/CustomLink';
 import ShareTweetButton from '@/components/links/ShareTweetButton';
 import Seo from '@/components/Seo';
 
-import { BlogFrontmatter, BlogType } from '@/types/frontmatters';
+import { BlogFrontmatter } from '@/types/frontmatters';
 
 type SingleBlogPageProps = {
   recommendations: BlogFrontmatter[];
-} & BlogType;
+  frontmatter: BlogFrontmatter;
+  mdxSource: any;
+};
 
 export default function SingleBlogPage({
-  code,
   frontmatter,
   recommendations,
+  mdxSource,
 }: SingleBlogPageProps) {
-  const Component = React.useMemo(() => getMDXComponent(code), [code]);
-
   //#region  //*=========== Link Constants ===========
   const OG_BANNER_LINK = `https://res.cloudinary.com/pedromebo/image/upload/f_auto,g_auto,c_fill,ar_4:5,w_1200/pedromebo/banner/${frontmatter.banner}`;
   //#endregion  //*======== Link Constants ===========
 
   //#region  //*=========== Blog Language ===========
-  // TODO: add implementation, should be bugged if folder/es-slug.mdx
   const translated_slug = frontmatter.translated_slug;
   const cleanSlug = cleanPagePrefix(translated_slug ?? frontmatter.slug);
   const isSpanish = cleanPagePrefix(frontmatter.slug) === frontmatter.slug;
@@ -134,14 +136,7 @@ export default function SingleBlogPage({
 
             <section className='lg:grid lg:grid-cols-[auto,250px] lg:gap-8'>
               <article className='mdx prose mx-auto mt-4 w-full transition-colors dark:prose-invert'>
-                <Component
-                  components={
-                    {
-                      ...MDXComponents,
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    } as any
-                  }
-                />
+                <MDXRemote {...mdxSource} components={MDXComponents} />
               </article>
 
               <aside className='py-4'>
@@ -192,6 +187,7 @@ export default function SingleBlogPage({
     </Layout>
   );
 }
+
 export const getStaticPaths: GetStaticPaths = async () => {
   const posts = await getFileSlugArray('blog');
 
@@ -208,13 +204,56 @@ export const getStaticPaths: GetStaticPaths = async () => {
 interface Params extends ParsedUrlQuery {
   slug: string[];
 }
+
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { slug } = params as Params;
-
-  const post = await getFileBySlug('blog', slug.join('/'));
+  const { frontmatter } = await getFrontmatter('blog', slug.join('/'));
   const recommendations = await getRecommendations(slug.join('/'));
 
+  // Read and process the MDX file
+  const filePath = path.join(process.cwd(), 'src', 'contents', 'blog', `${slug.join('/')}.mdx`);
+  const mdxContent = readFileSync(filePath, 'utf8');
+
+  const mdxSource = await serialize(mdxContent, {
+    mdxOptions: {
+      remarkPlugins: [remarkGfm],
+      rehypePlugins: [
+        rehypeSlug,
+        [rehypePrettyCode as any, {
+          theme: {
+            dark: 'github-dark',
+            light: 'github-light'
+          },
+          keepBackground: true,
+          onVisitLine(node: any) {
+            // Prevent lines from collapsing in `display: grid` mode, and
+            // allow empty lines to be copy/pasted
+            if (node.children.length === 0) {
+              node.children = [{ type: 'text', value: ' ' }];
+            }
+          },
+          onVisitHighlightedLine(node: any) {
+            node.properties.className.push('highlighted');
+          },
+          onVisitHighlightedWord(node: any) {
+            node.properties.className = ['word'];
+          },
+        }],
+        [rehypeAutolinkHeadings, {
+          properties: {
+            className: ['hash-anchor']
+          }
+        }]
+      ],
+    },
+    parseFrontmatter: true,
+  });
+
   return {
-    props: { ...post, recommendations },
+    props: {
+      frontmatter,
+      recommendations,
+      mdxSource,
+    },
   };
 };

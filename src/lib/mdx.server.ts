@@ -1,12 +1,7 @@
 import { promises, readFileSync } from 'fs';
 import matter from 'gray-matter';
-import { bundleMDX } from 'mdx-bundler';
 import { join } from 'path';
 import readingTime from 'reading-time';
-import rehypeAutolinkHeadings from 'rehype-autolink-headings';
-import rehypePrettyCode from 'rehype-pretty-code';
-import rehypeSlug from 'rehype-slug';
-import remarkGfm from 'remark-gfm';
 
 import { sortByDate } from '@/lib/mdx.client';
 
@@ -28,7 +23,7 @@ export async function getFileSlugArray(type: ContentType) {
   );
 }
 
-export async function getFileBySlug(type: ContentType, slug: string) {
+export async function getFrontmatter(type: ContentType, slug: string) {
   const source = slug
     ? readFileSync(
         join(process.cwd(), 'src', 'contents', type, `${slug}.mdx`),
@@ -39,39 +34,16 @@ export async function getFileBySlug(type: ContentType, slug: string) {
         'utf8'
       );
 
-  const { code, frontmatter } = await bundleMDX({
-    source,
-    mdxOptions(options) {
-      options.remarkPlugins = [...(options?.remarkPlugins ?? []), remarkGfm];
-      options.rehypePlugins = [
-        ...(options?.rehypePlugins ?? []),
-        rehypeSlug,
-        () =>
-          rehypePrettyCode({
-            theme: 'css-variables',
-          }),
-        [
-          rehypeAutolinkHeadings,
-          {
-            properties: {
-              className: ['hash-anchor'],
-            },
-          },
-        ],
-      ];
-
-      return options;
-    },
-  });
+  const { data: frontmatter, content } = matter(source);
 
   return {
-    code,
     frontmatter: {
-      wordCount: source.split(/\s+/gu).length,
-      readingTime: readingTime(source),
+      wordCount: content.split(/\s+/g).length,
+      readingTime: readingTime(content),
       slug: slug || null,
       ...frontmatter,
     },
+    content
   };
 }
 
