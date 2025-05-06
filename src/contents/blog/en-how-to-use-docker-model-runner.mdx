@@ -1,0 +1,78 @@
+---
+title: 'How to use Docker Model Runner: Running LLM locally with Docker and LangChain'
+description: "Learn how to run LLM models locally using Docker Model Runner and LangChain. A beginner-friendly guide to getting started with local LLMs in under 10 minutes, without complex setups or expensive hardware."
+publishedAt: '2025-05-07'
+banner: 'docker_model_runner'
+tags: 'blogs'
+translated_slug: como-usar-docker-model-runner
+---
+
+If you've ever felt overwhelmed by how complicated it seems to install and run models (LLM) on your computer, you're not alone. Many developers, students, or AI enthusiasts face the same difficulties: complex technical configurations, failing dependencies, and the need for expensive hardware. All of this makes running a model on your own computer seem like an impossible mission.
+
+What if you could have a language model (LLM) responding from your terminal in less than 10 minutes, without weird configurations or complex code? You could create prototypes, train your skills, or develop an AI-based app without depending on the cloud or paying for external servers. All running on your own machine, even if you don't have a top-of-the-line GPU.
+
+## What is Docker Model Runner?
+Docker has launched a new feature called Model Runner, available since Docker Desktop 4.40, that completely simplifies the process of running LLM models locally. You no longer need to know how to install Python, configure virtual environments, or manually download models. Docker takes care of everything.
+
+You can easily install hundreds of models from Docker Hub. You can interact with them from the terminal, as if you were talking to ChatGPT, but without your conversation leaving your device, thus enhancing privacy.
+
+## How does it work?
+
+1. **Install Docker Desktop** from [docker.com](https://www.docker.com/products/docker-desktop/).
+2. Activate Model Runner from settings: go to *Settings > Features in development* and check the corresponding box. Also enable "*Enable host-side TCP support*" with port 12434.
+3. Restart Docker.
+
+That's all for setting up the environment. Now, open a terminal and type:
+
+```bash
+docker model pull ai/llama3.2:3B-Q4_K_M
+```
+You now have the model downloaded.
+
+To interact with it:
+
+```bash
+docker model run ai/llama3.2:3B-Q4_K_M "What is Docker?"
+```
+
+Prefer a more fluid conversation? Just run:
+```bash
+docker model run ai/llama3.2:3B-Q4_K_M
+```
+
+## How to use Docker Model Runner with LangChain?
+
+LangChain allows us to use OpenAI Chat by modifying the base_url to interact with our local model and use any LLM locally. To do this, we must ensure that the model is running in docker and we can execute the following code:
+
+```python
+!pip install langchain_openai
+
+from langchain_openai import ChatOpenAI
+import pprint
+
+llm = ChatOpenAI(
+    model="ai/llama3.2:3B-Q4_K_M",
+    base_url="http://127.0.0.1:12434/engines/v1",
+    api_key="ignored"
+)
+```
+Now you have the model ready to use. We can now make calls to this LLM:
+
+```python
+from langchain_core.messages import AIMessage
+
+messages = [
+    (
+        "system",
+        "You are a helpful assistant.",
+    ),
+    ("human", "Generate a professional AI LLM project structure"),
+]
+ai_msg = llm.invoke(messages)
+pprint.pp(ai_msg.content)
+```
+
+## What do you get with all this?
+The ability to test and experiment with LLM without needing to depend on external servers, pay for APIs, or study neural network architecture. In minutes, and without deep technical knowledge.
+
+This is an easy and quick way if you want to use LLM locally for testing or have greater privacy without having to pay for it. Additionally, this brings the use of LLMs closer to more devices and beginner users.
