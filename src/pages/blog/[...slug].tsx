@@ -179,7 +179,7 @@ export default function SingleBlogPage({
             <SubscribeCard className='mt-12' title='¿Disfrutando del post?' />
 
             <div className='mt-8 flex flex-col items-start gap-4 md:flex-row md:justify-between'>
-              <CustomLink href='/projects'>← Back to blogs</CustomLink>
+              <CustomLink href='/blog'>← Back to blogs</CustomLink>
             </div>
           </div>
         </section>
