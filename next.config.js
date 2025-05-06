@@ -57,6 +57,7 @@ const withMDX = createMDX({
           light: 'github-light'
         },
         keepBackground: true,
+        defaultLang: 'python',
         onVisitLine(node) {
           // Prevent lines from collapsing in `display: grid` mode, and
           // allow empty lines to be copy/pasted
@@ -69,7 +70,7 @@ const withMDX = createMDX({
         },
         onVisitHighlightedWord(node) {
           node.properties.className = ['word'];
-        },
+        }
       }],
       [rehypeAutolinkHeadings, {
         properties: {

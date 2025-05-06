@@ -221,27 +221,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       remarkPlugins: [remarkGfm],
       rehypePlugins: [
         rehypeSlug,
-        // @ts-ignore - Ignoring type mismatch between different versions of vfile
-        [rehypePrettyCode, {
-          theme: {
-            dark: 'github-dark',
-            light: 'github-light'
-          },
-          keepBackground: true,
-          onVisitLine(node: any) {
-            // Prevent lines from collapsing in `display: grid` mode, and
-            // allow empty lines to be copy/pasted
-            if (node.children.length === 0) {
-              node.children = [{ type: 'text', value: ' ' }];
-            }
-          },
-          onVisitHighlightedLine(node: any) {
-            node.properties.className.push('highlighted');
-          },
-          onVisitHighlightedWord(node: any) {
-            node.properties.className = ['word'];
-          },
-        }],
+        [rehypePrettyCode as any],
         [rehypeAutolinkHeadings, {
           properties: {
             className: ['hash-anchor']
