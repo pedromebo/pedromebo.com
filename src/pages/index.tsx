@@ -346,14 +346,15 @@ export async function getStaticProps() {
   const featuredPosts = getFeatured(blogs, [
     'como-usar-docker-model-runner',
     'como-funciona-deepseek-r1',
-    'llm-prompt-caching'
+    'uv-gestor-paquetes-python'
   ]);
   const featuredProjects = getFeatured(projects, [
     'informe-datos-marbella-vice',
-    'oona-the-druids-path'
+    'oona-the-druids-path',
+    'cpp-opengl-engine'
   ]);
   const introPosts = getFeatured(blogs, [
-    'como-usar-docker-model-runner',
+    'uv-gestor-paquetes-python',
     'como-funciona-deepseek-r1'
   ]);
   const featuredShorts = getFeatured(shorts, [
