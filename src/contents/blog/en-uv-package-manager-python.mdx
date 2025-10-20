@@ -1,0 +1,167 @@
+---
+title: 'UV - Python Package Manager: how to use it, comparisons, and common issues'
+description: 'Learn how to use UV, the Python package manager poised to replace Pip; its advantages, comparisons with other systems, and common issues'
+publishedAt: '2025-10-21'
+banner: 'uv_package_manager_python_banner'
+tags: 'blogs'
+translated_slug: 'uv-gestor-paquetes-python'
+---
+
+> ## Introduction
+If you work with Python, you probably know dependency management and virtual environments can be a headache. The slowness of pip install, the verbosity of python -m venv, the need for extra tools like pip-tools to lock dependencies, or the heavy-handedness of Conda... all of this wastes time on something as simple as installing a new package.
+
+What if I told you there’s a tool that does all of that, but is between 10 and 100 times faster? It’s called uv, and it’s becoming the new standard for managing Python packages.
+
+> ## What is UV?
+**UV** is an extremely fast Python installer and package manager, written in **Rust**. It was created by [Astral](https://astral.sh/), the same team behind [Ruff](https://astral.sh/ruff), the linter that already revolutionized the Python ecosystem with its speed.
+
+You can think of `uv` as a Swiss army knife aiming to replace and unify a bunch of tools into one:
+* `pip` (package installer)
+* `venv` / `virtualenv` (environment creator)
+* `pip-tools` (to compile and sync `requirements.txt`)
+* `pipx` (to install global tools)
+* Even `pyenv` (to manage Python versions)
+
+All of this ships as a **single static binary**, making installation trivial and performance outstanding.
+
+---
+
+## Advantages: Why should you use UV?
+
+The short answer is **speed**. But there’s more.
+
+1.  **Extreme Speed:**
+    `uv` is blazing fast. In common benchmarks, `uv` is **10 to 100 times faster** than `pip`. For example, a cold install of JupyterLab can take **2.6 seconds** with `uv`, versus **21.4 seconds** with `pip`. This is because it’s written in Rust, parallelizes downloads and dependency resolution, and uses a very efficient global cache system.
+
+2.  **All-in-One Tool:**
+    Installing and managing 3 or 4 tools is tiring. `uv` gives you a single command-line interface (CLI) for the entire lifecycle of your environment:
+    * `uv venv`: Create virtual environments (80x faster than `python -m venv`).
+    * `uv pip install`: Install packages (replaces `pip`).
+    * `uv pip compile` / `uv pip sync`: Lock and sync dependencies (replaces `pip-tools`).
+    * `uv python install`: Download and install Python versions (replaces `pyenv`).
+    * `uv tool install`: Install global tools in isolation (replaces `pipx`).
+
+3.  **Disk Efficiency (Global Cache):**
+    Unlike `venv`, where each project duplicates all dependencies (yes, you also have 20 copies of pandas), `uv` uses a global cache. This means a package is only downloaded and built once, then linked across all your projects. If, like me, you have dozens of AI projects, this will save you gigabytes of disk space.
+
+4.  **Modern Dependency Resolution:**
+    `uv` includes a state-of-the-art dependency resolver. It’s faster and, more importantly, provides **much clearer error messages** when you have version conflicts, helping you understand which package requires which version.
+
+5.  **Drop-in Compatibility:**
+    `uv` is designed as a direct replacement. You can start using it *today* in your existing projects. It understands `requirements.txt` and `pyproject.toml` perfectly. You don’t need to migrate anything—just change the command:
+    * `pip install -r requirements.txt` becomes `uv pip install -r requirements.txt`.
+
+---
+
+## Cons (Disadvantages)
+
+Not everything is perfect—though `uv` comes close.
+* **It’s new:** While stable and used in production by large companies, it’s a young project. `pip` and `Conda` have been around for years.
+* **Doesn’t manage non-Python packages:** This is the big difference with `Conda`. `uv` is for Python. It won’t install `CUDA`, `cuDNN`, or `ffmpeg`. If your project relies heavily on system binaries, `Conda` remains a very solid option.
+* **Legacy package compatibility:** It can struggle with very old package formats like `.egg`, though this is increasingly rare.
+
+---
+
+## Comparison with other systems
+
+| Feature | `uv` | `pip` + `venv` + `pip-tools` | `Poetry` / `PDM` | `Conda` |
+| :--- | :---: | :---: | :---: | :---: |
+| **Speed** | ⚡️⚡️⚡️ (Extreme) | 🐢 (Slow) | ⚡️ (Fast) | 🐢 (Slow) |
+| **All-in-one** | ✅ | ❌ (Multiple tools) | ✅ | ✅ |
+| **Python management** | ✅ (Replaces `pyenv`) | ❌ | ❌ | ✅ |
+| **Non-Python management** | ❌ | ❌ | ❌ | ✅ |
+| **Disk space** | Efficient (Global cache) | Inefficient (Duplicated) | Efficient | Efficient |
+| **Standards** | `pyproject.toml`, `reqs.txt` | `pyproject.toml`, `reqs.txt` | `pyproject.toml` (Own) | `environment.yml` |
+
+**UV vs. Pip:** `uv` wins across the board: speed, UI, environment management, and dependency locking. It’s a direct and superior replacement.
+
+**UV vs. Poetry:** `uv` is significantly faster than `Poetry` and simpler (a single binary). Plus, `uv` also manages Python installation itself, which `Poetry` doesn’t. If you like `Poetry`’s flow (`add`, `run`), `uv` offers an almost identical one (`uv add`, `uv run`).
+
+**UV vs. Conda:** This is the most interesting comparison for Data Science.
+* **Use `Conda`** if you need to manage complex non-Python dependencies (like `CUDA`).
+* **Use `uv`** for everything else.
+* **The hybrid trick:** Many (myself included) are adopting a hybrid approach: use `Conda` or `mamba` only to create the base environment and manage Python + CUDA, then use `uv` *inside* that environment to install all Python packages. You get the best of both worlds.
+
+---
+
+## How to use UV: Quick Start
+
+Getting started is very simple.
+
+### 1. Installation
+
+```bash
+# macOS / Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Windows (PowerShell)
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+
+# Or with pip (if you already have it)
+pip install uv
+```
+
+### 2. Basic usage (like pip + venv)
+
+This is the flow if you use requirements.txt.
+
+```bash
+# 1. Create a virtual environment (creates a .venv folder)
+uv venv
+
+# 2. Activate it (same as always)
+source .venv/bin/activate
+
+# 3. Install packages (you’ll see the speed difference here)
+uv pip install numpy pandas "fastapi[all]"
+
+# 4. Save your dependencies
+uv pip freeze > requirements.txt
+```
+
+### 3. Project workflow (like Poetry)
+
+This is the recommended flow for new projects.
+
+```bash
+# 1. Initialize a project (creates a pyproject.toml)
+uv init
+
+# 2. Add dependencies (they’re added to pyproject.toml and installed)
+uv add requests
+uv add ruff --dev
+
+# 3. Sync your environment (installs everything from pyproject.toml)
+# uv takes care of creating the .venv automatically
+uv sync
+
+# 4. Run a script within the environment
+uv run python my_script.py
+```
+
+---
+
+## Common Issues
+
+1.  **Build Failures:**
+    * **The issue:** `uv` is so fast because it prefers using wheels (precompiled packages). If it doesn’t find one for your system, it will try to build from source (sdist), which can fail if you’re missing build tools or development libraries.
+    * **The error:** You’ll see messages like `failed to build...` or `missing header: Python.h`.
+    * **The fix:** Install your system’s development tools. On Ubuntu/Debian, this is usually enough:
+        ```bash
+        sudo apt install build-essential python3-dev
+        ```
+
+2.  **Using `python` instead of `uv run`:**
+    * **The issue:** In a project managed by `uv` (with `uv init`), if you run `python my_script.py` directly, you might be using the system Python, not the project’s virtual environment (`.venv`).
+    * **The fix:** Get used to `uv run`. This command ensures the correct environment and dependencies defined in your `pyproject.toml` and `uv.lock` are used.
+        ```bash
+        uv run python my_script.py
+        ```
+
+---
+
+## Conclusion
+
+**`uv` is the future of Python package management.** It’s absurdly fast, solves the fragmentation of tools (pip, venv, pip-tools, pyenv), and its use of a global cache is a gift for those of us working on multiple projects.
+
+As a developer, iteration speed is key. Waiting minutes for an environment to be created or a library to install is time wasted. `uv` cuts that wait down to seconds. Unless you have a critical dependency on `Conda`’s non-Python packages, I strongly recommend trying `uv` on your next project. You won’t want to go back.
