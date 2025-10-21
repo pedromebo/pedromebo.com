@@ -2,10 +2,10 @@ import clsx from 'clsx';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import * as React from 'react';
-import { HiLink, HiOutlineEye, HiPlay, HiUser } from 'react-icons/hi';
+import { HiLink, HiPlay, HiUser } from 'react-icons/hi';
 import { SiGithub } from 'react-icons/si';
-import { MDXRemote } from 'next-mdx-remote';
-import { serialize } from 'next-mdx-remote/serialize';
+import { MDXClient } from 'next-mdx-remote-client';
+import { serialize } from 'next-mdx-remote-client/serialize';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypePrettyCode from 'rehype-pretty-code';
 import rehypeSlug from 'rehype-slug';
@@ -164,9 +164,9 @@ export default function SingleProjectPage({
 
             <hr className='mt-4 dark:border-gray-600' />
 
-            <section className='lg:grid lg:grid-cols-[auto,250px] lg:gap-8'>
+            <section className='lg:grid lg:grid-cols-[auto_250px] lg:gap-8'>
               <article className='mdx projects prose mx-auto w-full transition-colors dark:prose-invert'>
-                <MDXRemote {...mdxSource} components={MDXComponents} />
+                <MDXClient {...mdxSource} components={MDXComponents} />
               </article>
 
               <aside className='py-4'>
@@ -216,20 +216,23 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { readFile } = await import('node:fs/promises');
   const source = await readFile(filePath, 'utf8');
 
-  const mdxSource = await serialize(source, {
-    mdxOptions: {
-      remarkPlugins: [remarkGfm],
-      rehypePlugins: [
-        rehypeSlug,
-        [rehypePrettyCode as any],
-        [rehypeAutolinkHeadings, {
-          properties: {
-            className: ['hash-anchor']
-          }
-        }]
-      ],
-    },
-    parseFrontmatter: true,
+  const mdxSource = await serialize({
+    source: source,
+    options: {
+      mdxOptions: {
+        remarkPlugins: [remarkGfm],
+        rehypePlugins: [
+          rehypeSlug,
+          [rehypePrettyCode as any],
+          [rehypeAutolinkHeadings, {
+            properties: {
+              className: ['hash-anchor']
+            }
+          }]
+        ],
+      },
+      parseFrontmatter: true,
+    }
   });
 
   return {

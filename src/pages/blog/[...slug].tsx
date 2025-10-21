@@ -4,8 +4,8 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import * as React from 'react';
 import { HiOutlineClock } from 'react-icons/hi';
-import { MDXRemote } from 'next-mdx-remote';
-import { serialize } from 'next-mdx-remote/serialize';
+import { MDXClient } from 'next-mdx-remote-client';
+import { serialize } from 'next-mdx-remote-client/serialize';
 import { readFileSync } from 'fs';
 import path from 'path';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
@@ -134,9 +134,9 @@ export default function SingleBlogPage({
 
             <hr className='dark:border-gray-600' />
 
-            <section className='lg:grid lg:grid-cols-[auto,250px] lg:gap-8'>
+            <section className='lg:grid lg:grid-cols-[auto_250px] lg:gap-8'>
               <article className='mdx prose mx-auto mt-4 w-full transition-colors dark:prose-invert'>
-                <MDXRemote {...mdxSource} components={MDXComponents} />
+                <MDXClient {...mdxSource} components={MDXComponents} />
               </article>
 
               <aside className='py-4'>
@@ -214,20 +214,23 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const filePath = path.join(process.cwd(), 'src', 'contents', 'blog', `${slug.join('/')}.mdx`);
   const mdxContent = readFileSync(filePath, 'utf8');
 
-  const mdxSource = await serialize(mdxContent, {
-    mdxOptions: {
-      remarkPlugins: [remarkGfm],
-      rehypePlugins: [
-        rehypeSlug,
-        [rehypePrettyCode as any],
-        [rehypeAutolinkHeadings, {
-          properties: {
-            className: ['hash-anchor']
-          }
-        }]
-      ],
-    },
-    parseFrontmatter: true,
+  const mdxSource = await serialize({
+    source: mdxContent,
+    options: {
+      mdxOptions: {
+        remarkPlugins: [remarkGfm],
+        rehypePlugins: [
+          rehypeSlug,
+          [rehypePrettyCode as any],
+          [rehypeAutolinkHeadings, {
+            properties: {
+              className: ['hash-anchor']
+            }
+          }]
+        ],
+      },
+      parseFrontmatter: true,
+    }
   });
 
   return {
