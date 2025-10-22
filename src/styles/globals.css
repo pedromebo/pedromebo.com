@@ -197,3 +197,142 @@
   }
 }
 /* #endregion  /**======== Twitter Embed =========== */
+
+/* #region  /**=========== Note Component =========== */
+.note {
+  border-left: 4px solid;
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin: 1.7142857em 0;
+}
+
+.note__layout {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.note__icon {
+  flex: 0 0 auto;
+  line-height: 1;
+}
+
+.note__emoji {
+  font-size: 40px;
+  line-height: 1;
+  display: block;
+}
+
+.note__body {
+  flex: 1 1 auto;
+  min-width: 0;
+  text-align: center;
+}
+
+.note__title {
+  font-size: 16px;
+  letter-spacing: 0.3px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  text-align: center;
+}
+
+.note__content {
+  font-size: 1.05rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Ensure the very last child element has no bottom margin */
+.note .note__content > *:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* Variants */
+.note.note--neutral {
+  @apply border-gray-400 bg-gray-200 dark:border-gray-500 dark:bg-gray-700/70;
+}
+
+.note.note--neutral .note__title {
+  @apply text-gray-900 dark:text-gray-100;
+}
+
+.note.note--neutral .note__content {
+  @apply text-gray-800 dark:text-gray-200;
+}
+
+.note.note--info {
+  border-left-color: #f39c12;
+  background: color-mix(in oklab, #f39c12 18%, transparent);
+}
+
+html.dark .note.note--info {
+  background: color-mix(in oklab, #f39c12 25%, #1f2937);
+}
+
+.note.note--info .note__title {
+  color: #c87f0a;
+}
+
+html.dark .note.note--info .note__title {
+  color: #f5b041;
+}
+
+.note.note--info .note__content {
+  color: #a66d09;
+}
+
+html.dark .note.note--info .note__content {
+  color: #f8c471;
+}
+
+.note.note--success {
+  border-left-color: #2ecc71;
+  background: color-mix(in oklab, #2ecc71 15%, transparent);
+}
+
+html.dark .note.note--success {
+  background: color-mix(in oklab, #2ecc71 20%, #1f2937);
+}
+
+.note.note--success .note__title {
+  color: #229954;
+}
+
+html.dark .note.note--success .note__title {
+  color: #58d68d;
+}
+
+.note.note--success .note__content {
+  color: #1e8449;
+}
+
+html.dark .note.note--success .note__content {
+  color: #7dcea0;
+}
+
+.note.note--danger {
+  border-left-color: #e74c3c;
+  background: color-mix(in oklab, #e74c3c 15%, transparent);
+}
+
+html.dark .note.note--danger {
+  background: color-mix(in oklab, #e74c3c 20%, #1f2937);
+}
+
+.note.note--danger .note__title {
+  color: #c0392b;
+}
+
+html.dark .note.note--danger .note__title {
+  color: #ec7063;
+}
+
+.note.note--danger .note__content {
+  color: #a93226;
+}
+
+html.dark .note.note--danger .note__content {
+  color: #f1948a;
+}
+/* #endregion  /**======== Note Component =========== */

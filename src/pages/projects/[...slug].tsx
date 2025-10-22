@@ -10,6 +10,8 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypePrettyCode from 'rehype-pretty-code';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
 
 import { trackEvent } from '@/lib/analytics';
 import { cleanPagePrefix } from '@/lib/helper.client';
@@ -166,7 +168,7 @@ export default function SingleProjectPage({
 
             <section className='lg:grid lg:grid-cols-[auto_250px] lg:gap-8'>
               <article className='mdx projects prose mx-auto w-full transition-colors dark:prose-invert'>
-                <MDXClient {...mdxSource} components={MDXComponents} />
+                <MDXClient {...mdxSource} components={MDXComponents()} />
               </article>
 
               <aside className='py-4'>
@@ -220,10 +222,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     source: source,
     options: {
       mdxOptions: {
-        remarkPlugins: [remarkGfm],
+        development: false,
+        remarkPlugins: [remarkGfm, remarkMath],
         rehypePlugins: [
           rehypeSlug,
-          [rehypePrettyCode as any],
+          rehypeKatex,
           [rehypeAutolinkHeadings, {
             properties: {
               className: ['hash-anchor']
@@ -232,6 +235,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         ],
       },
       parseFrontmatter: true,
+      scope: {},
     }
   });
 

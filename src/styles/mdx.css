@@ -206,3 +206,98 @@ html.light {
   --shiki-token-punctuation: #24292e;
   --shiki-token-link: #24292e;
 }
+
+/* #region  /**=========== KaTeX Math =========== */
+/* Improve KaTeX rendering for light and dark modes */
+.katex {
+  font-size: 1.1em;
+}
+
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 1rem 0;
+}
+
+html.dark .katex {
+  color: #e1e4e8;
+}
+
+html.dark .katex .mord,
+html.dark .katex .mop,
+html.dark .katex .mbin,
+html.dark .katex .mrel,
+html.dark .katex .mopen,
+html.dark .katex .mclose,
+html.dark .katex .mpunct,
+html.dark .katex .minner {
+  color: #e1e4e8;
+}
+
+html.dark .katex .mspace {
+  background-color: transparent;
+}
+
+/* Scrollbar for long equations */
+.katex-display::-webkit-scrollbar {
+  height: 6px;
+}
+
+.katex-display::-webkit-scrollbar-track {
+  @apply bg-gray-200 dark:bg-gray-700;
+}
+
+.katex-display::-webkit-scrollbar-thumb {
+  @apply bg-gray-400 dark:bg-gray-500 rounded;
+}
+
+.katex-display::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-500 dark:bg-gray-400;
+}
+/* #endregion  /**======== KaTeX Math =========== */
+
+/* #region  /**=========== Mermaid Diagrams =========== */
+.mermaid,
+.mermaid-container {
+  @apply my-8 flex justify-center overflow-x-auto;
+  position: relative !important;
+  z-index: 0 !important;
+  isolation: isolate !important;
+  transform: translateZ(0) !important;
+  contain: layout style paint !important;
+  backface-visibility: hidden !important;
+}
+
+.mermaid svg,
+.mermaid-container svg {
+  max-width: 100%;
+  height: auto;
+  position: relative !important;
+  z-index: 0 !important;
+  transform: translateZ(0) !important;
+  will-change: auto !important;
+}
+
+/* Dark mode support for Mermaid diagrams */
+html.dark .mermaid svg,
+html.dark .mermaid-container svg {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* Adjust specific elements that don't look good with invert */
+html.dark .mermaid svg .er.relationshipLabel,
+html.dark .mermaid svg .er.entityLabel,
+html.dark .mermaid-container svg .er.relationshipLabel,
+html.dark .mermaid-container svg .er.entityLabel {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* Error styling for mermaid */
+.mermaid-error {
+  @apply rounded-md border border-red-300 bg-red-50 p-4 text-sm text-red-700;
+}
+
+html.dark .mermaid-error {
+  @apply border-red-700 bg-red-900/20 text-red-300;
+}
+/* #endregion  /**======== Mermaid Diagrams =========== */
