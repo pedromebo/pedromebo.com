@@ -7,6 +7,7 @@ import { MDXClient } from 'next-mdx-remote-client';
 import { serialize } from 'next-mdx-remote-client/serialize';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeKatex from 'rehype-katex';
+import rehypePrettyCode from 'rehype-pretty-code';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
@@ -141,6 +142,28 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         development: false,
         remarkPlugins: [remarkGfm, remarkMath],
         rehypePlugins: [
+          [rehypePrettyCode, {
+            theme: 'github-dark-dimmed',
+            onVisitLine(node) {
+              // Prevent lines from collapsing in `display: grid` mode, and
+              // allow empty lines to be copy/pasted
+              if (node.children.length === 0) {
+                node.children = [{ type: 'text', value: ' ' }];
+              }
+            },
+            onVisitHighlightedLine(node) {
+              if (!node.properties.className) {
+                node.properties.className = [];
+              }
+              node.properties.className.push('highlighted');
+            },
+            onVisitHighlightedWord(node, id) {
+              if (!node.properties.className) {
+                node.properties.className = [];
+              }
+              node.properties.className.push('word');
+            }
+          }],
           [rehypeSlug, {
             maintainCase: false,
             removeAccents: true

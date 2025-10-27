@@ -70,12 +70,7 @@ const withMDX = createMDX({
     rehypePlugins: [
       rehypeSlugWithoutAccents,
       [rehypePrettyCode, {
-        theme: {
-          dark: 'github-dark',
-          light: 'github-light'
-        },
-        keepBackground: true,
-        defaultLang: 'python',
+        theme: 'github-dark-dimmed',
         onVisitLine(node) {
           // Prevent lines from collapsing in `display: grid` mode, and
           // allow empty lines to be copy/pasted
@@ -84,10 +79,16 @@ const withMDX = createMDX({
           }
         },
         onVisitHighlightedLine(node) {
+          if (!node.properties.className) {
+            node.properties.className = [];
+          }
           node.properties.className.push('highlighted');
         },
-        onVisitHighlightedWord(node) {
-          node.properties.className = ['word'];
+        onVisitHighlightedWord(node, id) {
+          if (!node.properties.className) {
+            node.properties.className = [];
+          }
+          node.properties.className.push('word');
         }
       }],
       [rehypeAutolinkHeadings, {
