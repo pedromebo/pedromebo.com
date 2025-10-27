@@ -141,7 +141,10 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         development: false,
         remarkPlugins: [remarkGfm, remarkMath],
         rehypePlugins: [
-          rehypeSlug,
+          [rehypeSlug, {
+            maintainCase: false,
+            removeAccents: true
+          }],
           rehypeKatex,
           [rehypeAutolinkHeadings, {
             properties: {

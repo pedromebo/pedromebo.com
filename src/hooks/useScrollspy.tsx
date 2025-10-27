@@ -10,8 +10,9 @@ export default function useScrollSpy() {
 
   const actionSectionScrollSpy = throttle(() => {
     const sections = document.getElementsByClassName('hash-anchor');
-
-    let prevBBox: DOMRect | null = null;
+    
+    // Use a fixed offset from the top of the viewport
+    const OFFSET = 150;
     let currentSectionId = activeSection;
 
     for (let i = 0; i < sections.length; ++i) {
@@ -22,18 +23,15 @@ export default function useScrollSpy() {
       }
 
       const bbox = section.getBoundingClientRect();
-      const prevHeight = prevBBox ? bbox.top - prevBBox.bottom : 0;
-      const offset = Math.max(200, prevHeight / 4);
 
       // GetBoundingClientRect returns values relative to viewport
-      if (bbox.top - offset < 0) {
+      // If section is above the offset line, it's the current section
+      if (bbox.top <= OFFSET) {
         currentSectionId = section.getAttribute('href')?.split('#')[1] ?? null;
-
-        prevBBox = bbox;
         continue;
       }
 
-      // No need to continue loop, if last element has been detected
+      // If we've reached a section below the offset line, stop
       break;
     }
 
