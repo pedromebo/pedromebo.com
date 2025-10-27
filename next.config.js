@@ -1,9 +1,10 @@
 const path = require('path');
 const createMDX = require('@next/mdx');
 const remarkGfm = require('remark-gfm');
-const rehypeSlug = require('rehype-slug');
 const rehypePrettyCode = require('rehype-pretty-code');
 const rehypeAutolinkHeadings = require('rehype-autolink-headings');
+const { slug: githubSlug } = require('github-slugger');
+const { visit } = require('unist-util-visit');
 
 /**
  * @type {import('next').NextConfig}
@@ -19,6 +20,7 @@ const nextConfig = {
     ],
   },
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
+  transpilePackages: ['react-tweet'],
   async redirects() {
     return [
       {
@@ -40,19 +42,35 @@ const nextConfig = {
   },
 };
 
+// Custom rehype plugin to add slugs without accents
+const rehypeSlugWithoutAccents = () => {
+  return (tree) => {
+    visit(tree, 'element', (node) => {
+      if (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(node.tagName)) {
+        const text = node.children
+          .map((child) => {
+            if (child.type === 'text') return child.value;
+            if (child.value) return child.value;
+            return '';
+          })
+          .join('');
+        
+        // Use github-slugger to generate slug without accents
+        node.properties = node.properties || {};
+        node.properties.id = githubSlug(text);
+      }
+    });
+  };
+};
+
 const withMDX = createMDX({
   options: {
     providerImportSource: "@/components/content/MDXComponents",
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
-      rehypeSlug,
+      rehypeSlugWithoutAccents,
       [rehypePrettyCode, {
-        theme: {
-          dark: 'github-dark',
-          light: 'github-light'
-        },
-        keepBackground: true,
-        defaultLang: 'python',
+        theme: 'github-dark-dimmed',
         onVisitLine(node) {
           // Prevent lines from collapsing in `display: grid` mode, and
           // allow empty lines to be copy/pasted
@@ -61,10 +79,16 @@ const withMDX = createMDX({
           }
         },
         onVisitHighlightedLine(node) {
+          if (!node.properties.className) {
+            node.properties.className = [];
+          }
           node.properties.className.push('highlighted');
         },
-        onVisitHighlightedWord(node) {
-          node.properties.className = ['word'];
+        onVisitHighlightedWord(node, id) {
+          if (!node.properties.className) {
+            node.properties.className = [];
+          }
+          node.properties.className.push('word');
         }
       }],
       [rehypeAutolinkHeadings, {

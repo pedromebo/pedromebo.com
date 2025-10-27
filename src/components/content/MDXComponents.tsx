@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import { MDXComponents } from 'mdx/types';
 
 import CloudinaryVideoPlayer from '@/components/CloudinaryVideoPlayer';
+import Note from '@/components/Note';
 import Quiz from '@/components/content/blog/Quiz';
 import GithubCard from '@/components/content/card/GithubCard';
 import { Pre } from '@/components/content/Pre';
@@ -32,6 +33,7 @@ const components: MDXComponents = {
   TweetCard,
   GithubCard,
   Quiz,
+  Note,
 };
 
 export default function useMDXComponents(): MDXComponents {

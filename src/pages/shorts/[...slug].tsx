@@ -3,12 +3,14 @@ import { ParsedUrlQuery } from 'querystring';
 import * as React from 'react';
 import { readFileSync } from 'fs';
 import path from 'path';
-import { MDXRemote } from 'next-mdx-remote';
-import { serialize } from 'next-mdx-remote/serialize';
+import { MDXClient } from 'next-mdx-remote-client';
+import { serialize } from 'next-mdx-remote-client/serialize';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import rehypeKatex from 'rehype-katex';
 import rehypePrettyCode from 'rehype-pretty-code';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
 
 import { getFileSlugArray, getFrontmatter } from '@/lib/mdx.server';
 import useScrollSpy from '@/hooks/useScrollspy';
@@ -83,9 +85,9 @@ export default function SingleShortPage({ mdxSource, frontmatter }: SingleShortP
 
             <hr className='dark:border-gray-600' />
 
-            <section className='lg:grid lg:grid-cols-[auto,250px] lg:gap-8'>
+            <section className='lg:grid lg:grid-cols-[auto_250px] lg:gap-8'>
               <article className='mdx prose mx-auto mt-4 w-full transition-colors dark:prose-invert'>
-                <MDXRemote {...mdxSource} components={MDXComponents} />
+                <MDXClient {...mdxSource} components={MDXComponents()} />
               </article>
 
               <aside className='py-4'>
@@ -133,20 +135,50 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const filePath = path.join(process.cwd(), 'src', 'contents', 'library', `${slug.join('/')}.mdx`);
   const mdxContent = readFileSync(filePath, 'utf8');
 
-  const mdxSource = await serialize(mdxContent, {
-    mdxOptions: {
-      remarkPlugins: [remarkGfm],
-      rehypePlugins: [
-        rehypeSlug,
-        [rehypePrettyCode as any],
-        [rehypeAutolinkHeadings, {
-          properties: {
-            className: ['hash-anchor']
-          }
-        }]
-      ],
-    },
-    parseFrontmatter: true,
+  const mdxSource = await serialize({
+    source: mdxContent,
+    options: {
+      mdxOptions: {
+        development: false,
+        remarkPlugins: [remarkGfm, remarkMath],
+        rehypePlugins: [
+          [rehypePrettyCode, {
+            theme: 'github-dark-dimmed',
+            onVisitLine(node) {
+              // Prevent lines from collapsing in `display: grid` mode, and
+              // allow empty lines to be copy/pasted
+              if (node.children.length === 0) {
+                node.children = [{ type: 'text', value: ' ' }];
+              }
+            },
+            onVisitHighlightedLine(node) {
+              if (!node.properties.className) {
+                node.properties.className = [];
+              }
+              node.properties.className.push('highlighted');
+            },
+            onVisitHighlightedWord(node, id) {
+              if (!node.properties.className) {
+                node.properties.className = [];
+              }
+              node.properties.className.push('word');
+            }
+          }],
+          [rehypeSlug, {
+            maintainCase: false,
+            removeAccents: true
+          }],
+          rehypeKatex,
+          [rehypeAutolinkHeadings, {
+            properties: {
+              className: ['hash-anchor']
+            }
+          }]
+        ],
+      },
+      parseFrontmatter: true,
+      scope: {},
+    }
   });
 
   return {
