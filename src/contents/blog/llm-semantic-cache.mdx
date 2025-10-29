@@ -1,0 +1,190 @@
+---
+title: 'Cómo ahorrar costes y mejorar la latencia en LLMs: Caché semántica con LangChain y Redis'
+description: 'Descubre cómo ahorrar costes usando LLM con caché semántica implementandola con LangChain y Redis, comparativa, pros y contras y errores frecuentes'
+publishedAt: '2025-10-30'
+banner: 'llm_semantic_cache'
+tags: 'blogs'
+---
+
+> ## Introducción
+
+¿Cansado de ver cómo tu factura de API (OpenAI, Anthropic, Google) se dispara cada vez que un usuario hace una pregunta ligeramente diferente? ¿Te molesta la **latencia** de tu aplicación RAG porque estás pidiendo al LLM la misma idea una y otra vez?
+
+En tus proyectos de IA, **cada llamada a la API es dinero y tiempo**.
+
+¿Y si te dijera que puedes **ahorrar** hasta un 90% de esos costes y reducir la latencia drásticamente con una sola línea de configuración?
+
+Se llama Caché Semántica, y vamos a implementarla de forma sencilla con Redis y LangChain.
+
+> ## ¿Qué es la caché semántica?
+
+Una caché semántica no es la típica caché (key, value) donde key debe ser un match exacto. Es mucho más inteligente.
+
+Cuando haces un prompt, la caché primero genera un **embedding** (una representación vectorial) de tu pregunta y busca en su base de datos si ya existe una respuesta para una pregunta **semánticamente similar**.
+
+**Prompt 1**: "¿Qué comidas son conocidas en Madrid?"
+
+**Prompt 2**: "¿Qué se suele comer en la capital de España?"
+
+Una caché normal fallaría por **no ser idéntica**. Una caché semántica entiende que significan lo mismo y devuelve la respuesta cacheada para el Prompt 2, evitando la llamada a la API.
+
+Esto es algo fácil de implementar haciendo uso de los principales frameworks de LLMs como puede ser **LangChain** y pudiendo usar cualquier **base de datos vectorial** para ello.
+
+---
+
+> ### Ventajas (¿Por qué usarlo?)
+
+1.  **Reducción de Costes Brutal:** Si el 50% de las consultas de tus usuarios son conceptualmente similares ("¿cómo está el tiempo en BCN?" vs "¿qué tiempo hace en Barcelona?"), estás pagando dos veces por la misma respuesta. La caché semántica intercepta esto. **Ahorros del 50-90%** son realistas en aplicaciones de producción.
+
+2.  **Latencia Cero (Casi):** Una llamada a `gpt-4` puede tardar de 3 a 10 segundos. Una búsqueda de vectores en un Redis local o alojado tarda **milisegundos**. Para tus usuarios, la diferencia entre una app lenta y una instantánea es la retención.
+
+3.  **Consistencia de Respuesta:** ¿Alguna vez el LLM te ha dado una respuesta perfecta y luego, con un *prompt* similar, alucina o da un formato diferente? La caché semántica asegura que una vez que tienes una "respuesta de oro" para un concepto, esa es la respuesta que sirves. **Controlas la calidad** de las respuestas repetidas.
+
+4.  **Implementación Trivial (con LangChain):** Como veremos luego, esto no es un proyecto de un mes. Es literalmente *una línea* para activar la caché en tu objeto LLM de LangChain.
+
+> ### Contras (Las Desventajas)
+
+Seamos transparentes, no todos los casos de uso son susceptibles de poder usar este tipo de caché. Todo dependerá de si un pequeño cambio debe cambiar tu respuesta (como puede ser algunos RAGs) o si siempre es la misma respuesta como en los casos de preguntas frecuentes en customer support.
+
+* **Coste de Embeddings:** La caché no es 100% gratis. Cada *prompt* de entrada debe ser vectorizado para hacer la búsqueda de similitud. Esto tiene un coste (pequeño, pero no cero) y una latencia (muy baja, pero no cero).
+* **Invalidación de Caché:** Este es el problema clásico de la informática. Si la respuesta "correcta" a una pregunta cambia (ej. "¿Qué ofertas hay disponibles en la tienda?"), tu caché semántica servirá la respuesta antigua (navidad, verano, black friday...) hasta que la invalides manualmente.
+* **Ajuste del Umbral (Threshold):** Tendrás que decidir qué es "suficientemente similar". Un umbral muy bajo no cacheará casi nada; un umbral muy alto podría dar respuestas incorrectas a preguntas que son sutilmente diferentes.
+* **Requisitos de Infraestructura:** Necesitas una instancia de Redis que soporte búsqueda vectorial (como **Redis Stack** o Redis Cloud). No funciona con la versión básica de Redis.
+
+
+> ### Comparación con otros sistemas
+
+¿Cómo se compara esto con la caché básica o con no tener nada?
+
+| Característica | Sin Caché (Default) | Caché Exacta (ej. `InMemoryCache`) | Caché Semántica (Redis) |
+| :--- | :---: | :---: | :---: |
+| **Coste API** | Muy Alto | Medio-Alto | **Muy Bajo** |
+| **Latencia** | Alta | Baja (si hay match exacto) | **Muy Baja** |
+| **Flexibilidad** | N/A | Muy Baja (solo match exacto) | **Alta** (match por significado) |
+| **¿Maneja Tildes/Errores?** | N/A | No | **Sí** |
+| **¿"Hola" vs "Buenas"?** | N/A | Falla (Miss) | **Acierta (Hit)** |
+
+La **Caché Exacta** (como `InMemoryCache` o `RedisCache` simple de LangChain) es mejor que nada, pero falla en cuanto el usuario añade un punto final, un emoji o cambia una palabra. **Sin caché** es quemar dinero en producción.
+
+Ten en cuenta que también puedes usar el **prompt caching** para **ahorrar costes**, puedes ver cómo usarlo en [este post](https://www.pedromebo.com/blog/llm-prompt-caching)
+
+
+> ## Implementación
+
+### 1. Instalación
+Necesitarás las librerías de LangChain, un modelo de embeddings (usaremos el de Gemini) y el cliente de Redis.
+
+Para instalar las dependencias vamos a usar UV. Si quieres saber cómo usarlo, puedes leer [este post sobre UV](https://www.pedromebo.com/blog/uv-gestor-paquetes-python).
+
+```bash
+# Instala las dependencias
+uv pip install langchain langchain-openai redis
+
+# Asegúrate de tener un servidor Redis Stack corriendo
+# La forma más fácil es con Docker:
+docker run -d -p 6379:6379 -p 8001:8001 redis/redis-stack:latest
+```
+
+**Nota: Usamos redis/redis-stack porque incluye el módulo RediSearch necesario para vectores**
+
+
+### 2. Configuración de la caché semántica
+
+```python
+import time
+from langchain.globals import set_llm_cache
+from langchain_redis import RedisSemanticCache
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+
+embeddings_model = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001")
+
+REDIS_URL = "redis://localhost:6379"
+
+semantic_cache = RedisSemanticCache(
+    redis_url=REDIS_URL,
+    embeddings=embeddings_model,
+    distance_threshold=0.01
+)
+
+llm = ChatGoogleGenerativeAI(
+    model="gemini-2.5-flash",
+    temperature=0,
+    max_tokens=500,
+    timeout=None,
+    max_retries=2
+)
+set_llm_cache(semantic_cache)
+```
+
+Ahora vamos a probarlo:
+
+```python
+# Function to test semantic cache
+def test_semantic_cache(prompt):
+
+    start_time = time.time()
+    result = llm.invoke(prompt)
+    end_time = time.time()
+    return result, end_time - start_time
+
+# Original query
+original_prompt = "¿Cómo es la población en la capital de Alemania?"
+result1, time1 = test_semantic_cache(original_prompt)
+print(
+    f"Original query:\nPrompt: {original_prompt}\nResult: {result1}\nTime: {time1:.2f} seconds\n"
+)
+
+# Semantically similar query
+similar_prompt = "¿Cómo es la población en Berlín?"
+result2, time2 = test_semantic_cache(similar_prompt)
+print(
+    f"Similar query:\nPrompt: {similar_prompt}\nResult: {result2}\nTime: {time2:.2f} seconds\n"
+)
+
+print(f"Speed improvement: {time1 / time2:.2f}x faster")
+```
+
+### 3. Resultados
+
+Estos son los resultados:
+
+```md
+Original query:
+Prompt: ¿Cómo es la poblacion en la capital de alemania?
+Result: content='La población de Berlín, la capital de Alemania, es **diversa, dinámica y en constante evolución**...
+Time: 13.93 seconds
+
+Similar query:
+Prompt: ¿Cómo es la poblacion en berlin?
+Result: content='La población de Berlín, la capital de Alemania, es **diversa, dinámica y en constante evolución**...
+Time: 0.31 seconds
+
+Speed improvement: 44.45x faster
+```
+
+Cómo se puede apreciar no sólo es **mucho más rápido** sino que acabamos de **ahorrar más de 4000 tokens** de output + reasoning
+
+> ## Errores Frecuentes
+
+- **El problema:** Me da un error de conexión a Redis (`redis.exceptions.ConnectionError`).
+    - **El error:** `Connection refused` o `Timeout`.
+    - **La solución:** Asegúrate de que tu servidor Redis esté corriendo y accesible en la URL que pasaste (`redis://localhost:6379` por defecto). Si usas Docker, verifica que el puerto `-p 6379:6379` esté mapeado.
+
+- **El problema:** Mi caché no funciona, siempre llama a la API.
+    - **El error:** No hay error, pero la caché siempre falla (siempre *miss*).
+    - **La solución:** Probablemente tu `score_threshold/distance_threshold` es muy estricto . Los embeddings rara vez son 100% idénticos semánticamente. Prueba bajando el umbral a `0.9` o `0.85` para pruebas y ajústalo desde ahí.
+
+- **El problema:** Recibo un error `redis.exceptions.ResponseError: unknown command 'FT.SEARCH'`.
+    - **El error:** El servidor Redis no entiende los comandos de búsqueda vectorial.
+    - **La solución:** **No estás usando Redis Stack.** La caché semántica requiere el módulo RediSearch (que incluye búsqueda vectorial). No funcionará con la imagen estándar `redis:latest` de Docker. Asegúrate de usar `redis/redis-stack:latest`.
+
+> ## Conclusión
+
+**La caché semántica no es un "nice-to-have"; es una necesidad absoluta** para cualquier aplicación de LLM en producción.
+
+Es la diferencia entre una app que es **cara y lenta**, y una que es **barata e instantánea**.
+
+Como desarrollador y como usuario, tu tiempo y los recursos de cómputo son lo más valioso. Dejar que un LLM responda la misma pregunta (formulada de 10 maneras distintas) es un desperdicio de ambos.
+
+**Pruébalo en tu próximo proyecto y empieza a ver los beneficios.**
