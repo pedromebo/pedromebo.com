@@ -49,7 +49,7 @@ export default function SingleBlogPage({
   mdxSource,
 }: SingleBlogPageProps) {
   //#region  //*=========== Link Constants ===========
-  const OG_BANNER_LINK = `https://res.cloudinary.com/pedromebo/image/upload/f_auto,g_auto,c_fill,ar_4:5,w_1200/pedromebo/banner/${frontmatter.banner}`;
+  const OG_BANNER_LINK = `https://res.cloudinary.com/pedromebo/image/upload/f_auto,c_fill,g_center,w_1200,h_630/pedromebo/banner/${frontmatter.banner}`;
   //#endregion  //*======== Link Constants ===========
 
   //#region  //*=========== Blog Language ===========

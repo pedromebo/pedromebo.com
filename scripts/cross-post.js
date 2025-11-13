@@ -73,7 +73,7 @@ const hashnode = () => {
 
     parsedContent = parsedContent.replace(
       CLOUDINARY_REGEXP,
-      '![$2](https://res.cloudinary.com/pedromebo/image/upload/c_fit,g_center,w_1200,h_630/$1)'
+      '![$2](https://res.cloudinary.com/pedromebo/image/upload/c_fill,g_center,w_1200,h_630/$1)'
     );
     parsedContent = parsedContent.replace(
       GITHUB_REGEXP,
@@ -101,7 +101,7 @@ const hashnode = () => {
 };
 //#endregion  //*======== Hashnode ===========
 
-devto();
+// devto(); // Function not implemented yet
 hashnode();
 
 //#region  //*=========== Download OG Image ===========
@@ -110,7 +110,7 @@ const getOgImage = () => {
     if (err) reject(err);
 
     const { data: frontmatter } = matter(content);
-    const bannerLink = `https://res.cloudinary.com/pedromebo/image/upload/c_fit,g_center,w_1200,h_630/pedromebo/banner/${frontmatter.banner}`;
+    const bannerLink = `https://res.cloudinary.com/pedromebo/image/upload/c_fill,g_center,w_1200,h_630/pedromebo/banner/${frontmatter.banner}`;
     const ogLink = openGraph({
       siteName: 'pedromebo',
       siteName: 'pedromebo',
