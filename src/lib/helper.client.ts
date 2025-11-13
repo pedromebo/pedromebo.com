@@ -16,7 +16,7 @@ export function openGraph({
   templateTitle,
   description,
   banner,
-  logo = 'https://res.cloudinary.com/pedromebo/image/upload/c_fit,w_1200,h_630,b_white/v1725804553/logo.png',
+  logo = 'https://res.cloudinary.com/pedromebo/image/upload/c_pad,g_center,w_1200,h_630,b_white/v1725804553/logo.png',
   isBlog = false,
   tags,
 }: OpenGraphType): string {
@@ -27,9 +27,9 @@ export function openGraph({
     : undefined;
   const ogDesc = encodeURIComponent(description.trim());
 
-  if (isBlog) {
+  if (banner) {
     const ogTags = tags ? encodeURIComponent(tags.trim()) : undefined;
-    const ogBanner = banner ? banner.trim() : undefined;
+    const ogBanner = banner.trim();
 
     return `${ogBanner}?siteName=${ogSiteName}&description=${ogDesc}&templateTitle=${ogTemplateTitle}${
       ogTags ? `&tags=${ogTags}` : ''

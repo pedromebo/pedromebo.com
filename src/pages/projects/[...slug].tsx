@@ -38,6 +38,10 @@ export default function SingleProjectPage({
   frontmatter,
   mdxSource,
 }: SingleProjectPageProps) {
+  //#region  //*=========== Link Constants ===========
+  const OG_BANNER_LINK = `https://res.cloudinary.com/pedromebo/image/upload/f_auto,c_fill,g_center,w_1200,h_630/pedromebo/${frontmatter.banner}`;
+  //#endregion  //*======== Link Constants ===========
+
   //#region  //*=========== Project Language ===========
   // TODO: add implementation, should be bugged if folder/es-slug.mdx
   const cleanSlug = cleanPagePrefix(frontmatter.slug);
@@ -73,6 +77,7 @@ export default function SingleProjectPage({
         templateTitle={frontmatter.title}
         description={frontmatter.description}
         date={new Date(frontmatter.publishedAt).toISOString()}
+        banner={OG_BANNER_LINK}
       />
 
       <main>
