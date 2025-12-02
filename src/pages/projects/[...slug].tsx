@@ -9,6 +9,7 @@ import { serialize } from 'next-mdx-remote-client/serialize';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypePrettyCode from 'rehype-pretty-code';
 import rehypeSlug from 'rehype-slug';
+import rehypeMermaid from 'rehype-mermaidjs';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
@@ -159,15 +160,15 @@ export default function SingleProjectPage({
                 {frontmatter.category}
               </p>
             )}
-            
+
             {!frontmatter?.spanishOnly && (
-                <CustomLink
-                  href={`/projects/${isSpanish ? 'en-' : ''}${cleanSlug}`}
-                  className='mt-4'
-                >
-                  {isSpanish ? 'Read in English' : 'Leer en Español'}
-                </CustomLink>
-              )}
+              <CustomLink
+                href={`/projects/${isSpanish ? 'en-' : ''}${cleanSlug}`}
+                className='mt-4'
+              >
+                {isSpanish ? 'Read in English' : 'Leer en Español'}
+              </CustomLink>
+            )}
 
             <hr className='mt-4 dark:border-gray-600' />
 
@@ -230,6 +231,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         development: false,
         remarkPlugins: [remarkGfm, remarkMath],
         rehypePlugins: [
+          rehypeMermaid,
           [rehypePrettyCode, {
             theme: 'github-dark-dimmed',
             onVisitLine(node) {
@@ -270,7 +272,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   });
 
   return {
-    props: { 
+    props: {
       frontmatter,
       mdxSource,
     },

@@ -9,6 +9,7 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeKatex from 'rehype-katex';
 import rehypePrettyCode from 'rehype-pretty-code';
 import rehypeSlug from 'rehype-slug';
+import rehypeMermaid from 'rehype-mermaidjs';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 
@@ -142,6 +143,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         development: false,
         remarkPlugins: [remarkGfm, remarkMath],
         rehypePlugins: [
+          rehypeMermaid,
           [rehypePrettyCode, {
             theme: 'github-dark-dimmed',
             onVisitLine(node) {
@@ -182,7 +184,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   });
 
   return {
-    props: { 
+    props: {
       frontmatter,
       mdxSource,
     },
