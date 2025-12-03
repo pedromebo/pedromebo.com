@@ -1,0 +1,140 @@
+---
+title: 'Ruff - The Fastest Python Linter and Formatter: Guide and Configuration'
+description: 'Discover Ruff, the all-in-one tool that replaces Flake8, Black, and isort. Learn how to use it, configure it, and why it is the new standard in Python.'
+publishedAt: '2025-12-04'
+banner: 'ruff_python_linter_banner'
+tags: 'blogs'
+translated_slug: 'ruff-linter-python'
+---
+
+> ## Introduction
+If you've been programming in Python for a while, your development environment surely includes a combination of tools: **Flake8** to check for errors, **Black** to format code, **isort** to sort imports, and perhaps **Pylint** for deeper analysis.
+
+Configuring, maintaining, and running all these tools separately can be tedious and, above all, **slow**. In large projects, linting can take seconds or even minutes, breaking your workflow rhythm.
+
+What if I told you there is a tool capable of replacing almost all of them, offering the same results, but running **between 10 and 100 times faster**? That tool is **Ruff**.
+
+> ## What is Ruff?
+**Ruff** is a code linter and formatter for Python written in **Rust**. It was created by [Astral](https://astral.sh/), the same team that recently launched `uv` (the package manager we discussed [in another article](/blog/en-uv-package-manager-python)).
+
+Ruff is not just "another linter". Its goal is to be a **Swiss Army knife** that unifies the functionality of dozens of popular tools into a single, high-performance static binary.
+
+Ruff is capable of replacing (and emulating almost perfectly):
+* **Flake8** (and dozens of its most popular plugins like `flake8-bugbear`).
+* **Black** (the quintessential code formatter).
+* **isort** (for sorting imports).
+* **pydocstyle** (for docstrings).
+* **pyupgrade** (for modernizing Python syntax).
+* **autoflake** (for removing unused imports).
+
+Major open-source projects like **FastAPI**, **Pandas**, **SciPy**, and **Apache Airflow** have already migrated to Ruff.
+
+---
+
+## Advantages: Why should you use Ruff?
+
+Ruff's adoption has been widespread in the Python community, and these are the main reasons:
+
+1.  **Absurd Speed:**
+    Ruff is incredibly fast. Being written in Rust and designed from scratch for performance, it is between **10 and 100 times faster** than the combination of Flake8 and Black. You can lint and format gigantic codebases in milliseconds. It's so fast that you can run it on-save without noticing any delay.
+
+2.  **All-in-One Tool:**
+    Forget about having a `.flake8` file, another for `isort`, and `black` configuration in `pyproject.toml`. Ruff unifies everything. You have a single command to lint, format, and sort imports, and a single centralized configuration.
+
+3.  **"Drop-in" Compatibility:**
+    Ruff has put a lot of effort into being compatible with the tools it replaces. Its formatter is designed to produce output almost identical to Black's. Its linting rules are faithful reimplementations of Flake8's. You can migrate today and barely notice the difference in the code, only in the speed.
+
+4.  **Auto-fix Capability:**
+    Ruff doesn't just tell you what's wrong; it can fix it for you. With the `--fix` flag, Ruff can remove unused imports, add missing variables to `__all__`, rewrite old syntax (e.g., converting `Set()` to `{}`), and much more, safely and automatically.
+
+5.  **Modern Support:**
+    It supports the latest Python versions (including 3.12 and 3.13) and integrates perfectly with `pyproject.toml` from day one.
+
+---
+
+## Cons (Disadvantages)
+
+Although Ruff is excellent, it's worth mentioning a few points:
+
+*   **Not a deep static analyzer (yet):** Tools like **Pylint** or **MyPy** perform a much deeper analysis of type and data flow. Ruff focuses more on style and local syntactic or logical errors. Therefore, the ideal setup is to use **Ruff + MyPy**.
+*   **Custom Rules:** If you have very obscure Flake8 plugins or custom-made ones in your company, Ruff might not have them implemented yet (although it has over 800 built-in rules).
+
+---
+
+## Comparison with other systems
+
+| Feature | `Ruff` | `Flake8` + `Black` + `isort` | `Pylint` |
+| :--- | :---: | :---: | :---: |
+| **Speed** | ⚡️⚡️⚡️ (Instant) | 🐢 (Slow) | 🐢🐢 (Very Slow) |
+| **Language** | Rust | Python | Python |
+| **Formatting** | ✅ (Included) | ✅ (Requires Black) | ❌ |
+| **Sort Imports** | ✅ (Included) | ✅ (Requires isort) | ❌ |
+| **Configuration** | Single (`pyproject.toml`) | Multiple | Single |
+| **Auto-fix** | ✅ (Very powerful) | ❌ (Limited) | ❌ |
+
+**Ruff vs. Flake8/Black:** There is no competition. Ruff does the same thing, much faster and with less configuration. It is the default recommendation today.
+
+**Ruff vs. Pylint:** They are complementary. Pylint can find complex logical errors that Ruff doesn't look for. However, Pylint is very slow. Many developers use Ruff for immediate feedback and leave Pylint (or MyPy) for CI/CD.
+
+---
+
+## How to use Ruff: Quick Guide
+
+### 1. Installation
+
+You can install Ruff like any other Python package.
+
+```bash
+# With pip
+pip install ruff
+
+# With uv (the perfect combination!)
+uv add --dev ruff
+```
+
+### 2. Basic Usage
+
+Ruff has two main commands you will use constantly: `check` (for linting) and `format` (for formatting).
+
+```bash
+# 1. Check for errors (Linting)
+ruff check .
+
+# 2. Fix errors automatically (Magic!)
+ruff check --fix .
+
+# 3. Format code (Black replacement)
+ruff format .
+```
+
+---
+
+## Recommended Configuration
+
+Ruff works very well "out of the box", but you can customize it in your `pyproject.toml`. Here is a recommended initial configuration:
+
+```toml
+[tool.ruff]
+# Line length (same as Black)
+line-length = 88
+
+[tool.ruff.lint]
+# Enable rules:
+# E: pycodestyle errors
+# F: Pyflakes
+# I: isort (sort imports)
+# B: flake8-bugbear (common bugs)
+# UP: pyupgrade (modernize syntax)
+select = ["E", "F", "I", "B", "UP"]
+
+# Ignore specific rules if necessary
+ignore = []
+```
+
+---
+
+## Conclusion
+
+**Ruff has changed the game.** The speed improvement is so drastic that it changes the way you interact with your code. You no longer have to wait to see if the CI fails; you have instant feedback while you write.
+
+If you are starting a new project, using Ruff is an obvious decision. If you have an existing project, migration is simple and the benefits are immediate. Simplify your development environment, eliminate dependencies, and save time with Ruff.
