@@ -31,30 +31,37 @@ export default function CloudinaryImg({
   aspect,
   ...rest
 }: CloudinaryImgType) {
-  const urlBlurred = buildUrl(publicId, {
-    cloud: {
-      cloudName: 'pedromebo',
-    },
-    transformations: {
-      effect: {
-        name: 'blur:200',
-      },
-      quality: 1,
-      rawTransformation: aspect
-        ? `c_fill,ar_${aspect.width}:${aspect.height},w_${width}`
-        : undefined,
-    },
-  });
-  const url = buildUrl(publicId, {
-    cloud: {
-      cloudName: 'pedromebo',
-    },
-    transformations: {
-      rawTransformation: aspect
-        ? `c_fill,ar_${aspect.width}:${aspect.height},w_${width}`
-        : undefined,
-    },
-  });
+  const isDirectUrl = publicId.startsWith('/') || publicId.startsWith('http');
+
+  const urlBlurred = isDirectUrl
+    ? publicId
+    : buildUrl(publicId, {
+        cloud: {
+          cloudName: 'pedromebo',
+        },
+        transformations: {
+          effect: {
+            name: 'blur:200',
+          },
+          quality: 1,
+          rawTransformation: aspect
+            ? `c_fill,ar_${aspect.width}:${aspect.height},w_${width}`
+            : undefined,
+        },
+      });
+
+  const url = isDirectUrl
+    ? publicId
+    : buildUrl(publicId, {
+        cloud: {
+          cloudName: 'pedromebo',
+        },
+        transformations: {
+          rawTransformation: aspect
+            ? `c_fill,ar_${aspect.width}:${aspect.height},w_${width}`
+            : undefined,
+        },
+      });
 
   const aspectRatio = aspect ? aspect.height / aspect.width : undefined;
 
@@ -81,7 +88,7 @@ export default function CloudinaryImg({
             ? `${aspectRatio * 100}%`
             : `${(+height / +width) * 100}%`,
         }}
-        className='img-blur'
+        className='img-blur overflow-hidden'
       >
         <style jsx>{`
           .img-blur::before {
@@ -92,21 +99,18 @@ export default function CloudinaryImg({
             z-index: 0;
             background-image: url(${urlBlurred});
             background-position: center center;
-            background-size: 100%;
+            background-size: cover;
           }
         `}</style>
-        <div className='absolute left-0 top-0'>
+        <div className='absolute inset-0 z-[1] h-full w-full'>
           <Image
-            width={
-              resizedToMaxWidth ? Math.min(+width, RESIZE_MAX_WIDTH) : +width
-            }
-            height={
-              resizedToMaxWidth ? (RESIZE_MAX_WIDTH * +height) / +width : +height
-            }
+            fill
+            className='h-full w-full object-cover'
             unoptimized
             src={url}
             alt={alt}
             title={title || alt}
+            sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
           />
         </div>
       </div>

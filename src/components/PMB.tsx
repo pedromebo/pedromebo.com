@@ -82,17 +82,18 @@ export default function PMB(props: React.ComponentPropsWithoutRef<'svg'>) {
           y2='100%'
         >
           <stop
-            className='text-primary-100 dark:text-primary-100'
+            className='text-primary-200 dark:text-primary-200'
+            offset='0%'
             stopColor='currentColor'
           />
           <stop
-            className='text-primary-200 dark:text-primary-200'
+            className='text-primary-300 dark:text-primary-300'
             offset='50%'
             stopColor='currentColor'
           />
           <stop
             className='text-primary-400 dark:text-primary-400'
-            offset='70%'
+            offset='100%'
             stopColor='currentColor'
           />
         </linearGradient>

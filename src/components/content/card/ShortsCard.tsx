@@ -1,7 +1,5 @@
 import clsx from 'clsx';
 import * as React from 'react';
-import { GiTechnoHeart } from 'react-icons/gi';
-import { HiOutlineEye } from 'react-icons/hi';
 
 import Accent from '@/components/Accent';
 import Tag from '@/components/content/Tag';
@@ -22,8 +20,8 @@ export default function ShortsCard({
   return (
     <li
       className={clsx([
-        'ring-vis-0 h-full rounded-md bg-white dark:bg-dark',
-        'border dark:border-gray-600',
+        'ring-vis-0 h-full rounded-md bg-white dark:bg-[#0a0d24]',
+        'border border-[#cbcfe0] dark:border-[#262f6e]',
         'scale-100 hover:scale-[1.04] active:scale-[0.97] motion-safe:transform-gpu',
         'transition duration-100',
         'motion-reduce:hover:scale-100',
@@ -36,11 +34,11 @@ export default function ShortsCard({
         className='block h-full rounded-md focus:outline-none focus-visible:ring focus-visible:ring-primary-300'
       >
         <div className='p-4'>
-          <h4 className='font-semibold tracking-tight text-gray-800 dark:text-gray-100'>
+          <h4 className='font-semibold tracking-tight text-[#111638] dark:text-white'>
             {short.title}
           </h4>
 
-          <div className='mt-2 flex flex-wrap gap-x-1 gap-y-1 text-sm text-black dark:text-gray-100'>
+          <div className='mt-2 flex flex-wrap gap-x-1 gap-y-1 text-sm text-[#111638] dark:text-white'>
             {short.tags.split(',').map((tag) => (
               <Tag
                 tabIndex={-1}
@@ -51,7 +49,7 @@ export default function ShortsCard({
               </Tag>
             ))}
           </div>
-          <p className='mt-4 text-sm text-gray-600 dark:text-gray-300'>
+          <p className='mt-4 text-sm text-[#586094] dark:text-[#b6bddb]'>
             {short.description}
           </p>
         </div>
