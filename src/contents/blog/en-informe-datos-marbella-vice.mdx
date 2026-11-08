@@ -3,10 +3,11 @@ title: 'Marbella Vice Data Report'
 description: 'Analytical summary of the Marbella Vice GTA RP server. General and creator data.'
 publishedAt: '2021-06-23'
 banner: 'marbella-vice-banner'
-tags: 'projects'
+tags: 'data,analytics,twitch,python'
+translated_slug: 'informe-datos-marbella-vice'
 ---
 
-> ## Introduction
+## Introduction
 
 Marbella Vice is a GTA RP server founded by *Ibai Llanos* and *Jacky* (Coolifegame) aimed at content creators. The server was developed by the *MoleCorp* team, bringing all their experience and customization capabilities. The creators were directly invited through a passport system or via applications.
 
@@ -14,348 +15,78 @@ The entry process for creators was not the same for everyone, as they joined at 
 
 This project measures the data from the moment a creator's entry is publicly announced by their community or themselves. This means that some creators might not be included in the lists, and thus their content has not been monitored.
 
-Unlike most Twitch analytics websites, this project had a refresh rate (the frequency at which data is collected) of 1 minute, making it more precise. However, the data is calculated independently and *is not provided directly by Twitch*, so while every effort is made to ensure accuracy, the data may not be exact.
+Unlike most Twitch analytics platforms, this project operated with a 1-minute refresh rate (data collection frequency), providing higher granularity and precision. Nevertheless, these metrics are custom-calculated and *not provided directly by Twitch*, meaning that while they strive to be as close to reality as possible, slight variations may exist.
 
-In this report, you will find both general server information and specific creator data.
+<Note variant="info" emoji="ℹ️" className="my-4 !py-2.5 !px-3.5 text-xs [&_p]:text-xs [&_p]:my-0">
+*Archive note:* Following the shutdown of Plotly Chart Studio, the original interactive embeds are presented via the official visual posts from the analysis thread.
+</Note>
 
-> ## General Data
+<TweetCard tweetId='1408046974725672963' className='my-8' />
+
+## General Data
 
 ### Total Viewers
-An estimated total of **26,949,099 non-unique viewers**
+An estimated total of **26,949,099 non-unique viewers**:
+- **From 04/11 to 05/10:** 15,065,572 viewers.
+- **From 05/11 to 06/21:** 11,883,527 viewers.
 
 ### Total Hours Watched
 A total of:
-#### **113,531,617** **hours** have been watched.
-That is **4,730,484 days**, 
-
-equivalent to **12,960 years**.
+#### **113,531,617 hours.**
+That is **4,730,484 days**, equivalent to **12,960 years**.
 
 ### Total Hours Created
-From **6,921 live streams**, a total of:
-#### **29,557** **hours** have been created.
-That is **1,231 days**,
+Across **6,921 live streams**, a total of:
+#### **29,557 hours.**
+That is **1,231 days**, equivalent to **3.37 years**.
 
-equivalent to **3.37 years**.
+If you planned to watch all of Marbella Vice's broadcasted content at 8 hours a day, it would take you **10 years and 43 days**.
 
-So if you plan to watch all of Marbella Vice and dedicate 8 hours a day, you would finish **in 10 years and 43 days.**
+<TweetCard tweetId='1408046981084221441' className='my-8' />
 
-### Total Concurrent Viewers in GTA V by Day (Only Marbella Vice Creators)
-<iframe
-  style={{
-    aspectRatio: '16/9',
-  }}
-  width='100%'
-  src="//plotly.com/~pedromebo/77.embed?showlink=false"
-/>
+As a curiosity, temporal metrics clearly display how major real-world events (such as *La Velada del Año*) caused a steep decline in hours broadcasted on the server during those dates.
 
-### Hours Streamed in GTA V by Day (Only Marbella Vice Creators)
-<iframe 
-  style={{
-    aspectRatio: '16/9',
-  }}
-  width='100%'
-  src="//plotly.com/~pedromebo/79.embed?showlink=false"
-  frameBorder="0"
-  scrolling="no"
-/>
+## Top Hours Watched on GTA V
 
-As a fun fact, you can see how events like *La Velada del Año* caused a significant drop in hours streamed.
+Each visualization calculates the total volume accumulated per viewer (`viewers × live broadcast duration`) exclusively tracking GTA V broadcasts within the server.
 
-> ## Top Watched Hours in GTA V
+<TweetCard tweetId='1408046985043755016' className='my-8' />
 
-Each rectangle represents a creator. The size is determined by the number of hours watched (viewers * time streamed). Only time spent on GTA V is counted.
+## Most Stream Time
 
-For the rest of the charts, it's recommended to use the visualization tools such as zoom, move, and reset.
+The most consistent creators who logged the highest cumulative broadcast hours on the server across the 71 days of the event.
 
-### Watched Hours in GTA V for Marbella Vice Creators
-<iframe 
-  style={{
-    aspectRatio: '16/9',
-  }}
-  width='100%'
-  src="//plotly.com/~pedromebo/53.embed?showlink=false"
-  frameBorder="0"
-  scrolling="no"
-/>
+<TweetCard tweetId='1408046989426704386' className='my-8' />
 
-### Marbella Vice Creators with the Most Watched Hours
-<iframe 
-  style={{
-    aspectRatio: '16/9',
-  }}
-  width='100%'
-  src="//plotly.com/~pedromebo/48.embed?showlink=false"
-  height="1200"
-  frameBorder="0"
-  scrolling="no"
-/>
+## Top Average Viewers
 
-<iframe 
-  style={{
-    aspectRatio: '16/9',
-  }}
-  width='100%'
-  src="//plotly.com/~pedromebo/50.embed?showlink=false"
-  height="1200"
-  frameBorder="0"
-  scrolling="no"
-/>
+Channels with the highest average concurrent audience retention throughout their Marbella Vice streams.
 
-<iframe 
-  style={{
-    aspectRatio: '16/9',
-  }}
-  width='100%'
-  src="//plotly.com/~pedromebo/46.embed?showlink=false"
-  height="1200"
-  frameBorder="0"
-  scrolling="no"
-/>
+<TweetCard tweetId='1408046993558093828' className='my-8' />
 
-<iframe 
-  style={{
-    aspectRatio: '16/9',
-  }}
-  width='100%'
-  src="//plotly.com/~pedromebo/84.embed?showlink=false"
-  height="1200"
-  frameBorder="0"
-  scrolling="no"
-/>
+## Viewership Growth
 
-### Top Average Viewers
-<iframe 
-  style={{
-    aspectRatio: '16/9',
-  }}
-  width='100%'
-  src="//plotly.com/~pedromebo/6.embed?showlink=false"
-  height="1200"
-  frameBorder="0"
-  scrolling="no"
-/>
+Channels with the highest percentage growth in accumulated video views throughout the series.
 
-<iframe 
-  style={{
-    aspectRatio: '16/9',
-  }}
-  width='100%'
-  src="//plotly.com/~pedromebo/9.embed?showlink=false"
-  height="1200"
-  frameBorder="0"
-  scrolling="no"
-/>
+<TweetCard tweetId='1408046997995724802' className='my-8' />
 
-<iframe 
-  style={{
-    aspectRatio: '16/9',
-  }}
-  width='100%'
-  src="//plotly.com/~pedromebo/11.embed?showlink=false"
-  height="1200"
-  frameBorder="0"
-  scrolling="no"
-/>
+## Follower Growth
 
-<iframe 
-  style={{
-    aspectRatio: '16/9',
-  }}
-  width='100%'
-  src="//plotly.com/~pedromebo/96.embed?showlink=false"
-  height="1200"
-  frameBorder="0"
-  scrolling="no"
-/>
+Channels with the highest rate of follower community growth during their participation on the server.
 
-### Top Peak Viewers
-<iframe 
-  style={{
-    aspectRatio: '16/9',
-  }}
-  width='100%'
-  src="//plotly.com/~pedromebo/24.embed?showlink=false"
-  height="1200"
-  frameBorder="0"
-  scrolling="no"
-/>
+<TweetCard tweetId='1408047001812492291' className='my-8' />
 
-<iframe 
-  style={{
-    aspectRatio: '16/9',
-  }}
-  width='100%'
-  src="//plotly.com/~pedromebo/27.embed?showlink=false"
-  height="1200"
-  frameBorder="0"
-  scrolling="no"
-/>
+## Media Coverage & Portfolio Case Study
 
-<iframe 
-  style={{
-    aspectRatio: '16/9',
-  }}
-  width='100%'
-  src="//plotly.com/~pedromebo/29.embed?showlink=false"
-  height="1200"
-  frameBorder="0"
-  scrolling="no"
-/>
+The data from this report had significant media reach and was featured across gaming press and marketing agencies:
+- [Final Marbella Vice Summary on Movistar eSports](https://esports.as.com/bonus/influencers/marbella-vice/Resumen-Marbella-Vice-entretenimiento-espectadores_0_1477652222.html)
+- [One Month of Marbella Vice on Movistar eSports](https://esports.as.com/bonus/influencers/marbella-vice/mes-Marbella-Vice-cifras_0_1464753511.html)
+- [Data Analytics Project Case Study in Portfolio](/projects/en-informe-datos-marbella-vice)
 
-<iframe 
-  style={{
-    aspectRatio: '16/9',
-  }}
-  width='100%'
-  src="//plotly.com/~pedromebo/101.embed?showlink=false"
-  height="1200"
-  frameBorder="0"
-  scrolling="no"
-/>
+## Future
 
-### Longest Streaming Time
-<iframe 
-  style={{
-    aspectRatio: '16/9',
-  }}
-  width='100%'
-  src="//plotly.com/~pedromebo/18.embed?showlink=false"
-  height="1200"
-  frameBorder="0"
-  scrolling="no"
-/>
+Marbella Vice was a historic milestone in Spanish-language livestreaming. The primary challenge that followed for many creators was long-term audience retention across broader content formats.
 
-<iframe 
-  style={{
-    aspectRatio: '16/9',
-  }}
-  width='100%'
-  src="//plotly.com/~pedromebo/20.embed?showlink=false"
-  height="1200"
-  frameBorder="0"
-  scrolling="no"
-/>
+If you have read this far, thank you very much! It was an incredible pleasure sharing my passion for data analytics with the community and collaborating with such talented creators and gaming media outlets.
 
-<iframe 
-  style={{
-    aspectRatio: '16/9',
-  }}
-  width='100%'
-  src="//plotly.com/~pedromebo/22.embed?showlink=false"
-  height="1200"
-  frameBorder="0"
-  scrolling="no"
-/>
-
-<iframe 
-  style={{
-    aspectRatio: '16/9',
-  }}
-  width='100%'
-  src="//plotly.com/~pedromebo/106.embed?showlink=false"
-  height="1200"
-  frameBorder="0"
-  scrolling="no"
-/>
-
-### Viewership Growth
-<iframe 
-  style={{
-    aspectRatio: '16/9',
-  }}
-  width='100%'
-  src="//plotly.com/~pedromebo/31.embed?showlink=false"
-  height="1200"
-  frameBorder="0"
-  scrolling="no"
-/>
-
-<iframe 
-  style={{
-    aspectRatio: '16/9',
-  }}
-  width='100%'
-  src="//plotly.com/~pedromebo/34.embed?showlink=false"
-  height="1200"
-  frameBorder="0"
-  scrolling="no"
-/>
-
-<iframe 
-  style={{
-    aspectRatio: '16/9',
-  }}
-  width='100%'
-  src="//plotly.com/~pedromebo/36.embed?showlink=false"
-  height="1200"
-  frameBorder="0"
-  scrolling="no"
-/>
-
-<iframe 
-  style={{
-    aspectRatio: '16/9',
-  }}
-  width='100%'
-  src="//plotly.com/~pedromebo/111.embed?showlink=false"
-  height="1200"
-  frameBorder="0"
-  scrolling="no"
-/>
-
-### Follower Growth
-<iframe 
-  style={{
-    aspectRatio: '16/9',
-  }}
-  width='100%'
-  src="//plotly.com/~pedromebo/39.embed?showlink=false"
-  height="1200"
-  frameBorder="0"
-  scrolling="no"
-/>
-
-<iframe 
-  style={{
-    aspectRatio: '16/9',
-  }}
-  width='100%'
-  src="//plotly.com/~pedromebo/42.embed?showlink=false"
-  height="1200"
-  frameBorder="0"
-  scrolling="no"
-/>
-
-<iframe 
-  style={{
-    aspectRatio: '16/9',
-  }}
-  width='100%'
-  src="//plotly
-
-.com/~pedromebo/44.embed?showlink=false"
-  height="1200"
-  frameBorder="0"
-  scrolling="no"
-/>
-
-<iframe 
-  style={{
-    aspectRatio: '16/9',
-  }}
-  width='100%'
-  src="//plotly.com/~pedromebo/120.embed?showlink=false"
-  height="1200"
-  frameBorder="0"
-  scrolling="no"
-/>
-
-> ## Future
-
-We already know that Marbella Vice has been incredible and that many creators have significantly increased their reach. Now, many of them face a harsh reality: the challenge of maintaining all those new followers, whether in GTA V or other types of content.
-
-In the future, we will analyze how these creators have evolved, if their growth rate continues, and if they are able to maintain their numbers. I encourage you to follow me on Twitter to stay updated and be the first to know about new content.
-
-If you've read this far, thank you so much! It has been a pleasure to share my passion for data with so many people, meet fantastic streamers, and receive support from different communities.
-
-Once again, thank you.
+Thank you once again.

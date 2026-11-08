@@ -1,0 +1,73 @@
+---
+translated_slug: 'dialogiclab'
+title: 'DialogicLab: Multi-Agent Simulation System to Prevent School Bullying'
+description: 'Educational role-play platform powered by AI agents to train mediation, communication, and conflict resolution in school environments.'
+category: 'Startup & Social Impact'
+publishedAt: '2025-09-15'
+techs: 'nextjs,typescript,python,openai,amazonaws,docker'
+banner: '/images/projects/dialogiclab-banner.png'
+link: 'https://www.dialogiclab.com/'
+youtube: ''
+---
+
+## The Problem
+
+Stepping into a school bullying case or mediating a classroom conflict is not something you learn from theory alone. Many teachers, counselors, and students know what the protocols say on paper, but when it comes time to sit down with a withdrawn student or someone who is on the defensive, they freeze up—afraid of saying the wrong thing and making the situation worse.
+
+In real life, there is no room for trial and error when dealing with vulnerable minors. A poor approach can cause the victim to shut down completely or escalate the conflict. **[DialogicLab](https://www.dialogiclab.com/)** was built to bridge that gap: providing a safe simulation environment to practice difficult conversations, make mistakes without real-world consequences, and build confidence before handling real cases.
+
+---
+
+## How the Platform Works
+
+Instead of multiple-choice quizzes or rigid scripts, the platform runs open-ended simulations through real-time conversations (voice or text) with AI-driven avatars.
+
+### 1. Avatars with Emotional State and Memory
+Characters do not follow a predefined dialogue tree. They represent different roles within school dynamics (the targeted student, the aggressor, or passive bystanders) and react according to how they are approached. If the user comes across as judgmental or authoritarian, the avatar becomes defensive; if the user practices active listening and validates their feelings, the character gradually opens up.
+
+### 2. Risk-Free Practice
+The main goal is to overcome the fear of intervening. If a mediation strategy fails and the conversation hits a wall, the user can pause the session, review where the dialogue went off track, and try a different approach from scratch.
+
+### 3. In-Session Guidance
+When users get stuck or do not know how to redirect the conversation, an integrated assistant provides real-time suggestions based on nonviolent communication and school mediation guidelines to help unblock the dialogue.
+
+### 4. Post-Session Evaluation
+At the end of each practice run, the system analyzes the full transcript and delivers a clear breakdown of the intervention: which phrases helped lower tension, where assertiveness or empathy was lacking, and concrete takeaways to improve in the next session.
+
+---
+
+## Technical Architecture & Development
+
+I designed and built the platform end-to-end as the sole engineer, covering the multi-agent architecture, full-stack development, and production deployment.
+
+Below is the complete interactive system architecture generated with **Archify**, detailing the live streaming pipelines, state management, and real-time pedagogical evaluation:
+
+<InteractiveDiagram
+  src='/diagrams/en-dialogiclab-architecture.html'
+  title='DialogicLab — Multi-Agent Architecture & Inference Flow'
+  subtitle='Explore components, streaming pipelines, and security boundaries'
+  aspectRatio='1370 / 585'
+/>
+
+### Multi-Agent Orchestration & State Management
+To keep an avatar consistent throughout a full session without breaking character, the conversational logic is orchestrated using **LangGraph** and models running on **Google Vertex AI (Gemini)**. Each agent maintains its own memory and a dynamic internal state (trust, tension, and openness levels) that updates turn by turn based on the intent detected in the user's responses.
+
+### Hallucination Mitigation, Evals & Observability
+One of the hardest parts of building educational role-play with LLMs is preventing the model from becoming overly agreeable by default or hallucinating out-of-context details. To keep agents grounded, I implemented validation flows and evaluation suites (**Evals**) backed by **LangSmith** for production tracing and observability, ensuring responses stay realistic and pedagogically sound.
+
+### Privacy & Data Protection
+Because the platform is designed for schools and educational psychology teams, the data pipeline was built with strict privacy and anonymization rules from day one, ensuring sessions remain confidential and are never used to train external models.
+
+### Tech Stack
+- **AI & Orchestration:** LangGraph, Google Vertex AI (Gemini), LangSmith (observability and Evals).
+- **Backend & Data:** FastAPI (Python), Supabase (PostgreSQL, authentication, and persistence).
+- **Frontend:** Next.js, TypeScript, Tailwind CSS.
+- **Infrastructure:** AWS, Vercel, and Docker containers.
+
+---
+
+## Project Purpose
+
+Conflict mediation is often treated as an innate soft skill, when in reality it improves significantly with deliberate practice. The goal with DialogicLab is to use AI as a practical training ground so that teachers, counselors, and students are better prepared when they have to handle a real situation face-to-face.
+
+You can check out the live platform at **[dialogiclab.com](https://www.dialogiclab.com/)**.

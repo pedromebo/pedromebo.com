@@ -1,28 +1,29 @@
 ---
+translated_slug: 'en-llm-prompt-caching'
 title: 'Uso de caché en LLMs: LangChain Caché y OpenAI Prompt Caching'
 description: 'Descubre qué es la caché para LLMs y cómo implementarla con LangChain y con OpenAI'
 publishedAt: '2024-10-17'
 banner: 'prompt_caching_banner'
-tags: 'blogs'
+tags: 'llms,optimizacion,costes,prompting'
 ---
-> ## Introducción
+## Introducción
 Si eres un desarrollador que utiliza LLMs en sus aplicaciones, seguramente sabes que las consultas (prompts) que envías son esenciales para obtener **respuestas valiosas y adaptadas a tu objetivo**. Pero, ¿sabías que hay una forma de **optimizar tus peticiones y mejorar la eficiencia** general de tu proyecto? Aquí es donde entra en juego el concepto de **Prompt Caching (caché de prompts)**.
 
 El Prompt Caching es una técnica que permite almacenar las respuestas generadas por la API para ciertos prompts y reutilizarlas cuando sea necesario. Esto puede ser un cambio radical en la forma en que optimizas tu aplicación, reduciendo costos y tiempos de espera, y asegurando una experiencia más fluida para los usuarios.
 
-> ## ¿Qué es el Prompt Caching?
+## ¿Qué es el Prompt Caching?
 Imagina que tienes una aplicación que constantemente hace las mismas preguntas a la API, como una IA para responder preguntas frecuentes. En lugar de hacer la misma solicitud una y otra vez (lo que consume recursos y puede generar tiempos de espera innecesarios), el Prompt Caching te permite guardar esas respuestas para reutilizarlas.
 
 Es decir, cuando se detecta que un usuario realiza una consulta repetida, la API puede devolver una respuesta guardada previamente en lugar de generar una nueva. Esto no solo optimiza el tiempo de procesamiento, sino que también ayuda a reducir costos si estás trabajando con límites de uso o un presupuesto ajustado.
 
-> ## ¿Por qué deberías usarlo?
+## ¿Por qué deberías usarlo?
 Hay varias razones por las que el Prompt Caching es una herramienta valiosa:
 
 - **Ahorro de costes**: Al no tener que generar una respuesta nueva cada vez que se hace una solicitud repetida, reduces la cantidad de tokens consumidos, lo que se traduce en menos costos.
 - **Mejora de la velocidad**: Al obtener una respuesta almacenada, los tiempos de espera disminuyen notablemente, ya que no necesitas que el LLM procese el prompt de nuevo desde cero.
 - **Consistencia**: Si tu aplicación depende de respuestas consistentes, el Prompt Caching asegura que los usuarios reciban las mismas respuestas a las mismas preguntas, sin variaciones involuntarias.
 
-> ## Implementación de caché con LangChain
+## Implementación de caché con LangChain
 
 ### Caché en memoria
 ```python
@@ -80,7 +81,7 @@ CPU times: total: 609 ms
 Wall time: 609 ms
 ```
 
-> ## Usando Prompt Caching de OpenAI
+## Usando Prompt Caching de OpenAI
 
 La API de OpenAI implementa el Prompt Caching de manera automática lo que reduce la latencia en un 80% y los costes en un 50% para prompts de más de 1024 tokens.
 

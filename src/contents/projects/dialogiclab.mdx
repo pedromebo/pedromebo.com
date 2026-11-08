@@ -1,0 +1,73 @@
+---
+translated_slug: 'en-dialogiclab'
+title: 'DialogicLab: Sistema Multiagente de Simulación para Prevenir el Acoso Escolar'
+description: 'Plataforma de role-play educativo impulsada por agentes de IA para entrenar la mediación, la comunicación y la resolución de conflictos en entornos escolares.'
+category: 'Startup & Proyecto de Impacto'
+publishedAt: '2025-09-15'
+techs: 'nextjs,typescript,python,openai,amazonaws,docker'
+banner: '/images/projects/dialogiclab-banner.png'
+link: 'https://www.dialogiclab.com/'
+youtube: ''
+---
+
+## El problema
+
+Intervenir en un caso de acoso escolar o mediar en un conflicto dentro del aula no se aprende solo con teoría. Muchos docentes, orientadores y alumnos saben qué dicen los protocolos sobre el papel, pero a la hora de sentarse a hablar con un menor que se cierra en banda o con alguien a la defensiva, aparece el bloqueo: el miedo a decir algo que empeore la situación.
+
+En la vida real no se puede "probar a ver qué pasa" cuando tratas con personas vulnerables. Un mal enfoque puede hacer que la víctima deje de confiar o que el conflicto escale. **[DialogicLab](https://www.dialogiclab.com/)** nace precisamente para cubrir ese vacío: crear un entorno seguro de simulación donde poder practicar conversaciones difíciles, equivocarse sin consecuencias reales y entrenar cómo actuar antes de enfrentarse al caso real.
+
+---
+
+## Cómo funciona la plataforma
+
+En lugar de tests tipo cuestionario o guiones cerrados, planteamos simulaciones abiertas mediante conversaciones en tiempo real (por voz o texto) con avatares impulsados por IA.
+
+### 1. Avatares con estado emocional y memoria
+Los personajes no siguen un árbol de diálogo predefinido. Representan distintos perfiles dentro de la dinámica escolar (quien sufre el acoso, quien agrede o los testigos pasivos) y reaccionan según cómo les hables. Si el usuario entra juzgando o con tono autoritario, el avatar se pone a la defensiva; si aplica escucha activa y valida lo que siente, empieza a abrirse.
+
+### 2. Práctica sin riesgo real
+El objetivo principal es perder el miedo a intervenir. Si una estrategia de mediación no funciona y la conversación se bloquea, se puede pausar la sesión, ver en qué punto se torció el diálogo y volver a intentarlo desde otro enfoque.
+
+### 3. Asistencia durante la sesión
+Cuando el usuario se queda en blanco o no sabe cómo reconducir la charla, cuenta con un asistente integrado que sugiere pautas basadas en comunicación no violenta y mediación escolar para desbloquear la situación en el momento.
+
+### 4. Evaluación tras la conversación
+Al terminar cada práctica, el sistema analiza toda la transcripción y devuelve un desglose claro sobre cómo ha ido la intervención: qué frases ayudaron a rebajar la tensión, en qué momentos faltó asertividad o empatía, y qué aspectos concretos se pueden mejorar en la siguiente sesión.
+
+---
+
+## Arquitectura y desarrollo técnico
+
+He diseñado y construido la plataforma de principio a fin (*end-to-end*), abarcando tanto la arquitectura del sistema multiagente como el desarrollo Full Stack y el despliegue en producción.
+
+A continuación puedes explorar el mapa interactivo completo de la arquitectura del sistema generado con **Archify**, donde se aprecian los flujos de inferencia, control de estado y evaluación pedagógica:
+
+<InteractiveDiagram
+  src='/diagrams/dialogiclab-architecture.html'
+  title='DialogicLab — Arquitectura Multiagente y Flujo de Inferencia'
+  subtitle='Explora componentes, conexiones en streaming y límites de seguridad'
+  aspectRatio='1370 / 585'
+/>
+
+### Orquestación multiagente y control de estado
+Para que un avatar mantenga la coherencia durante toda una sesión sin salirse de su papel, la lógica conversacional está orquestada con **LangGraph** y modelos sobre **Google Vertex AI (Gemini)**. Cada agente gestiona su propia memoria y un estado interno dinámico (niveles de confianza, tensión o apertura) que evoluciona turno a turno según la intención detectada en las respuestas del usuario.
+
+### Mitigación de alucinaciones, Evals y observabilidad
+Uno de los mayores retos en el *role-play* educativo con LLMs es evitar que el modelo sea demasiado complaciente por defecto o que invente datos fuera de contexto. Para controlarlo, implementé flujos de validación y baterías de evaluación (**Evals**) apoyados en **LangSmith** para trazabilidad y observabilidad en producción, asegurando que las respuestas sean realistas y pedagógicamente consistentes.
+
+### Privacidad y entorno seguro
+Al trabajar con casos orientados a centros educativos y gabinetes psicopedagógicos, todo el flujo de datos se diseñó bajo criterios estrictos de privacidad y anonimización, garantizando que las sesiones sean confidenciales y no se utilicen para entrenar modelos externos.
+
+### Stack tecnológico
+- **IA y Orquestación:** LangGraph, Google Vertex AI (Gemini), LangSmith (observabilidad y Evals).
+- **Backend y Datos:** FastAPI (Python), Supabase (PostgreSQL, autenticación y persistencia).
+- **Frontend:** Next.js, TypeScript, Tailwind CSS.
+- **Infraestructura:** AWS, Vercel y contenedores Docker.
+
+---
+
+## Propósito del proyecto
+
+A menudo se piensa que saber mediar o tener mano izquierda en un conflicto es un don innato, pero en gran medida es una habilidad que mejora con la práctica. El objetivo con DialogicLab es usar la inteligencia artificial como herramienta de entrenamiento previo, ayudando a que profesores, orientadores y alumnos lleguen mejor preparados cuando les toque gestionar una situación real cara a cara.
+
+Puedes ver el proyecto en funcionamiento en **[dialogiclab.com](https://www.dialogiclab.com/)**.

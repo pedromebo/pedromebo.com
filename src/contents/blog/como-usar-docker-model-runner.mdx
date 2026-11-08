@@ -3,9 +3,11 @@ title: 'Cómo usar Docker Model Runner: Ejecutando LLM en local con Docker y Lan
 description: "Aprende a ejecutar modelos LLM localmente usando Docker Model Runner y LangChain. Una guía para principiantes para comenzar con modelos LLM locales en menos de 10 minutos, sin configuraciones complejas ni hardware costoso."
 publishedAt: '2025-05-07'
 banner: 'docker_model_runner'
-tags: 'blogs'
+tags: 'docker,llms,langchain,python'
 translated_slug: en-how-to-use-docker-model-runner
 ---
+
+> **TL;DR (Resumen ejecutivo):** **Docker Model Runner** (incluido desde Docker Desktop 4.40) permite descargar y ejecutar modelos LLM locales (como Llama 3.2) directamente desde la terminal con `docker model run`, exponiendo una API compatible con OpenAI en `http://localhost:12434/engines/v1` lista para conectarse con **LangChain** en menos de 10 minutos y sin configurar entornos complejos.
 
 Si alguna vez te has sentido saturado por lo complicado que parece instalar y ejecutar modelos(LLM) en tu equipo, no estás solo. Muchos desarrolladores, estudiantes o curiosos de la IA se enfrentan a las mismas dificultades: configuraciones técnicas difíciles, dependencias que fallan y la necesidad de hardware costoso. Todo eso hace que correr un modelo en tu propio ordenador parezca misión imposible.
 
@@ -76,3 +78,14 @@ pprint.pp(ai_msg.content)
 La capacidad de probar y experimentar con LLM sin necesidad de depender de servidores externos, pagar por APIs o estudiar arquitectura de redes neuronales. En minutos, y sin conocimientos técnicos profundos.
 
 Esta es una forma fácil y rápida si quieres usar LLM en local para realizar pruebas o tener una mayor privacidad sin tener que pagar por ello. Además esto acerca el uso de LLMs a más dispositivos y a usuarios principiantes.
+
+## Preguntas frecuentes sobre Docker Model Runner (FAQ)
+
+### ¿Qué versión de Docker necesito para usar Docker Model Runner?
+Necesitas **Docker Desktop 4.40 o superior**. Se activa desde *Settings > Features in development* marcando **Docker Model Runner** y habilitando el soporte TCP en el host (*Enable host-side TCP support*, por defecto en el puerto `12434`).
+
+### ¿Cómo conecto Docker Model Runner con LangChain o el SDK de OpenAI?
+Docker Model Runner expone un servidor compatible con la especificación de OpenAI en `http://localhost:12434/engines/v1`. Basta con instanciar `ChatOpenAI` en `langchain_openai` apuntando `base_url` a esa dirección y pasando cualquier valor en `api_key` (por ejemplo, `"docker"`).
+
+### ¿Los modelos de Docker Model Runner corren dentro de un contenedor normal?
+A diferencia de un contenedor tradicional aislado, Docker Model Runner ejecuta el motor de inferencia (`llama.cpp`) directamente sobre el host para aprovechar la aceleración por hardware (GPU/Metal/CUDA) sin penalización de virtualización, manteniendo la gestión de imágenes OCI desde Docker CLI.
