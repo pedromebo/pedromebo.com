@@ -24,7 +24,7 @@ Router.events.on('routeChangeComplete', nProgress.done);
 
 const queryClient = new QueryClient();
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps, router }: AppProps) {
   React.useEffect(() => {
     // Don't increment views if not on main domain
     if (
@@ -40,6 +40,16 @@ function MyApp({ Component, pageProps }: AppProps) {
       }
     }
   }, []);
+
+  React.useEffect(() => {
+    const path = router.asPath || '';
+    const isEn =
+      path.includes('/en-') ||
+      path.startsWith('/en/') ||
+      path === '/en' ||
+      path.includes('lang=en');
+    document.documentElement.lang = isEn ? 'en' : 'es';
+  }, [router.asPath]);
 
   return (
     <ThemeProvider attribute='class' defaultTheme='dark' enableSystem={false}>

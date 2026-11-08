@@ -1,18 +1,25 @@
 import clsx from 'clsx';
 import { GetStaticPaths, GetStaticProps } from 'next';
+import dynamic from 'next/dynamic';
 import { ParsedUrlQuery } from 'querystring';
 import * as React from 'react';
-import { HiLink, HiPlay, HiUser } from 'react-icons/hi';
+import { HiGlobeAlt, HiLink, HiPlay, HiUser } from 'react-icons/hi';
 import { SiGithub } from 'react-icons/si';
 import { MDXClient } from 'next-mdx-remote-client';
 import { serialize } from 'next-mdx-remote-client/serialize';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypePrettyCode from 'rehype-pretty-code';
 import rehypeSlug from 'rehype-slug';
-import rehypeMermaid from 'rehype-mermaidjs';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
+
+import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css';
+
+const LiteYouTubeEmbed = dynamic(
+  () => import('react-lite-youtube-embed').then((mod) => mod.default),
+  { ssr: false }
+);
 
 import { trackEvent } from '@/lib/analytics';
 import { cleanPagePrefix } from '@/lib/helper.client';
@@ -20,12 +27,15 @@ import { getFileSlugArray, getFrontmatter } from '@/lib/mdx.server';
 import useScrollSpy from '@/hooks/useScrollspy';
 
 import MDXComponents from '@/components/content/MDXComponents';
+import SubscribeCard from '@/components/content/blog/SubscribeCard';
 import TableOfContents, {
   HeadingScrollSpy,
 } from '@/components/content/TableOfContents';
 import CloudinaryImg from '@/components/images/CloudinaryImg';
 import Layout from '@/components/layout/Layout';
+import ReadingProgressBar from '@/components/ReadingProgressBar';
 import CustomLink from '@/components/links/CustomLink';
+import UnstyledLink from '@/components/links/UnstyledLink';
 import Seo from '@/components/Seo';
 
 import { ProjectType } from '@/types/frontmatters';
@@ -40,13 +50,18 @@ export default function SingleProjectPage({
   mdxSource,
 }: SingleProjectPageProps) {
   //#region  //*=========== Link Constants ===========
-  const OG_BANNER_LINK = `https://res.cloudinary.com/pedromebo/image/upload/f_auto,c_fill,g_center,w_1200,h_630/pedromebo/${frontmatter.banner}`;
+  const isDirectBanner = frontmatter.banner.startsWith('/') || frontmatter.banner.startsWith('http');
+  const bannerPublicId = isDirectBanner ? frontmatter.banner : `pedromebo/${frontmatter.banner}`;
+  const OG_BANNER_LINK = isDirectBanner
+    ? (frontmatter.banner.startsWith('http') ? frontmatter.banner : `https://www.pedromebo.com${frontmatter.banner}`)
+    : `https://res.cloudinary.com/pedromebo/image/upload/f_auto,c_fill,g_center,w_1200,h_630/pedromebo/${frontmatter.banner}`;
   //#endregion  //*======== Link Constants ===========
 
   //#region  //*=========== Project Language ===========
-  // TODO: add implementation, should be bugged if folder/es-slug.mdx
   const cleanSlug = cleanPagePrefix(frontmatter.slug);
   const isSpanish = cleanSlug === frontmatter.slug;
+  const targetSlug =
+    frontmatter.translated_slug ?? (isSpanish ? `en-${cleanSlug}` : cleanSlug);
   //#endregion  //*======== Project Language ===========
 
   //#region  //*=========== Scrollspy ===========
@@ -72,109 +87,151 @@ export default function SingleProjectPage({
   }, [frontmatter.slug]);
   //#endregion  //*======== Scrollspy ===========
 
+  //#region  //*=========== MDX Content Memoization ===========
+  const mdxContent = React.useMemo(
+    () => <MDXClient {...mdxSource} components={MDXComponents()} />,
+    [mdxSource]
+  );
+  //#endregion  //*======== MDX Content Memoization ===========
+
   return (
     <Layout>
+      <ReadingProgressBar />
       <Seo
         templateTitle={frontmatter.title}
         description={frontmatter.description}
+        isProject
         date={new Date(frontmatter.publishedAt).toISOString()}
+        dateModified={
+          frontmatter.lastUpdated
+            ? new Date(frontmatter.lastUpdated).toISOString()
+            : undefined
+        }
         banner={OG_BANNER_LINK}
+        tags={frontmatter.techs}
+        lang={isSpanish ? 'es' : 'en'}
+        alternateUrl={
+          !frontmatter?.spanishOnly ? `/projects/${targetSlug}` : undefined
+        }
       />
 
       <main>
-        <section className=''>
-          <div className='layout'>
-            <CloudinaryImg
-              publicId={`pedromebo/${frontmatter.banner}`}
-              alt={frontmatter.title}
-              width={1440}
-              height={792}
-            />
+        <section className='min-w-0 max-w-full'>
+          <div className='layout py-8'>
+            <div className='relative overflow-hidden rounded-[20px] border border-[#cbcfe0] shadow-sm dark:border-[#262f6e] dark:bg-[#0a0d24]'>
+              <CloudinaryImg
+                publicId={bannerPublicId}
+                alt={frontmatter.title}
+                width={1440}
+                height={792}
+                className='w-full'
+              />
+            </div>
 
-            <h1 className='mt-4'>{frontmatter.title}</h1>
-            <p className='mt-2 text-sm text-gray-600 dark:text-gray-300'>
+            <div className='mt-6 flex flex-wrap items-center justify-between gap-4'>
+              <h1 className='text-2xl font-bold leading-tight text-[#111638] sm:text-3xl lg:text-4xl dark:text-white'>
+                {frontmatter.title}
+              </h1>
+
+              {!frontmatter?.spanishOnly && (
+                <UnstyledLink
+                  href={`/projects/${targetSlug}`}
+                  onClick={() =>
+                    trackEvent(`Language Switch: ${frontmatter.slug}`, {
+                      type: 'navigate',
+                    })
+                  }
+                  className='group inline-flex items-center justify-center gap-2 rounded-xl border-2 border-[#596dff] bg-[#596dff]/15 px-3.5 py-1.5 font-mono text-xs font-bold leading-none text-[#3444ca] shadow-sm transition-all hover:scale-105 hover:bg-[#596dff] hover:text-white dark:border-[#00f5d4] dark:bg-[#00f5d4]/10 dark:text-[#00f5d4] dark:hover:bg-[#00f5d4] dark:hover:text-[#0a0d24]'
+                >
+                  <HiGlobeAlt className='h-4 w-4 shrink-0 transition-transform duration-200 group-hover:rotate-45' />
+                  <span className='inline-flex items-center leading-none'>
+                    {isSpanish ? 'Read in English 🇬🇧' : 'Leer en Español 🇪🇸'}
+                  </span>
+                  <span
+                    aria-hidden='true'
+                    className='shrink-0 transition-transform duration-200 group-hover:translate-x-0.5'
+                  >
+                    &rarr;
+                  </span>
+                </UnstyledLink>
+              )}
+            </div>
+
+            <p className='mt-3 text-sm leading-relaxed text-[#586094] dark:text-[#b6bddb] sm:text-base'>
               {frontmatter.description}
             </p>
 
-            <div className='mt-2 flex flex-wrap items-center justify-start gap-3 text-sm font-medium text-gray-600 dark:text-gray-300'>
-              {(frontmatter.github ||
-                frontmatter.youtube ||
-                frontmatter.link) &&
-                ' - '}
+            <div className='mt-4 flex flex-wrap items-center gap-3 text-sm'>
               {frontmatter.github && (
-                <div className='inline-flex items-center gap-2'>
-                  <SiGithub className='text-lg text-gray-800 dark:text-white' />
-                  <CustomLink
-                    onClick={() =>
-                      trackEvent(`Project Github: ${frontmatter.title}`, {
-                        type: 'link',
-                      })
-                    }
-                    href={frontmatter.github}
-                    className='mt-1'
-                  >
-                    Repository
-                  </CustomLink>
-                </div>
+                <UnstyledLink
+                  onClick={() =>
+                    trackEvent(`Project Github: ${frontmatter.title}`, {
+                      type: 'link',
+                    })
+                  }
+                  href={frontmatter.github}
+                  className='inline-flex items-center gap-2 rounded-lg border border-[#cbcfe0] bg-white px-3 py-1.5 font-mono text-xs font-semibold leading-none text-[#111638] transition-colors hover:border-[#00f5d4] dark:border-[#262f6e] dark:bg-[#0a0d24] dark:text-white'
+                >
+                  <SiGithub className='shrink-0 text-base text-[#111638] dark:text-[#00f5d4]' />
+                  <span>GitHub Repository</span>
+                </UnstyledLink>
               )}
-              {frontmatter.github &&
-                (frontmatter.youtube || frontmatter.link) &&
-                ' - '}
               {frontmatter.youtube && (
-                <div className='inline-flex items-center gap-2'>
-                  <HiPlay className='text-xl text-gray-800 dark:text-white' />
-                  <CustomLink
-                    href={frontmatter.youtube}
-                    className='mt-1'
-                    onClick={() =>
-                      trackEvent(`Project Video: ${frontmatter.title}`, {
-                        type: 'link',
-                      })
-                    }
-                  >
-                    Demo Video
-                  </CustomLink>
-                </div>
+                <UnstyledLink
+                  href={frontmatter.youtube}
+                  className='inline-flex items-center gap-2 rounded-lg border border-[#cbcfe0] bg-white px-3 py-1.5 font-mono text-xs font-semibold leading-none text-[#111638] transition-colors hover:border-[#ff2e93] dark:border-[#262f6e] dark:bg-[#0a0d24] dark:text-white'
+                  onClick={() =>
+                    trackEvent(`Project Video: ${frontmatter.title}`, {
+                      type: 'link',
+                    })
+                  }
+                >
+                  <HiPlay className='shrink-0 text-base text-[#ff2e93]' />
+                  <span>Demo Video</span>
+                </UnstyledLink>
               )}
-              {frontmatter.youtube && frontmatter.link && ' - '}
               {frontmatter.link && (
-                <div className='inline-flex items-center gap-2'>
-                  <HiLink className='text-lg text-gray-800 dark:text-white' />
-                  <CustomLink
-                    href={frontmatter.link}
-                    className='mt-1'
-                    onClick={() =>
-                      trackEvent(`Project Live: ${frontmatter.title}`, {
-                        type: 'link',
-                      })
-                    }
-                  >
-                    Open Live Site
-                  </CustomLink>
-                </div>
+                <UnstyledLink
+                  href={frontmatter.link}
+                  className='inline-flex items-center gap-2 rounded-lg border border-[#cbcfe0] bg-white px-3 py-1.5 font-mono text-xs font-semibold leading-none text-[#111638] transition-colors hover:border-[#596dff] dark:border-[#262f6e] dark:bg-[#0a0d24] dark:text-white'
+                  onClick={() =>
+                    trackEvent(`Project Live: ${frontmatter.title}`, {
+                      type: 'link',
+                    })
+                  }
+                >
+                  <HiLink className='shrink-0 text-base text-[#596dff] dark:text-[#00f5d4]' />
+                  <span>{isSpanish ? 'Visitar Proyecto' : 'Visit Project'}</span>
+                </UnstyledLink>
+              )}
+              {frontmatter.category && (
+                <span className='inline-flex items-center gap-1.5 rounded-lg border border-[#cbcfe0] bg-[#eff0f7] px-3 py-1.5 font-mono text-xs font-semibold leading-none text-[#586094] dark:border-[#262f6e] dark:bg-[#111638] dark:text-[#b6bddb]'>
+                  <HiUser className='shrink-0 text-sm text-[#00f5d4]' />
+                  <span>{frontmatter.category}</span>
+                </span>
               )}
             </div>
-            {frontmatter.category && (
-              <p className='mt-2 flex items-center justify-start gap-2 text-sm text-gray-600 dark:text-gray-300'>
-                <HiUser className='text-lg text-gray-800 dark:text-white' />{' '}
-                {frontmatter.category}
-              </p>
+
+            {/* Embedded YouTube Player if available */}
+            {frontmatter.youtube && (
+              <div className='mt-8 overflow-hidden rounded-2xl border border-[#cbcfe0] shadow-xl dark:border-[#262f6e]'>
+                <LiteYouTubeEmbed
+                  id={
+                    frontmatter.youtube.match(
+                      /(?:youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#&?]*)/
+                    )?.[1] ?? ''
+                  }
+                  title={frontmatter.title}
+                  noCookie={true}
+                />
+              </div>
             )}
 
-            {!frontmatter?.spanishOnly && (
-              <CustomLink
-                href={`/projects/${isSpanish ? 'en-' : ''}${cleanSlug}`}
-                className='mt-4'
-              >
-                {isSpanish ? 'Read in English' : 'Leer en Español'}
-              </CustomLink>
-            )}
+            <hr className='mt-6 border-[#cbcfe0] dark:border-[#262f6e]' />
 
-            <hr className='mt-4 dark:border-gray-600' />
-
-            <section className='lg:grid lg:grid-cols-[auto_250px] lg:gap-8'>
-              <article className='mdx projects prose mx-auto w-full transition-colors dark:prose-invert'>
-                <MDXClient {...mdxSource} components={MDXComponents()} />
+            <section className='mt-6 min-w-0 max-w-full lg:grid lg:grid-cols-[auto_260px] lg:gap-10'>
+              <article className='mdx projects prose mx-auto w-full min-w-0 max-w-full transition-colors dark:prose-invert'>
+                {mdxContent}
               </article>
 
               <aside className='py-4'>
@@ -188,8 +245,25 @@ export default function SingleProjectPage({
               </aside>
             </section>
 
+            <SubscribeCard
+              className='mt-12'
+              lang={isSpanish ? 'es' : 'en'}
+              title={
+                isSpanish
+                  ? '¿Quieres construir una arquitectura similar o tienes dudas sobre este proyecto?'
+                  : 'Want to build a similar architecture or have questions about this project?'
+              }
+              description={
+                isSpanish
+                  ? 'Estoy disponible para consultoría técnica, diseño de sistemas de IA en producción y colaboraciones. Conectemos en X o LinkedIn.'
+                  : 'I am available for technical consulting, production AI architecture design, and collaborations. Let’s connect on X or LinkedIn.'
+              }
+            />
+
             <div className='mt-8 flex flex-col items-start gap-4 md:flex-row md:justify-between'>
-              <CustomLink href='/projects'>← Back to projects</CustomLink>
+              <CustomLink href={isSpanish ? '/projects' : '/en/projects'}>
+                {isSpanish ? '← Volver a proyectos' : '← Back to projects'}
+              </CustomLink>
             </div>
           </div>
         </section>
@@ -231,7 +305,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         development: false,
         remarkPlugins: [remarkGfm, remarkMath],
         rehypePlugins: [
-          rehypeMermaid,
           [rehypePrettyCode, {
             theme: 'github-dark-dimmed',
             onVisitLine(node) {

@@ -32,6 +32,8 @@ export type BlogType = {
 
 export type LibraryFrontmatter = {
   slug: string;
+  translated_slug?: string;
+  spanishOnly?: boolean;
   title: string;
   readingTime: ReadTimeResults;
   description: string;
@@ -45,6 +47,7 @@ export type LibraryType = {
 
 export type ProjectFrontmatter = {
   slug: string;
+  translated_slug?: string;
   title: string;
   publishedAt: string;
   lastUpdated?: string;
