@@ -23,13 +23,43 @@
 .prose blockquote {
   border-style: solid;
   border-width: 0 0 0 0.25rem;
-  border-image: linear-gradient(to top, #249ca8, #249ca8, #9c3eeb) 1;
+  border-image: linear-gradient(to top, #00f5d4, #596dff, #ff2e93) 1;
+  background-color: rgba(239, 240, 247, 0.4);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0 10px 10px 0;
+}
+
+html.dark .prose blockquote {
+  background-color: rgba(10, 13, 36, 0.5);
+}
+
+/* Inline Code in MDX */
+.prose :not(pre) > code {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.85em;
+  font-weight: 600;
+  padding: 0.15em 0.4em;
+  border-radius: 6px;
+  background-color: #eff0f7;
+  color: #3b49df;
+  border: 1px solid #cbcfe0;
+}
+
+.prose :not(pre) > code::before,
+.prose :not(pre) > code::after {
+  content: '' !important;
+}
+
+html.dark .prose :not(pre) > code {
+  background-color: #111638;
+  color: #00f5d4;
+  border-color: #262f6e;
 }
 
 .prose hr {
   border-style: solid;
   border-width: 0 0 1px 0;
-  border-image: linear-gradient(to right, #249ca880, #249ca880, #9c3eeb80) 1;
+  border-image: linear-gradient(to right, #00f5d480, #596dff80, #ff2e9380) 1;
 }
 
 .mdx.prose :where(h1, h2, h3, h4) {
@@ -45,15 +75,64 @@
   border-bottom: none;
 }
 
-/* Custom Heading Style for Projects */
+/* Direct H2 styling with Night City accent bar (semantic replacement for > ##) */
+.mdx.prose > h2 {
+  width: 100%;
+  border-style: solid;
+  border-width: 0 0 0 0.25rem;
+  border-image: linear-gradient(to top, #00f5d4, #596dff, #ff2e93) 1;
+  background-color: rgba(239, 240, 247, 0.4);
+  padding: 0.65rem 1.25rem;
+  border-radius: 0 10px 10px 0;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+html.dark .mdx.prose > h2 {
+  background-color: rgba(10, 13, 36, 0.5);
+}
+
+/* Custom Heading Style for Projects & Blogs */
+.mdx.prose blockquote:has(h1, h2, h3, h4),
 .mdx.prose.projects blockquote {
   font-style: normal;
+}
+.mdx.prose blockquote:has(h1, h2, h3, h4) :where(h1, h2, h3, h4) {
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
 }
 .mdx.prose.projects blockquote:first-of-type h2 {
   margin-top: 1rem;
 }
 .mdx.prose.projects blockquote.with-icons h2 {
   margin-bottom: 0;
+}
+
+/* Enhanced Table Styling in MDX */
+.mdx.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.875rem;
+}
+.mdx.prose th {
+  background-color: #eff0f7;
+  padding: 0.75rem 1rem;
+  font-weight: 700;
+  text-align: left;
+  border-bottom: 2px solid #cbcfe0;
+}
+html.dark .mdx.prose th {
+  background-color: #0a0d24;
+  border-bottom-color: #262f6e;
+  color: #00f5d4;
+}
+.mdx.prose td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #cbcfe0;
+}
+html.dark .mdx.prose td {
+  border-bottom-color: #262f6e;
 }
 
 /* Apply shadow to Youtube Embed */
@@ -70,7 +149,7 @@
 }
 
 .hash-anchor:hover {
-  background-image: linear-gradient(to right, #249ca8, #249ca8, #9c3eeb);
+  background-image: linear-gradient(to right, #00f5d4, #596dff, #ff2e93);
   background-size: 100% 2px;
 }
 
@@ -148,7 +227,7 @@ code[data-line-numbers] > [data-line]::before {
 
 
 [data-rehype-pretty-code-fragment] {
-  @apply overflow-hidden rounded-lg;
+  @apply overflow-hidden rounded-[8px] border border-[#262f6e] bg-[#0a0d24];
   margin-top: 1.7142857em;
   margin-bottom: 1.7142857em;
 }
@@ -158,11 +237,11 @@ code[data-line-numbers] > [data-line]::before {
 }
 
 [data-rehype-pretty-code-fragment] > pre {
-  @apply m-0;
+  @apply m-0 !bg-[#0a0d24];
 }
 [data-rehype-pretty-code-title],
 [data-rehype-pretty-code-caption] {
-  @apply bg-[#e6eff9] px-6 py-2 text-xs font-medium dark:bg-gray-700;
+  @apply border-b border-[#262f6e] bg-[#111638] px-6 py-2 font-mono text-xs font-semibold text-[#00f5d4];
 }
 
 /* Word Wrap */
