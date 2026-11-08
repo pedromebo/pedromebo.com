@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 380" width="840" height="380" fill="none">
+  <defs>
+    <linearGradient id="bg4" x1="0" y1="0" x2="840" y2="380" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0a0d24" />
+      <stop offset="100%" stop-color="#111638" />
+    </linearGradient>
+    <linearGradient id="accent4" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#00f5d4" />
+      <stop offset="50%" stop-color="#596dff" />
+      <stop offset="100%" stop-color="#ff2e93" />
+    </linearGradient>
+    <clipPath id="cardClip4">
+      <rect width="840" height="380" rx="16" />
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#cardClip4)">
+    <rect width="840" height="380" rx="16" fill="url(#bg4)" />
+    <rect x="0" y="0" width="840" height="4" fill="url(#accent4)" />
+
+    <!-- Header -->
+    <circle cx="28" cy="26" r="6" fill="#ff2e93" />
+    <circle cx="48" cy="26" r="6" fill="#f59e0b" />
+    <circle cx="68" cy="26" r="6" fill="#00f5d4" />
+    <text x="92" y="30" fill="#b6bddb" font-family="monospace" font-size="13" font-weight="bold">pedromebo / README.md — GitHub Profile Preview</text>
+    <line x1="0" y1="48" x2="840" y2="48" stroke="#262f6e" stroke-width="1" />
+
+    <!-- Profile Header -->
+    <text x="42" y="88" fill="#ffffff" font-family="sans-serif" font-size="20" font-weight="bold">Hi there, I'm Pedro Medinilla Bohórquez (pedromebo) 👋</text>
+    <rect x="42" y="102" width="128" height="24" rx="6" fill="#ff2e93" />
+    <text x="106" y="118" text-anchor="middle" fill="#0a0d24" font-family="monospace" font-size="12" font-weight="bold">AI ENGINEER</text>
+    <rect x="178" y="102" width="225" height="24" rx="6" fill="#16224f" stroke="#00f5d4" />
+    <text x="290" y="118" text-anchor="middle" fill="#00f5d4" font-family="monospace" font-size="12" font-weight="bold">LLMs • Multi-Agent • RAG</text>
+
+    <!-- Bio bullets -->
+    <text x="42" y="156" fill="#b6bddb" font-family="sans-serif" font-size="13.5">🔭 Building Multi-Agent architectures, Semantic Layers &amp; Production LLMs</text>
+    <text x="42" y="182" fill="#b6bddb" font-family="sans-serif" font-size="13.5">🌱 Writing technical deep-dives at pedromebo.com (Spanish &amp; English)</text>
+    <text x="42" y="208" fill="#b6bddb" font-family="sans-serif" font-size="13.5">📫 Reach me: contacto@pedromebo.com • LinkedIn @pedromebo • X @pedromebo</text>
+
+    <!-- Stats & Stack Cards -->
+    <rect x="42" y="232" width="365" height="118" rx="12" fill="#070919" stroke="#262f6e" stroke-width="1.5" />
+    <text x="62" y="260" fill="#00f5d4" font-family="monospace" font-size="13" font-weight="bold">⚡ Core Tech Stack</text>
+    <text x="62" y="286" fill="#ffffff" font-family="monospace" font-size="11.5">Python • PyTorch • TensorFlow • LangGraph</text>
+    <text x="62" y="310" fill="#ffffff" font-family="monospace" font-size="11.5">Apache Spark • Airflow • Docker • AWS</text>
+    <text x="62" y="334" fill="#b6bddb" font-family="monospace" font-size="11.5">C++ • OpenGL • SQL • Redis Stack</text>
+
+    <rect x="433" y="232" width="365" height="118" rx="12" fill="#070919" stroke="#262f6e" stroke-width="1.5" />
+    <text x="453" y="260" fill="#596dff" font-family="monospace" font-size="13" font-weight="bold">📊 GitHub Activity &amp; Highlights</text>
+    <text x="453" y="286" fill="#ffffff" font-family="sans-serif" font-size="12.5">★ Featured: Multi-Agent C++ Engine &amp; DialogicLab</text>
+    <text x="453" y="310" fill="#ffffff" font-family="sans-serif" font-size="12.5">★ Open-Source AI &amp; NLP Notebooks</text>
+    <text x="453" y="334" fill="#00f5d4" font-family="monospace" font-size="12">github.com/pedromebo/pedromebo</text>
+  </g>
+  <rect x="1" y="1" width="838" height="378" rx="15" stroke="#262f6e" stroke-width="2" />
+</svg>
