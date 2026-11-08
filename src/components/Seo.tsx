@@ -58,13 +58,17 @@ const PERSON_SCHEMA = {
 
 export default function Seo(props: SeoProps) {
   const router = useRouter();
+  // Filter out undefined values from props so they don't overwrite defaultMeta
+  const definedProps = Object.fromEntries(
+    Object.entries(props).filter(([_, v]) => v !== undefined)
+  );
   const meta = {
     ...defaultMeta,
-    ...props,
+    ...definedProps,
   };
   meta['title'] = props.templateTitle
     ? `${props.templateTitle} | ${meta.siteName}`
-    : meta.title;
+    : meta.title || defaultMeta.title;
 
   // Clean path without query strings or hash fragments
   const rawPath = (router.asPath || '/').split('?')[0].split('#')[0];
@@ -111,8 +115,8 @@ export default function Seo(props: SeoProps) {
   // Use siteName if there is templateTitle
   // but show full title if there is none
   meta.image = openGraph({
-    description: meta.description,
-    siteName: props.templateTitle ? meta.siteName : meta.title,
+    description: meta.description || defaultMeta.description,
+    siteName: props.templateTitle ? meta.siteName : meta.title || defaultMeta.title,
     templateTitle: props.templateTitle,
     banner: props.banner,
     isBlog: props.isBlog,
