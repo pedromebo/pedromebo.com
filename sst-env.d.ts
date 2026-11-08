@@ -5,6 +5,14 @@
 
 declare module "sst" {
   export interface Resource {
+    "MyBucket": {
+      "name": string
+      "type": "sst.aws.Bucket"
+    }
+    "pedromebo-website": {
+      "type": "sst.aws.Nextjs"
+      "url": string
+    }
   }
 }
 /// <reference path="sst-env.d.ts" />
