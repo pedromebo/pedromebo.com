@@ -39,7 +39,7 @@ export const Pre = React.forwardRef<HTMLPreElement, PreProps>(
         {...rest}
         ref={localPreRef}
         className={clsxm([
-          'group relative',
+          'group relative max-w-full overflow-x-auto',
           // 'whitespace-pre-wrap break-words',
           className,
         ])}
