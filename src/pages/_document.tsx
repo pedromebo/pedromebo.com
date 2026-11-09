@@ -1,20 +1,36 @@
 import Document, {
   DocumentContext,
+  DocumentInitialProps,
   Head,
   Html,
   Main,
   NextScript,
 } from 'next/document';
 
-class MyDocument extends Document {
-  static async getInitialProps(ctx: DocumentContext) {
+type MyDocumentProps = DocumentInitialProps & {
+  lang?: 'es' | 'en';
+};
+
+class MyDocument extends Document<MyDocumentProps> {
+  static async getInitialProps(ctx: DocumentContext): Promise<MyDocumentProps> {
     const initialProps = await Document.getInitialProps(ctx);
-    return { ...initialProps };
+    const path = ctx.asPath || ctx.pathname || '';
+    const isEnglish =
+      path.includes('/en-') ||
+      path.startsWith('/en/') ||
+      path === '/en' ||
+      path.includes('lang=en');
+
+    return {
+      ...initialProps,
+      lang: isEnglish ? 'en' : 'es',
+    };
   }
 
   render() {
+    const lang = this.props.lang ?? 'es';
     return (
-      <Html lang='es'>
+      <Html lang={lang}>
         <Head>
           <link
             rel='preload'
@@ -31,7 +47,7 @@ class MyDocument extends Document {
             data-domains='www.pedromebo.com'
           />
         </Head>
-        <body className='bg-white antialiased transition-colors dark:bg-dark dark:text-white'>
+        <body className='bg-white text-[#111638] antialiased transition-colors dark:bg-[#111638] dark:text-white'>
           <Main />
           <NextScript />
         </body>

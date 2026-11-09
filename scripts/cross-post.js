@@ -40,9 +40,20 @@ const YOUTUBE_REGEXP = new RegExp(
  * @argument $1 id e.g. 1475685363003768836
  */
 const TWEET_REGEXP = new RegExp(
-  `<TweetCard${dotAll}tweetIdd=${quote}${select}${quote}${dotAll}/>`,
+  `<TweetCard${dotAll}tweetId=${quote}${select}${quote}${dotAll}/>`,
   'g'
 );
+
+/**
+ * Custom interactive MDX components that Hashnode does not support natively
+ */
+const COLLAPSIBLE_THINK_OPEN_REGEXP = /<CollapsibleThink[^>]*>/g;
+const COLLAPSIBLE_THINK_CLOSE_REGEXP = /<\/CollapsibleThink>/g;
+const INTERACTIVE_DIAGRAM_REGEXP = new RegExp(
+  `<InteractiveDiagram${dotAll}src=${quote}${select}${quote}${dotAll}title=${quote}${select}${quote}${dotAll}/>`,
+  'g'
+);
+const DEEPSEEK_PIPELINE_REGEXP = /<DeepSeekPipeline[^>]*\/>/g;
 //#endregion  //*======== Regex Constants ===========
 
 const slug = process.argv[2];
@@ -85,7 +96,20 @@ const hashnode = () => {
     );
     parsedContent = parsedContent.replace(
       TWEET_REGEXP,
-      '%[https://twitter.com/pedromebo]'
+      '%[https://twitter.com/pedromebo/status/$1]'
+    );
+    parsedContent = parsedContent.replace(
+      COLLAPSIBLE_THINK_OPEN_REGEXP,
+      '\n> **Proceso de razonamiento (`<think>`):**\n'
+    );
+    parsedContent = parsedContent.replace(COLLAPSIBLE_THINK_CLOSE_REGEXP, '\n');
+    parsedContent = parsedContent.replace(
+      INTERACTIVE_DIAGRAM_REGEXP,
+      '> 📊 **Diagrama interactivo ($2):** [Ver versión interactiva en pedromebo.com](https://www.pedromebo.com$1)'
+    );
+    parsedContent = parsedContent.replace(
+      DEEPSEEK_PIPELINE_REGEXP,
+      '> 📊 **Pipeline interactivo de DeepSeek R1:** [Explorar en pedromebo.com](https://www.pedromebo.com/blog/como-funciona-deepseek-r1)'
     );
     // Change tsx to ts
     parsedContent = parsedContent.replace(/```tsx/g, '```ts');
@@ -112,7 +136,6 @@ const getOgImage = () => {
     const { data: frontmatter } = matter(content);
     const bannerLink = `https://res.cloudinary.com/pedromebo/image/upload/c_fill,g_center,w_1200,h_630/pedromebo/banner/${frontmatter.banner}`;
     const ogLink = openGraph({
-      siteName: 'pedromebo',
       siteName: 'pedromebo',
       description: frontmatter.description,
       banner: bannerLink,

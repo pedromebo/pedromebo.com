@@ -1,0 +1,64 @@
+# Pedro Medinilla Bohórquez (pedromebo) — AI Engineer
+
+> AI Engineer specialized in Multi-Agent Systems, Semantic Layers, Advanced RAG, and Production LLMs (LLMOps & Evals). Bilingual technical blog, architectural breakdowns, and real-world AI projects in Spanish and English.
+
+## Author & Core Pages
+- [Home (ES)](https://www.pedromebo.com) | [Home (EN)](https://www.pedromebo.com/en): Overview of featured AI engineering articles, production stack, and projects.
+- [About Pedro (ES)](https://www.pedromebo.com/about): Career trajectory (AI Engineer at Timia, Lead AI Engineer at DialogicLab, Senior Data Scientist at Eugen), education (Master in Big Data 98/100, HND Computing Science with Distinction), and contact (`contacto@pedromebo.com`).
+- [About Pedro (EN)](https://www.pedromebo.com/en/about): Full English biography, professional experience, certifications, and technical stack.
+- [Blog (ES)](https://www.pedromebo.com/blog) | [Blog (EN)](https://www.pedromebo.com/en/blog)
+- [Projects (ES)](https://www.pedromebo.com/projects) | [Projects (EN)](https://www.pedromebo.com/en/projects)
+- [Shorts (ES)](https://www.pedromebo.com/shorts) | [Shorts (EN)](https://www.pedromebo.com/en/shorts)
+- [Full Content Bundle for LLMs](https://www.pedromebo.com/llms-full.txt): Complete markdown text of all articles and project case studies.
+
+## Featured Projects & Case Studies (Spanish)
+- [DialogicLab: Sistema Multiagente de Simulación para Prevenir el Acoso Escolar](https://www.pedromebo.com/projects/dialogiclab): Plataforma de role-play educativo impulsada por agentes de IA para entrenar la mediación, la comunicación y la resolución de conflictos en entornos escolares.
+- [Consultoría y analítica de datos para eventos en directo en Twitch (Marbella Vice 2021)](https://www.pedromebo.com/projects/informe-datos-marbella-vice): Proyecto de recolección y análisis de datos de Marbella Vice usando la API de twitch, visualización de los datos y publicación del contenido
+- [Oona the Druid's Path](https://www.pedromebo.com/projects/oona-the-druids-path): Juego de plataformas 2.5D desarrollado en Unreal Engine 4 como proyecto académico en ESAT Valencia con Berklee Music.
+- [Sistema Multi-Agente con Simulación Personalizada y Mejoras de Rendimiento](https://www.pedromebo.com/projects/multi-agent-system-cpp): Sistema Multi-Agente en C++ con simulación de loops para el comportamiento de los agentes y optimizaciones de rendimiento.
+- [Motor de Renderizado 3D Desarrollado en C++ y OpenGL](https://www.pedromebo.com/projects/cpp-opengl-engine): Proyecto de un motor gráfico desarrollado en C++ usando OpenGL (agnóstico al render) incorporando las últimas tecnologías de desarrollo gráfico.
+
+## Featured Projects & Case Studies (English)
+- [DialogicLab: Multi-Agent Simulation System to Prevent School Bullying](https://www.pedromebo.com/projects/en-dialogiclab): Educational role-play platform powered by AI agents to train mediation, communication, and conflict resolution in school environments.
+- [Consulting and Data Analytics for Live Events on Twitch (Marbella Vice 2021)](https://www.pedromebo.com/projects/en-informe-datos-marbella-vice): Marbella Vice data collection and analysis project using Twitch API, data visualization and content generation
+- [Oona the Druid's Path](https://www.pedromebo.com/projects/en-oona-the-druids-path): 2.5D platformer game developed in Unreal Engine 4 as an academic project at ESAT Valencia in collaboration with Berklee Music.
+- [Multi-Agent System with Custom Simulation and Performance Enhancements](https://www.pedromebo.com/projects/en-multi-agent-system-cpp): Multi-Agent System in C++ with simulation loops for agent behavior and performance optimizations.
+- [3D Rendering Engine Developed in C++ and OpenGL](https://www.pedromebo.com/projects/en-cpp-opengl-engine): Project of a graphics engine developed in C++ using OpenGL (render-agnostic) incorporating the latest graphics development technologies.
+
+## Technical Blog Articles (Spanish)
+- [Ruff - El Linter y Formateador de Python más rápido: guía y configuración](https://www.pedromebo.com/blog/ruff-linter-python) (2025-12-04): Descubre Ruff, la herramienta todo en uno que reemplaza a Flake8, Black e isort. Aprende a usarlo, configurarlo y por qué es el nuevo estándar en Python.
+- [Cómo ahorrar costes y mejorar la latencia en LLMs: Caché semántica con LangChain y Redis](https://www.pedromebo.com/blog/llm-semantic-cache) (2025-10-30): Descubre cómo ahorrar costes usando LLM con caché semántica implementandola con LangChain y Redis, comparativa, pros y contras y errores frecuentes
+- [UV - Gestor de paquetes de Python: cómo usarlo, comparativa y errores frecuentes](https://www.pedromebo.com/blog/uv-gestor-paquetes-python) (2025-10-21): Descubre cómo usar UV el gestor de paquetes de Python que reemplazará a Pip, cuales son sus ventajas, comparativa con otros sistemas y errores frecuentes
+- [Cómo usar Docker Model Runner: Ejecutando LLM en local con Docker y LangChain](https://www.pedromebo.com/blog/como-usar-docker-model-runner) (2025-05-07): Aprende a ejecutar modelos LLM localmente usando Docker Model Runner y LangChain. Una guía para principiantes para comenzar con modelos LLM locales en menos de 10 minutos, sin configuraciones complejas ni hardware costoso.
+- [Cómo funciona DeepSeek R1: Explicando todos sus componentes claves y sus consecuencias](https://www.pedromebo.com/blog/como-funciona-deepseek-r1) (2025-02-03): Aprende cómo funciona el modelo DeepSeek R1 y sus componentes como Chain of Thought, Reinforcement Learning, Reward Modeling y Distillation
+- [TF-IDF y Bag of Words: Cómo la estadística marcó el comienzo del procesamiento del lenguaje natural (NLP)](https://www.pedromebo.com/blog/tfidf-bow-nlp) (2025-01-14): Explora cómo las técnicas estadísticas clásicas como Bag of Words y TF-IDF pusieron las bases para el análisis y comprensión del lenguaje natural en el mundo de la computación.
+- [De n-gramas a Word2Vec: Los primeros pasos en la representación de lenguaje](https://www.pedromebo.com/blog/ngram-word2vec-evolucion) (2024-12-05): Explora cómo los enfoques tradicionales como los n-gramas evolucionaron hacia modelos más avanzados como Word2Vec para representar el lenguaje humano de manera eficiente.
+- [Uso de caché en LLMs: LangChain Caché y OpenAI Prompt Caching](https://www.pedromebo.com/blog/llm-prompt-caching) (2024-10-17): Descubre qué es la caché para LLMs y cómo implementarla con LangChain y con OpenAI
+- [Comparativa de Zero-Shot, One-Shot y Few-Shot en LLMs](https://www.pedromebo.com/blog/comparativa-zero-shot-one-shot-few-shot-llms) (2024-10-10): Comparativa de la estrategia de zero-shot, one-shot y few-shot orientado a LLMs.
+- [Informe de datos de Marbella Vice](https://www.pedromebo.com/blog/informe-datos-marbella-vice) (2021-06-23): Resumen analítico del servidor de GTA RP Marbella Vice. Datos generales y de creadores.
+- [Cómo crear un README de presentación en GitHub](https://www.pedromebo.com/blog/readme-presentacion-github) (2020-11-10): Tutorial de cómo crear un readme de presentación en GitHub.
+- [Awesome: Listas de recursos para programación](https://www.pedromebo.com/blog/awesomelist-recursos-programacion) (2020-11-10): Utiliza la lista de recursos awesome-list para descubrir y conocer nuevas tecnologías
+
+## Technical Blog Articles (English)
+- [Ruff - The Fastest Python Linter and Formatter: Guide and Configuration](https://www.pedromebo.com/blog/en-ruff-linter-python) (2025-12-04): Discover Ruff, the all-in-one tool that replaces Flake8, Black, and isort. Learn how to use it, configure it, and why it is the new standard in Python.
+- [How to Save Costs and Improve Latency in LLMs: Semantic Cache with LangChain and Redis](https://www.pedromebo.com/blog/en-llm-semantic-cache) (2025-10-30): Discover how to save costs using LLM with semantic cache implementing it with LangChain and Redis, comparison, pros and cons and common errors
+- [UV - Python Package Manager: how to use it, comparisons, and common issues](https://www.pedromebo.com/blog/en-uv-package-manager-python) (2025-10-21): Learn how to use UV, the Python package manager poised to replace Pip; its advantages, comparisons with other systems, and common issues
+- [How to use Docker Model Runner: Running LLM locally with Docker and LangChain](https://www.pedromebo.com/blog/en-how-to-use-docker-model-runner) (2025-05-07): Learn how to run LLM models locally using Docker Model Runner and LangChain. A beginner-friendly guide to getting started with local LLMs in under 10 minutes, without complex setups or expensive hardware.
+- [How DeepSeek R1 Works: Explaining All Its Key Components and Their Consequences](https://www.pedromebo.com/blog/en-how-deepseek-r1-works) (2025-02-03): Learn how the DeepSeek R1 model works and its components such as Chain of Thought, Reinforcement Learning, Reward Modeling, and Distillation
+- [TF-IDF and Bag of Words: How Statistics Pioneered Natural Language Processing (NLP)](https://www.pedromebo.com/blog/en-tfidf-bow-nlp) (2025-01-14): Discover how classic statistical techniques like Bag of Words and TF-IDF laid the foundation for text analysis and natural language understanding in computing.
+- [From N-grams to Word2Vec: The Early Steps in Language Representation](https://www.pedromebo.com/blog/en-ngram-word2vec-evolucion) (2024-12-05): Explore how traditional approaches like n-grams evolved into more advanced models like Word2Vec to represent human language efficiently.
+- [Cache Usage in LLMs: LangChain Cache and OpenAI Prompt Caching](https://www.pedromebo.com/blog/en-llm-prompt-caching) (2024-10-17): Learn what caching for LLMs is and how to implement it with LangChain and OpenAI
+- [Comparison of Zero-Shot, One-Shot, and Few-Shot in LLMs](https://www.pedromebo.com/blog/en-comparativa-zero-shot-one-shot-few-shot-llms) (2024-10-10): Comparison of the zero-shot, one-shot, and few-shot strategies in LLMs.
+- [Marbella Vice Data Report](https://www.pedromebo.com/blog/en-informe-datos-marbella-vice) (2021-06-23): Analytical summary of the Marbella Vice GTA RP server. General and creator data.
+- [How to Create a GitHub Profile README](https://www.pedromebo.com/blog/en-readme-presentacion-github) (2020-11-10): Tutorial on how to create a profile README on GitHub.
+- [Awesome: Resource Lists for Programming](https://www.pedromebo.com/blog/en-awesomelist-recursos-programacion) (2020-11-10): Use the awesome-list of resources to discover and learn new technologies
+
+## Shorts & Quick Engineering Notes
+- [ES: Nuevos programadores: Cómo la IA está revolucionando el sector](https://www.pedromebo.com/shorts/nuevos-desarrolladores-ia): Reflexión sobre como la IA está ayudando a crear nuevos desarrolladores, las ventajas e inconvenientes de esta tendencia.
+- [EN: New Programmers: How AI is Revolutionizing the Industry](https://www.pedromebo.com/shorts/en-nuevos-desarrolladores-ia): A reflection on how AI is helping to create new developers, the advantages and disadvantages of this trend.
+
+## Contact & Social Profiles
+- Email: contacto@pedromebo.com
+- LinkedIn: https://www.linkedin.com/in/pedromebo/
+- X (Twitter): https://twitter.com/pedromebo
+- GitHub: https://github.com/pedromebo

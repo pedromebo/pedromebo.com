@@ -18,6 +18,7 @@
 # misc
 .DS_Store
 *.pem
+*.tsbuildinfo
 
 # debug
 npm-debug.log*
@@ -54,26 +55,10 @@ scripts/out
 # open-next
 .open-next
 
-# sst
-.sst
+# agent skills & context
+.agent/
+.agents/
 
-# open-next
-.open-next
-
-# sst
-.sst
-
-# open-next
-.open-next
-
-# sst
-.sst
-
-# open-next
-.open-next
-
-# sst
-.sst
-
-# open-next
-.open-next
+# archify & diagram build artifacts
+.archify/
+public/diagrams/*.json

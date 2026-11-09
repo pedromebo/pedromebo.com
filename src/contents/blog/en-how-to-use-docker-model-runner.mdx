@@ -3,9 +3,11 @@ title: 'How to use Docker Model Runner: Running LLM locally with Docker and Lang
 description: "Learn how to run LLM models locally using Docker Model Runner and LangChain. A beginner-friendly guide to getting started with local LLMs in under 10 minutes, without complex setups or expensive hardware."
 publishedAt: '2025-05-07'
 banner: 'docker_model_runner'
-tags: 'blogs'
+tags: 'docker,llms,langchain,python'
 translated_slug: como-usar-docker-model-runner
 ---
+
+> **TL;DR (Executive Summary):** **Docker Model Runner** (available since Docker Desktop 4.40) lets you pull and run local LLMs (such as Llama 3.2) straight from the CLI via `docker model run` while exposing an OpenAI-compatible API endpoint at `http://localhost:12434/engines/v1` that plugs directly into **LangChain** in under 10 minutes.
 
 If you've ever felt overwhelmed by how complicated it seems to install and run models (LLM) on your computer, you're not alone. Many developers, students, or AI enthusiasts face the same difficulties: complex technical configurations, failing dependencies, and the need for expensive hardware. All of this makes running a model on your own computer seem like an impossible mission.
 
@@ -76,3 +78,14 @@ pprint.pp(ai_msg.content)
 The ability to test and experiment with LLM without needing to depend on external servers, pay for APIs, or study neural network architecture. In minutes, and without deep technical knowledge.
 
 This is an easy and quick way if you want to use LLM locally for testing or have greater privacy without having to pay for it. Additionally, this brings the use of LLMs closer to more devices and beginner users.
+
+## Frequently Asked Questions about Docker Model Runner (FAQ)
+
+### What version of Docker is required for Docker Model Runner?
+You need **Docker Desktop 4.40 or later**. Enable it in *Settings > Features in development* by checking **Docker Model Runner** and turning on *Enable host-side TCP support* (default port `12434`).
+
+### How do I connect Docker Model Runner to LangChain?
+Docker Model Runner serves an OpenAI-compatible REST API at `http://localhost:12434/engines/v1`. In `langchain_openai`, pass `base_url="http://localhost:12434/engines/v1"`, `model="ai/llama3.2:3B-Q4_K_M"`, and a dummy `api_key="docker"` to `ChatOpenAI`.
+
+### Does Docker Model Runner support GPU acceleration?
+Yes. Instead of running inference inside a slow virtualized Linux VM container, Docker Model Runner packages models as OCI artifacts and executes the inference server (`llama.cpp`) natively on the host GPU (Apple Silicon Metal or NVIDIA CUDA) for maximum throughput.

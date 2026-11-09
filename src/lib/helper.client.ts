@@ -3,8 +3,8 @@ export function classNames(...classes: string[]): string {
 }
 
 type OpenGraphType = {
-  siteName: string;
-  description: string;
+  siteName?: string;
+  description?: string;
   templateTitle?: string;
   logo?: string;
   banner?: string;
@@ -12,22 +12,22 @@ type OpenGraphType = {
   tags?: string;
 };
 export function openGraph({
-  siteName,
+  siteName = 'Pedro Medinilla Bohórquez - Pedromebo',
   templateTitle,
-  description,
+  description = '',
   banner,
   logo = 'https://res.cloudinary.com/pedromebo/image/upload/c_pad,g_center,w_1200,h_630,b_white/v1725804553/logo.png',
   isBlog = false,
   tags,
 }: OpenGraphType): string {
-  const ogLogo = logo.trim();
-  const ogSiteName = encodeURIComponent(siteName.trim());
+  const ogLogo = (logo ?? '').trim();
+  const ogSiteName = encodeURIComponent((siteName ?? '').trim());
   const ogTemplateTitle = templateTitle
     ? encodeURIComponent(templateTitle.trim())
     : undefined;
-  const ogDesc = encodeURIComponent(description.trim());
+  const ogDesc = encodeURIComponent((description ?? '').trim());
 
-  if (banner) {
+  if (banner && banner.trim()) {
     const ogTags = tags ? encodeURIComponent(tags.trim()) : undefined;
     const ogBanner = banner.trim();
 

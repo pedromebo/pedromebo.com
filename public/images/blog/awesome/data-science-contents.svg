@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 380" width="840" height="380" fill="none">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="840" y2="380" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0a0d24" />
+      <stop offset="100%" stop-color="#111638" />
+    </linearGradient>
+    <linearGradient id="accent2" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#00f5d4" />
+      <stop offset="50%" stop-color="#596dff" />
+      <stop offset="100%" stop-color="#ff2e93" />
+    </linearGradient>
+    <clipPath id="cardClip2">
+      <rect width="840" height="380" rx="16" />
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#cardClip2)">
+    <rect width="840" height="380" rx="16" fill="url(#bg2)" />
+    <rect x="0" y="0" width="840" height="4" fill="url(#accent2)" />
+
+    <!-- Header -->
+    <circle cx="28" cy="26" r="6" fill="#ff2e93" />
+    <circle cx="48" cy="26" r="6" fill="#f59e0b" />
+    <circle cx="68" cy="26" r="6" fill="#00f5d4" />
+    <text x="92" y="30" fill="#b6bddb" font-family="monospace" font-size="13" font-weight="bold">krzjoa / awesome-python-data-science — Table of Contents</text>
+    <line x1="0" y1="48" x2="840" y2="48" stroke="#262f6e" stroke-width="1" />
+
+    <!-- Grid of categories -->
+    <!-- Card 1: Machine Learning -->
+    <rect x="30" y="68" width="250" height="135" rx="12" fill="#070919" stroke="#00f5d4" stroke-width="1.5" />
+    <text x="48" y="96" fill="#00f5d4" font-family="monospace" font-size="13.5" font-weight="bold">01. Machine Learning</text>
+    <text x="48" y="122" fill="#ffffff" font-family="sans-serif" font-size="12.5">• scikit-learn &amp; XGBoost</text>
+    <text x="48" y="146" fill="#ffffff" font-family="sans-serif" font-size="12.5">• LightGBM &amp; CatBoost</text>
+    <text x="48" y="170" fill="#b6bddb" font-family="sans-serif" font-size="12.5">• Imbalanced-learn &amp; Optuna</text>
+
+    <!-- Card 2: Deep Learning -->
+    <rect x="295" y="68" width="250" height="135" rx="12" fill="#070919" stroke="#ff2e93" stroke-width="1.5" />
+    <text x="313" y="96" fill="#ff2e93" font-family="monospace" font-size="13.5" font-weight="bold">02. Deep Learning</text>
+    <text x="313" y="122" fill="#ffffff" font-family="sans-serif" font-size="12.5">• PyTorch &amp; Lightning</text>
+    <text x="313" y="146" fill="#ffffff" font-family="sans-serif" font-size="12.5">• TensorFlow &amp; Keras</text>
+    <text x="313" y="170" fill="#b6bddb" font-family="sans-serif" font-size="12.5">• Hugging Face Transformers</text>
+
+    <!-- Card 3: Data Manipulation -->
+    <rect x="560" y="68" width="250" height="135" rx="12" fill="#070919" stroke="#596dff" stroke-width="1.5" />
+    <text x="578" y="96" fill="#596dff" font-family="monospace" font-size="13.5" font-weight="bold">03. Data Manipulation</text>
+    <text x="578" y="122" fill="#ffffff" font-family="sans-serif" font-size="12.5">• pandas &amp; Polars</text>
+    <text x="578" y="146" fill="#ffffff" font-family="sans-serif" font-size="12.5">• NumPy &amp; SciPy</text>
+    <text x="578" y="170" fill="#b6bddb" font-family="sans-serif" font-size="12.5">• Dask &amp; Apache Spark</text>
+
+    <!-- Card 4: Visualization -->
+    <rect x="30" y="220" width="250" height="135" rx="12" fill="#070919" stroke="#596dff" stroke-width="1.5" />
+    <text x="48" y="248" fill="#596dff" font-family="monospace" font-size="13.5" font-weight="bold">04. Visualization</text>
+    <text x="48" y="274" fill="#ffffff" font-family="sans-serif" font-size="12.5">• Matplotlib &amp; Seaborn</text>
+    <text x="48" y="298" fill="#ffffff" font-family="sans-serif" font-size="12.5">• Plotly &amp; Bokeh</text>
+    <text x="48" y="322" fill="#b6bddb" font-family="sans-serif" font-size="12.5">• Altair &amp; Streamlit</text>
+
+    <!-- Card 5: NLP & Text Mining -->
+    <rect x="295" y="220" width="250" height="135" rx="12" fill="#070919" stroke="#00f5d4" stroke-width="1.5" />
+    <text x="313" y="248" fill="#00f5d4" font-family="monospace" font-size="13.5" font-weight="bold">05. Natural Language</text>
+    <text x="313" y="274" fill="#ffffff" font-family="sans-serif" font-size="12.5">• spaCy &amp; NLTK</text>
+    <text x="313" y="298" fill="#ffffff" font-family="sans-serif" font-size="12.5">• Gensim &amp; FastText</text>
+    <text x="313" y="322" fill="#b6bddb" font-family="sans-serif" font-size="12.5">• LangChain &amp; Embeddings</text>
+
+    <!-- Card 6: MLOps & Explainability -->
+    <rect x="560" y="220" width="250" height="135" rx="12" fill="#070919" stroke="#ff2e93" stroke-width="1.5" />
+    <text x="578" y="248" fill="#ff2e93" font-family="monospace" font-size="13.5" font-weight="bold">06. MLOps &amp; XAI</text>
+    <text x="578" y="274" fill="#ffffff" font-family="sans-serif" font-size="12.5">• MLflow &amp; W&amp;B</text>
+    <text x="578" y="298" fill="#ffffff" font-family="sans-serif" font-size="12.5">• SHAP &amp; LIME</text>
+    <text x="578" y="322" fill="#b6bddb" font-family="sans-serif" font-size="12.5">• DVC &amp; BentoML</text>
+  </g>
+  <rect x="1" y="1" width="838" height="378" rx="15" stroke="#262f6e" stroke-width="2" />
+</svg>

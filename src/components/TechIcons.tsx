@@ -12,7 +12,11 @@ import {
   SiOpengl,
   SiGit,
   SiUnrealengine,
-  SiFmod
+  SiFmod,
+  SiNextdotjs,
+  SiTypescript,
+  SiTailwindcss,
+  SiOpenai,
 } from 'react-icons/si';
 
 import Tooltip from '@/components/Tooltip';
@@ -91,5 +95,21 @@ const techList = {
   fmod: {
     icon: SiFmod,
     name: 'FMOD'
+  },
+  nextjs: {
+    icon: SiNextdotjs,
+    name: 'Next.js',
+  },
+  typescript: {
+    icon: SiTypescript,
+    name: 'TypeScript',
+  },
+  tailwind: {
+    icon: SiTailwindcss,
+    name: 'Tailwind CSS',
+  },
+  openai: {
+    icon: SiOpenai,
+    name: 'AI & LLMs',
   },
 };

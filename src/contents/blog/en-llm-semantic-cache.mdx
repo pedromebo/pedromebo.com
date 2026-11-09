@@ -1,12 +1,15 @@
 ---
+translated_slug: 'llm-semantic-cache'
 title: 'How to Save Costs and Improve Latency in LLMs: Semantic Cache with LangChain and Redis'
 description: 'Discover how to save costs using LLM with semantic cache implementing it with LangChain and Redis, comparison, pros and cons and common errors'
 publishedAt: '2025-10-30'
 banner: 'en_llm_semantic_cache'
-tags: 'blogs'
+tags: 'llms,redis,optimization,cost-saving'
 ---
 
-> ## Introduction
+> **TL;DR (Executive Summary):** A **semantic cache** stores LLM responses indexed by vector embeddings rather than exact text keys. By pairing **LangChain (`RedisSemanticCache`) with Redis Stack**, it intercepts conceptually equivalent prompts before hitting external APIs, cutting token costs by **50%–90%** and dropping response latency from seconds to milliseconds.
+
+## Introduction
 
 Tired of seeing your API bill (OpenAI, Anthropic, Google) skyrocket every time a user asks a slightly different question? Does the **latency** of your RAG application bother you because you're asking the LLM the same idea over and over again?
 
@@ -16,7 +19,7 @@ What if I told you that you can **save** up to 90% of those costs and drasticall
 
 It's called Semantic Cache, and we're going to implement it simply with Redis and LangChain.
 
-> ## What is semantic cache?
+## What is semantic cache?
 
 A semantic cache is not the typical (key, value) cache where key must be an exact match. It's much smarter.
 
@@ -32,7 +35,7 @@ This is easy to implement using major LLM frameworks such as **LangChain** and b
 
 ---
 
-> ### Advantages (Why use it?)
+### Advantages (Why use it?)
 
 1.  **Brutal Cost Reduction:** If 50% of your users' queries are conceptually similar ("what's the weather in BCN?" vs "what's the weather like in Barcelona?"), you're paying twice for the same answer. Semantic cache intercepts this. **Savings of 50-90%** are realistic in production applications.
 
@@ -42,7 +45,7 @@ This is easy to implement using major LLM frameworks such as **LangChain** and b
 
 4.  **Trivial Implementation (with LangChain):** As we'll see later, this is not a month-long project. It's literally *one line* to activate the cache in your LangChain LLM object.
 
-> ### Cons (The Disadvantages)
+### Cons (The Disadvantages)
 
 Let's be transparent, not all use cases are suitable for using this type of cache. Everything will depend on whether a small change should change your response (as can be some RAGs) or if it's always the same response as in the cases of frequently asked questions in customer support.
 
@@ -52,7 +55,7 @@ Let's be transparent, not all use cases are suitable for using this type of cach
 * **Infrastructure Requirements:** You need a Redis instance that supports vector search (like **Redis Stack** or Redis Cloud). It doesn't work with the basic version of Redis.
 
 
-> ### Comparison with other systems
+### Comparison with other systems
 
 How does this compare to basic cache or having nothing?
 
@@ -69,7 +72,7 @@ The **Exact Cache** (like `InMemoryCache` or simple `RedisCache` from LangChain)
 Keep in mind that you can also use **prompt caching** to **save costs**, you can see how to use it in [this post](https://www.pedromebo.com/blog/en-llm-prompt-caching)
 
 
-> ## Implementation
+## Implementation
 
 ### 1. Installation
 You'll need the LangChain libraries, an embeddings model (we'll use Gemini's) and the Redis client.
@@ -165,7 +168,7 @@ Speed improvement: 44.45x faster
 
 As you can see, it's not only **much faster** but we just **saved over 4000 tokens** of output + reasoning
 
-> ## Common Errors
+## Common Errors
 
 - **The problem:** I get a Redis connection error (`redis.exceptions.ConnectionError`).
     - **The error:** `Connection refused` or `Timeout`.
@@ -179,7 +182,7 @@ As you can see, it's not only **much faster** but we just **saved over 4000 toke
     - **The error:** The Redis server doesn't understand vector search commands.
     - **The solution:** **You're not using Redis Stack.** Semantic cache requires the RediSearch module (which includes vector search). It won't work with the standard `redis:latest` Docker image. Make sure to use `redis/redis-stack:latest`.
 
-> ## Conclusion
+## Conclusion
 
 **Semantic cache is not a "nice-to-have"; it's an absolute necessity** for any production LLM application.
 
@@ -188,4 +191,16 @@ It's the difference between an app that is **expensive and slow**, and one that 
 As a developer and as a user, your time and computing resources are the most valuable. Letting an LLM answer the same question (worded in 10 different ways) is a waste of both.
 
 **Try it in your next project and start seeing the benefits.**
+
+## Frequently Asked Questions about LLM Semantic Caching (FAQ)
+
+### How does a semantic cache differ from a standard key-value cache?
+A standard cache requires an exact character-by-character match of the prompt string to trigger a cache hit. A **semantic cache** embeds the incoming prompt into a high-dimensional vector and performs a similarity search in Redis Stack, returning the cached answer whenever two differently worded questions share the same meaning.
+
+### What `score_threshold` should I use in LangChain's `RedisSemanticCache`?
+In production, a `score_threshold` (cosine distance) between **`0.05` and `0.15`** provides a safe balance between hit rate and precision. Setting the distance threshold above `0.2` often causes false positives where distinct questions receive the same cached answer.
+
+### Why do I get `unknown command 'FT.SEARCH'` when using Redis for semantic caching?
+Standard `redis:latest` images do not include the RediSearch module required for vector similarity indexing. You must run **`redis/redis-stack:latest`** (or Redis 8+ with vector search enabled) so LangChain can create and query vector indices.
+
 

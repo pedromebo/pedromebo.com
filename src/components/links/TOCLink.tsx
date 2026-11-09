@@ -18,18 +18,19 @@ export default function TOCLink({
   text,
   activeSection,
 }: TOCLinkProps) {
+  const isActive = activeSection === id;
+
   return (
     <UnstyledLink
       href={`#${id}`}
       id={`link-${id}`}
       className={clsx(
-        'font-medium hover:text-gray-700 focus:outline-none dark:hover:text-gray-200',
-        'focus-visible:text-gray-700 dark:focus-visible:text-gray-200',
-        activeSection === id
-          ? 'text-gray-900 dark:text-gray-100'
-          : 'text-gray-400 dark:text-gray-500'
+        'block text-xs leading-relaxed transition-all focus:outline-none focus-visible:ring-1 focus-visible:ring-[#00f5d4]',
+        isActive
+          ? 'font-bold text-[#596dff] dark:text-[#00f5d4] border-l-2 border-[#596dff] dark:border-[#00f5d4] pl-2 -ml-[9px]'
+          : 'font-medium text-[#586094] dark:text-[#8890b5] hover:text-[#111638] dark:hover:text-[#00f5d4]'
       )}
-      style={{ marginLeft: (level - minLevel) * 16 }}
+      style={{ marginLeft: (level - minLevel) * 12 }}
     >
       {text}
     </UnstyledLink>

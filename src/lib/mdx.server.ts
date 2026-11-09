@@ -14,9 +14,14 @@ import {
 export async function getFileSlugArray(type: ContentType) {
   return getFileList(join(process.cwd(), 'src', 'contents', type)).then(
     (paths) =>
-      paths.map((path) =>
-        path
-          .replace(join(process.cwd(), 'src', 'contents', type) + '/', '')
+      paths.map((filePath) =>
+        filePath
+          .replace(/\\/g, '/')
+          .replace(
+            join(process.cwd(), 'src', 'contents', type).replace(/\\/g, '/') +
+              '/',
+            ''
+          )
           .replace('.mdx', '')
           .split('/')
       )
@@ -36,12 +41,33 @@ export async function getFrontmatter(type: ContentType, slug: string) {
 
   const { data: frontmatter, content } = matter(source);
 
+  const cleanSlug = slug.startsWith('en-') ? slug.slice(3) : slug;
+  const isSpanish = !slug.startsWith('en-');
+  const candidateTranslatedSlug =
+    frontmatter.translated_slug ?? `${isSpanish ? 'en-' : ''}${cleanSlug}`;
+  const candidatePath = join(
+    process.cwd(),
+    'src',
+    'contents',
+    type,
+    `${candidateTranslatedSlug}.mdx`
+  );
+  let resolvedTranslatedSlug: string | undefined = undefined;
+  try {
+    readFileSync(candidatePath, 'utf8');
+    resolvedTranslatedSlug = candidateTranslatedSlug;
+  } catch {
+    resolvedTranslatedSlug = undefined;
+  }
+
   return {
     frontmatter: {
       wordCount: content.split(/\s+/g).length,
       readingTime: readingTime(content),
       slug: slug || null,
       ...frontmatter,
+      translated_slug: resolvedTranslatedSlug,
+      spanishOnly: frontmatter.spanishOnly ?? !resolvedTranslatedSlug,
     },
     content
   };
@@ -64,6 +90,8 @@ const getFileList = async (dirName: string) => {
 
 export async function getAllFilesFrontmatter<T extends ContentType>(type: T) {
   const files = await getFileList(join(process.cwd(), 'src', 'contents', type));
+  const baseDir =
+    join(process.cwd(), 'src', 'contents', type).replace(/\\/g, '/') + '/';
 
   return files.reduce((allPosts: Array<PickFrontmatter<T>>, absolutePath) => {
     const source = readFileSync(absolutePath, 'utf8');
@@ -73,7 +101,8 @@ export async function getAllFilesFrontmatter<T extends ContentType>(type: T) {
       {
         ...(data as PickFrontmatter<T>),
         slug: absolutePath
-          .replace(join(process.cwd(), 'src', 'contents', type) + '/', '')
+          .replace(/\\/g, '/')
+          .replace(baseDir, '')
           .replace('.mdx', ''),
         readingTime: readingTime(source),
       },
@@ -85,13 +114,17 @@ export async function getAllFilesFrontmatter<T extends ContentType>(type: T) {
 
 export async function getRecommendations(currSlug: string) {
   const frontmatters = await getAllFilesFrontmatter('blog');
+  const isEnglish = currSlug.startsWith('en-');
 
   // Get current frontmatter
   const currentFm = frontmatters.find((fm) => fm.slug === currSlug);
 
-  // Remove currentFm and spanish Posts, then randomize order
+  // Filter posts matching the current language and exclude currentFm, then randomize order
   const otherFms = frontmatters
-    .filter((fm) => !fm.slug.startsWith('en-') && fm.slug !== currSlug)
+    .filter(
+      (fm) =>
+        fm.slug.startsWith('en-') === isEnglish && fm.slug !== currSlug
+    )
     .sort(() => Math.random() - 0.5);
 
   // Find with similar tags

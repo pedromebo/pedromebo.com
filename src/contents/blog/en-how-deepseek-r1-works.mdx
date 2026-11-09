@@ -3,14 +3,17 @@ title: 'How DeepSeek R1 Works: Explaining All Its Key Components and Their Conse
 description: 'Learn how the DeepSeek R1 model works and its components such as Chain of Thought, Reinforcement Learning, Reward Modeling, and Distillation'
 publishedAt: '2025-02-03'
 banner: 'deepseek_r1_learn_banner'
-tags: 'blogs'
+tags: 'llms,ai,deepseek,reasoning'
 translated_slug: como-funciona-deepseek-r1
 ---
+
+> **TL;DR (Executive Summary):** **DeepSeek-R1** is an open-weights reasoning model matching OpenAI o1 by combining Chain of Thought (CoT), large-scale reinforcement learning via **GRPO** (*Group Relative Policy Optimization*), and cold-start Supervised Fine-Tuning (SFT). Its sibling model, **DeepSeek-R1-Zero**, proves that emergent reasoning behaviors (*aha moments*) and self-verification can arise from pure RL without prior SFT, while distillation transfers these capabilities into compact dense models ranging from 1.5B to 70B parameters.
+
 **DeepSeek-R1** is a family of large-scale language models (LLMs) whose primary goal is to enhance reasoning capabilities and generate responses that are more aligned with human context. To achieve this, it relies on various stages of **Reinforcement Learning (RL)** and, optionally, **Supervised Fine-Tuning (SFT)**. One of its variants, **DeepSeek-R1-Zero**, demonstrates that it is possible to develop a reasoning model solely through RL techniques, even without a prior supervised fine-tuning phase. This paves the way for new approaches to training LLMs, reducing dependence on large volumes of labeled data.
 
 This article explores how the use of Chain of Thought reasoning, Reward Modeling configuration, and the RL process itself have contributed to DeepSeek-R1 outstanding performance metrics. It also delves into the phenomenon of the “aha moment” and how, through distillation, the acquired reasoning can be transferred to smaller models without losing effectiveness.
 
-> ## Types of DeepSeek R1 Models
+## Types of DeepSeek R1 Models
 
 On January 20, DeepSeek released its DeepSeek-R1 and DeepSeek-R1-Zero models—two new reasoning models that outperform OpenAI o1 in some benchmarks.
 
@@ -36,7 +39,7 @@ Here are the main differences between them:
 - **DeepSeek-R1**: Its results are less creative and may be less precise in complex problems. Its reliance on supervised data limits its scalability and adaptability.
 - **DeepSeek-R1-Zero**: The model tends to generate less precise responses or mix languages. The output may be less user-friendly as it lacks supervised fine-tuning and can even be difficult to interpret.
 
-> ## How Does DeepSeek R1 Work?
+## How Does DeepSeek R1 Work?
 
 ### Chain of Thought: Structuring Thought Processes
 
@@ -50,20 +53,27 @@ Essentially, this is a Prompt Engineering technique that enables the model to ge
 
 It is important not to confuse system prompting with Chain of Thought. System prompting refers to a training technique that involves guiding the model through a series of steps to generate a coherent response, while the latter refers to the internal structure of the reasoning steps the model follows before producing a final answer.
 
-This is the prompt template DeepSeek R1 has used to achieve this, as shown in their paper. Additionally, responses are labeled into two categories: think and answer.
+This is the prompt template DeepSeek R1 followed as shown in Table 1 of their paper. The model internally encloses its reasoning between `<think>` and `<answer>` tags:
+
+<CollapsibleThink title="Prompt Template (DeepSeek-R1-Zero)" badge="Table 1" defaultOpen={true} lang="en">
 
 ```md
 A conversation between User and Assistant. The user asks a question, and the Assistant solves it.
 The assistant first thinks about the reasoning process in the mind and then provides the user
 with the answer. The reasoning process and answer are enclosed within <think> </think> and
 <answer> </answer> tags, respectively, i.e., <think> reasoning process here </think>
-<answer> answer here </answer>. User: **prompt**. Assistant:
+<answer> answer here </answer>. User: prompt. Assistant:
 ```
+
+</CollapsibleThink>
+
 ### Example of Chain of Thought for the question “Are there more doors or chairs in the world?”:
 
 Response from o1:
+
+<CollapsibleThink title="OpenAI o1 Reasoning Process (<think>)" badge="o1 Reasoning" lang="en">
+
 ```md
-<think>
 1. There are millions of buildings in the world, and each one can have multiple internal and external doors.
 2. At the same time, almost all houses, offices, and schools contain multiple chairs.
 3. In a typical house, there may be an average of 5 to 10 doors (main entrance, interior doors, closets, etc.), while the same house might have an average of 4 to 8 chairs.
@@ -71,15 +81,19 @@ Response from o1:
 5. Many large buildings can have hundreds of doors, but also hundreds of chairs (conference rooms, cafeterias, etc.).
 6. Comparing these totals is complex, but most informal estimates tend to suggest that there are more doors, considering that even closet doors, vehicle doors, and other types of doors count.
 7. It could be very close, but popular opinion leans towards the idea that there might be more doors than chairs, given that every home and every car adds a significant number of doors.
-</think>
 ```
+
+</CollapsibleThink>
+
 ```md
 Final answer: There are possibly more doors than chairs in the world.
 ```
 
 Response from DeepSeek R1:
+
+<CollapsibleThink title="DeepSeek-R1 Reasoning Process (<think>)" badge="DeepSeek-R1 CoT" lang="en">
+
 ```md
-<think>
 
 Okay, so the question is whether there are more doors or chairs in the world.  
 Hmm, interesting. Let me try to break this down.  
@@ -193,6 +207,9 @@ In conclusion, it's a close call, but considering all types of doors (including
 cabinets, appliances, vehicles), doors probably outnumber chairs globally.  
 </think>
 ```
+
+</CollapsibleThink>
+
 ```md
 Final answer:  
 There are probably more doors than chairs in the world, thanks to their presence in large and small structures, vehicles, and appliances.
@@ -217,7 +234,15 @@ Key points of the GRPO algorithm:
 6. The highest-reward response is selected.
 7. The process repeats, allowing the model to learn and improve over time.
 
-![GRPO Algorithm](https://i.gyazo.com/fd8cd4eaded094836dec486108e3d0b2.png)
+$$
+A_i = \frac{r_i - \operatorname{mean}(\{r_1, r_2, \dots, r_G\})}{\operatorname{std}(\{r_1, r_2, \dots, r_G\})}
+$$
+
+$$
+\mathcal{J}_{GRPO}(\theta) = \mathbb{E} \left[ q \sim P(Q), \{o_i\}_{i=1}^G \sim \pi_{\theta_{old}}(O|q) \right] \frac{1}{G} \sum_{i=1}^G \left( \min\left( \frac{\pi_\theta(o_i|q)}{\pi_{\theta_{old}}(o_i|q)} A_i, \operatorname{clip}\left(\frac{\pi_\theta(o_i|q)}{\pi_{\theta_{old}}(o_i|q)}, 1-\epsilon, 1+\epsilon\right) A_i \right) - \beta D_{KL}(\pi_\theta \parallel \pi_{ref}) \right)
+$$
+
+> *GRPO (Group Relative Policy Optimization) objective from the official paper. It eliminates the critic network and normalizes advantages $A_i$ directly across a group of $G$ sampled outputs.*
 
 ### Reward Modeling
 
@@ -243,7 +268,7 @@ The distillation process aims to transfer the reasoning capabilities acquired by
 
 DeepSeek-R1 has openly shared distilled checkpoints for various model sizes (1.5B, 7B, 8B, 14B, 32B, and 70B), based on the Qwen2.5 and Llama3 families. This allows the community to leverage these distillation techniques and build lighter, more accessible solutions, enabling deployment across different devices.
 
-![DeepSeek R1 Training Flow](https://i.gyazo.com/ad570b8608fea997c1c2bf5dc6f1e51f.png)
+<DeepSeekPipeline lang='en' />
 
 ### Aha Moment
 
@@ -254,9 +279,45 @@ One of the most interesting discoveries during DeepSeek-R1-Zero’s training pha
 
 For researchers, this moment highlights the beauty and power of RL, as the model is not explicitly taught a step-by-step strategy—it discovers it by receiving well-designed rewards.
 
-![Aha Moment from the Paper](https://i.gyazo.com/356f73a15cab8fac33d88560bff7ed59.png)
+<CollapsibleThink title="Aha Moment - DeepSeek-R1-Zero (Table 3 from the Paper)" badge="Table 3" defaultOpen={true} lang="en">
 
-> ## Performance of DeepSeek R1
+```md
+Question: If a > 1, solve for x in sqrt(a - sqrt(a + x)) = x.
+
+Model Response:
+...
+Alternatively, let's look at the equation again:
+sqrt(a - sqrt(a + x)) = x
+Square both sides:
+a - sqrt(a + x) = x^2  =>  a - x^2 = sqrt(a + x)
+Square both sides again:
+(a - x^2)^2 = a + x
+Expand:
+a^2 - 2a x^2 + x^4 = a + x  =>  x^4 - 2a x^2 - x + a^2 - a = 0
+
+This is a quartic equation in x... Wait, wait. Wait. That's an aha moment I can flag here.
+Let's rethink about the original equation: sqrt(a - sqrt(a + x)) = x.
+Can we see it as a function composition?
+Let f(t) = sqrt(a - t). Then the equation is f(sqrt(a + x)) = x... No, not quite.
+
+Wait, what if we consider y = sqrt(a + x)?
+Then y >= 0, and y^2 = a + x  =>  x = y^2 - a.
+Wait, the inner term is sqrt(a + x), let y = sqrt(a + x). Then the equation is sqrt(a - y) = x.
+So we have:
+1) y = sqrt(a + x)  =>  y >= 0 and y^2 = a + x
+2) x = sqrt(a - y)  =>  x >= 0 and x^2 = a - y
+
+Subtracting the two equations gives:
+y^2 - x^2 = (a + x) - (a - y) = x + y
+(y - x)(y + x) = (x + y)
+Since x + y > 0, we can divide by (x + y):
+y - x = 1  =>  y = x + 1!
+...
+```
+
+</CollapsibleThink>
+
+## Performance of DeepSeek R1
 
 The performance results of DeepSeek-R1 and its variants are remarkable:
 
@@ -267,15 +328,21 @@ The performance results of DeepSeek-R1 and its variants are remarkable:
 
 These figures represent a significant advancement over previous open-source models, demonstrating the effectiveness of combining RL and explicit reasoning.
 
-<div align="center">DeepSeek R1 Zero vs. OpenAI o1 Performance</div>
+<div align="center"><strong>Performance Comparison: DeepSeek-R1-Zero vs. OpenAI o1 Models (Table 2 from the Paper)</strong></div>
 
-![DeepSeek R1 Zero vs. OpenAI o1 Performance](https://i.gyazo.com/f8eb1c168205738bc59b0389ac650cd6.png)
+| Reasoning Benchmark | DeepSeek-R1-Zero | OpenAI o1-preview | OpenAI o1-mini | OpenAI o1-0912 |
+| :--- | :---: | :---: | :---: | :---: |
+| **AIME 2024** (Pass@1) | **71.0%** | 44.6% | 63.6% | **74.4%** |
+| **MATH-500** (Pass@1) | **95.8%** | 85.5% | 90.0% | **96.4%** |
+| **GPQA Diamond** (Pass@1) | **65.2%** | 61.5% | 60.0% | **75.7%** |
+| **LiveCodeBench** (Pass@1) | **52.5%** | 32.8% | 53.8% | **62.9%** |
+| **Codeforces** (Percentile) | **86.3%** | 80.8% | 93.4% | **96.6%** |
 
 <div align="center">Performance of DeepSeek R1, R1-Zero, and OpenAI o1</div>
 
-![Performance of DeepSeek R1, R1-Zero, and OpenAI o1](https://i.gyazo.com/510a206ff6a525a95a6b4a01b0e22605.png)
+![Performance of DeepSeek R1, R1-Zero, and OpenAI o1](/images/blog/deepseek-r1/benchmark.jpg)
 
-> ## Consequences of the DeepSeek R1 Release
+## Consequences of the DeepSeek R1 Release
 
 The release of DeepSeek-R1 and DeepSeek-R1-Zero has had a significant impact on the LLM research and development community. Some of the most notable consequences include:
 
@@ -289,7 +356,7 @@ This has led to:
 - **Increased investment in reasoning models**: China has announced an investment of over $137 billion in the development of reasoning models, fostering competition and innovation in this field.
 - **Criticism of U.S. sanctions on China**: Many developers and [executives](https://darioamodei.com/on-deepseek-and-export-controls) have questioned whether the sanctions against China are being effectively enforced and are calling for stricter controls or further limitations on GPU access.
 
-> ## Conclusion
+## Conclusion
 
 The race to achieve AGI (Artificial General Intelligence) has begun, and no one wants to be left behind. We are witnessing a period of rapid innovation and competition with the potential to reshape humanity and our daily lives.
 
@@ -300,3 +367,15 @@ What would happen if these scientists and developers had the same resources as O
 Many have claimed that the AI bubble has burst and that we are in a crisis. But is this truly a crisis, or is it an opportunity for smaller companies to realize they, too, can participate in the race toward AGI?
 
 Whether AGI is a benefit or a danger to humanity remains to be seen. For now, let's enjoy the advancements and competition that are leading us toward a smarter and more promising future.
+
+## Frequently Asked Questions about DeepSeek R1 (FAQ)
+
+### What is the difference between DeepSeek-R1 and DeepSeek-R1-Zero?
+**DeepSeek-R1-Zero** is trained exclusively via large-scale Reinforcement Learning (RL) directly on the base model without any preliminary Supervised Fine-Tuning (SFT); while it develops strong reasoning, it suffers from poor readability and language mixing. **DeepSeek-R1** resolves this by introducing a multi-stage pipeline with cold-start SFT data and rejection sampling alongside RL.
+
+### How does GRPO (Group Relative Policy Optimization) reduce training costs?
+Unlike PPO, **GRPO** removes the separate value/critic network (which normally doubles memory and compute overhead). Instead, it samples a group of $G$ outputs for each prompt and normalizes each reward against the group’s mean and standard deviation to compute the advantage $A_i$.
+
+### Can I run DeepSeek R1 locally on consumer hardware?
+While the full **DeepSeek-R1 (671B MoE)** model requires multi-GPU server hardware, DeepSeek released **six distilled dense models** (**1.5B, 7B, 8B, 14B, 32B, and 70B** based on Qwen and Llama) that transfer R1's Chain-of-Thought reasoning and run smoothly on local GPUs or laptops via Ollama, vLLM, or Docker Model Runner.
+
