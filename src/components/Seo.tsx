@@ -61,12 +61,12 @@ export default function Seo(props: SeoProps) {
   // Filter out undefined values from props so they don't overwrite defaultMeta
   const definedProps = Object.fromEntries(
     Object.entries(props).filter(([_, v]) => v !== undefined)
-  );
-  const meta = {
+  ) as SeoProps;
+  const meta: typeof defaultMeta & SeoProps = {
     ...defaultMeta,
     ...definedProps,
   };
-  meta['title'] = props.templateTitle
+  meta.title = props.templateTitle
     ? `${props.templateTitle} | ${meta.siteName}`
     : meta.title || defaultMeta.title;
 
