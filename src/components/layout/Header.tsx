@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import * as React from 'react';
+import { HiOutlineMenuAlt3, HiOutlineX } from 'react-icons/hi';
 
 import { trackEvent } from '@/lib/analytics';
 
@@ -56,6 +57,14 @@ export default function Header({ large = false }: HeaderProps) {
 
   const langToggleHref = resolveLangToggleHref();
   //#endregion  //*======== Route & Language Functionality ===========
+
+  //#region  //*=========== Mobile Menu State ===========
+  const [mobileMenuOpen, setMobileMenuOpen] = React.useState<boolean>(false);
+
+  React.useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [router.asPath]);
+  //#endregion  //*======== Mobile Menu State ===========
 
   //#region  //*=========== Scroll Shadow ===========
   const [onTop, setOnTop] = React.useState<boolean>(true);
@@ -118,12 +127,13 @@ export default function Header({ large = false }: HeaderProps) {
                 className='h-7 w-7 transition-transform group-hover:scale-110'
                 priority
               />
-              <span className='hidden font-mono text-sm font-bold tracking-tight text-[#111638] group-hover:text-primary-300 dark:text-white sm:inline-block'>
+              <span className='font-mono text-sm font-bold tracking-tight text-[#111638] group-hover:text-primary-300 dark:text-white inline-block'>
                 pedromebo
               </span>
             </UnstyledLink>
 
-            <ul className='flex items-center gap-1 sm:gap-2 md:gap-3 text-xs md:text-sm pl-2 sm:pl-3 border-l border-slate-200 dark:border-slate-800 overflow-x-auto overflow-y-hidden no-scrollbar py-0.5'>
+            {/* Desktop Navigation */}
+            <ul className='hidden md:flex items-center gap-1 sm:gap-2 md:gap-3 text-xs md:text-sm pl-2 sm:pl-3 border-l border-slate-200 dark:border-slate-800 py-0.5'>
               {navLinks.map(({ href, base, label }) => (
                 <li key={`${href}${label}`} className='shrink-0'>
                   <UnstyledLink
@@ -148,6 +158,7 @@ export default function Header({ large = false }: HeaderProps) {
               ))}
             </ul>
           </div>
+
           <div className='flex shrink-0 items-center gap-2'>
             <UnstyledLink
               href={langToggleHref}
@@ -165,8 +176,52 @@ export default function Header({ large = false }: HeaderProps) {
               <span>{isEnglish ? 'ES 🇪🇸' : 'EN 🇬🇧'}</span>
             </UnstyledLink>
             <ThemeButton />
+
+            {/* Mobile Hamburger Button */}
+            <button
+              type='button'
+              onClick={() => setMobileMenuOpen((prev) => !prev)}
+              className='md:hidden inline-flex items-center justify-center p-2 rounded-lg text-[#586094] hover:text-[#111638] dark:text-[#b6bddb] dark:hover:text-white border border-[#cbcfe0] dark:border-[#262f6e] bg-[#eff0f7]/80 dark:bg-[#111638] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-300'
+              aria-label={mobileMenuOpen ? (isEnglish ? 'Close menu' : 'Cerrar menú') : (isEnglish ? 'Open menu' : 'Abrir menú')}
+              aria-expanded={mobileMenuOpen}
+            >
+              {mobileMenuOpen ? (
+                <HiOutlineX className='h-5 w-5' />
+              ) : (
+                <HiOutlineMenuAlt3 className='h-5 w-5' />
+              )}
+            </button>
           </div>
         </nav>
+
+        {/* Mobile Navigation Dropdown Menu */}
+        {mobileMenuOpen && (
+          <div className='md:hidden border-t border-[#cbcfe0]/60 dark:border-[#262f6e]/60 bg-white/98 dark:bg-[#0a0d24]/98 backdrop-blur-xl shadow-xl transition-all duration-200'>
+            <div className='layout py-3 space-y-1'>
+              {navLinks.map(({ href, base, label }) => {
+                const isActive = base === baseRoute;
+                return (
+                  <UnstyledLink
+                    key={`${href}${label}`}
+                    href={href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={clsx(
+                      'flex items-center justify-between px-3.5 py-2.5 rounded-xl font-mono text-sm transition-all',
+                      isActive
+                        ? 'bg-[#596dff]/10 text-[#596dff] dark:bg-[#00f5d4]/10 dark:text-[#00f5d4] font-bold border border-[#596dff]/30 dark:border-[#00f5d4]/30'
+                        : 'text-[#586094] dark:text-[#b6bddb] hover:bg-[#eff0f7] dark:hover:bg-[#111638] hover:text-[#111638] dark:hover:text-white font-medium'
+                    )}
+                  >
+                    <span>{label}</span>
+                    {isActive && (
+                      <span className='h-2 w-2 rounded-full bg-[#596dff] dark:bg-[#00f5d4] shadow-[0_0_8px_currentColor]' />
+                    )}
+                  </UnstyledLink>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
     </header>
   );

@@ -349,18 +349,18 @@ export default function Mascot({
       <div
         onClick={onOpenGallery}
         className={clsx(
-          'group relative z-10 overflow-hidden rounded-[24px] border-2 border-[#262f6e] bg-[#0a0d24] p-2 shadow-[0_20px_50px_-15px_rgba(10,13,36,0.7),6px_6px_0px_#00f5d4] transition-transform duration-300 hover:-translate-y-1 dark:border-[#00f5d4]/60 dark:shadow-[0_20px_50px_-15px_rgba(0,245,212,0.25),6px_6px_0px_#ff2e93]',
+          'group relative z-10 overflow-hidden rounded-[20px] sm:rounded-[24px] border-2 border-[#262f6e] bg-[#0a0d24] p-1.5 sm:p-2 shadow-[0_20px_50px_-15px_rgba(10,13,36,0.7),4px_4px_0px_#00f5d4] sm:shadow-[0_20px_50px_-15px_rgba(10,13,36,0.7),6px_6px_0px_#00f5d4] transition-transform duration-300 hover:-translate-y-1 dark:border-[#00f5d4]/60 dark:shadow-[0_20px_50px_-15px_rgba(0,245,212,0.25),4px_4px_0px_#ff2e93] dark:sm:shadow-[0_20px_50px_-15px_rgba(0,245,212,0.25),6px_6px_0px_#ff2e93]',
           onOpenGallery && 'cursor-pointer'
         )}
       >
-        <div className='relative overflow-hidden rounded-[18px] bg-[#0a0d24]'>
+        <div className='relative overflow-hidden rounded-[16px] sm:rounded-[18px] bg-[#0a0d24]'>
           {!useSvg ? (
             /* eslint-disable-next-line @next/next/no-img-element */
             <img
               src={selectedMascot.imageSrc}
               alt={selectedMascot.name}
               onError={() => setImgError(true)}
-              className='mx-auto h-auto w-full max-w-[400px] object-contain transition-transform duration-500 group-hover:scale-105'
+              className='mx-auto h-auto w-full max-w-[280px] sm:max-w-[340px] md:max-w-[400px] object-contain transition-transform duration-500 group-hover:scale-105'
             />
           ) : (
             <div className='mx-auto flex aspect-square w-full max-w-[400px] items-center justify-center p-6'>

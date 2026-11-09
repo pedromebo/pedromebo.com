@@ -231,9 +231,9 @@ export default function IndexPage({
 
               <div
                 data-fade='5'
-                className='mt-7 flex flex-wrap items-center gap-4'
+                className='mt-6 sm:mt-7 flex flex-wrap items-center gap-3 sm:gap-4'
               >
-                <div className='group relative'>
+                <div className='group relative w-full sm:w-auto'>
                   <div
                     className={clsx(
                       'animate-tilt absolute -inset-0.5 rounded-xl blur',
@@ -246,7 +246,7 @@ export default function IndexPage({
                     onClick={() =>
                       trackEvent('Home: Explorar el blog', { type: 'navigate' })
                     }
-                    className='relative inline-flex items-center justify-center rounded-xl bg-[#00f5d4] px-5 py-2.5 font-mono text-sm font-bold text-[#0a0d24] shadow-[0_0_20px_rgba(0,245,212,0.4)] transition-all duration-200 hover:scale-105 hover:bg-[#33f7dc] active:scale-95'
+                    className='relative inline-flex w-full sm:w-auto items-center justify-center rounded-xl bg-[#00f5d4] px-5 py-2.5 font-mono text-sm font-bold text-[#0a0d24] shadow-[0_0_20px_rgba(0,245,212,0.4)] transition-all duration-200 hover:scale-105 hover:bg-[#33f7dc] active:scale-95'
                   >
                     {isSpanish ? 'Explorar el blog →' : 'Explore the blog →'}
                   </UnstyledLink>
@@ -256,7 +256,7 @@ export default function IndexPage({
                   onClick={() =>
                     trackEvent('Home: Quien soy', { type: 'navigate' })
                   }
-                  className='inline-flex items-center justify-center rounded-xl border border-[#cbcfe0] bg-white px-5 py-2.5 font-mono text-sm font-bold text-[#111638] shadow-sm transition-all duration-200 hover:scale-105 hover:border-[#596dff] hover:text-[#596dff] active:scale-95 dark:border-[#262f6e] dark:bg-[#0a0d24] dark:text-white dark:hover:border-[#00f5d4] dark:hover:text-[#00f5d4]'
+                  className='inline-flex w-full sm:w-auto items-center justify-center rounded-xl border border-[#cbcfe0] bg-white px-5 py-2.5 font-mono text-sm font-bold text-[#111638] shadow-sm transition-all duration-200 hover:scale-105 hover:border-[#596dff] hover:text-[#596dff] active:scale-95 dark:border-[#262f6e] dark:bg-[#0a0d24] dark:text-white dark:hover:border-[#00f5d4] dark:hover:text-[#00f5d4]'
                 >
                   {isSpanish ? '¿Quién soy?' : 'About me'}
                 </UnstyledLink>
@@ -268,7 +268,7 @@ export default function IndexPage({
             </div>
 
             {/* Right Column: Mascot Sticker Illustration */}
-            <div className='lg:col-span-5' data-fade='4'>
+            <div className='lg:col-span-5 max-w-[340px] sm:max-w-[400px] lg:max-w-none mx-auto w-full' data-fade='4'>
               <Mascot mascotId={1} />
             </div>
           </article>
